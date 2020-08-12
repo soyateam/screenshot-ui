@@ -1,3 +1,8 @@
+enum ROLE {
+    READ = 'READ',
+    WRITE = 'WRITE'
+}
+
 interface IDomainUser {
     id?: string;
     domain?: string;
@@ -50,4 +55,5 @@ export interface IUser {
     responsibilityLocation?: string | IOrganizationGroup;
     clearance?: string;
     fullName?: string;
+    role: ROLE;
 }

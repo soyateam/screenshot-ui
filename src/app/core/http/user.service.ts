@@ -8,33 +8,35 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UserService {
-  authenticationURL: string = environment.loginURL;
+  private loginURL: string = environment.auth.loginURL;
+  private logoutURL: string = environment.auth.logoutURL;
+  private cookieName: string = environment.auth.cookieTokenName;
 
   constructor(private cookieService: CookieService) { }
 
   login() {
-    if (!this.currentUser && !this.cookieService.get(environment.authenticationToken)) {
-      window.location.href = environment.loginURL;
+    if (!this.currentUser && !this.cookieService.get(this.cookieName)) {
+      window.location.href = this.loginURL;
       this.currentUser;
     }
   }
 
   logout() {
     if (this.currentUser) {
-      this.cookieService.delete(environment.authenticationToken);
-      window.location.href = environment.logoutURL;
+      this.cookieService.delete(this.cookieName);
+      window.location.href = this.logoutURL;
     }
   }
 
   expired() {
-    const token = this.cookieService.get(environment.authenticationToken);
+    const token = this.cookieService.get(this.cookieName);
     const exp = this.parseJwt(token).exp;
     if (Date.now() >= exp * 1000) return true;
     return false;
   }
 
   public get currentUser(): IUser {
-    const token = this.cookieService.get(environment.authenticationToken);
+    const token = this.cookieService.get(this.cookieName);
     if (token) {
       const decodedData = this.parseJwt(token);
       return decodedData as IUser;

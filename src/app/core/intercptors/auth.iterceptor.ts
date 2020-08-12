@@ -25,11 +25,11 @@ export class AuthInterceptor implements HttpInterceptor {
     request = request.clone({
       withCredentials: true,
       setHeaders: {
-        Authorization: `Bearer ${this.cookieService.get(environment.authenticationToken)}`,
+        Authorization: `Bearer ${this.cookieService.get(environment.auth.cookieTokenName)}`,
       },
     });
 
-    return next.handle(request).pipe(catchError((error: any, caught: Observable<any>) => {
+    return next.handle(request).pipe(catchError((error: any, _caught: Observable<any>) => {
       if (error && error.status === 401) {
         this.userService.logout();
       } else {
