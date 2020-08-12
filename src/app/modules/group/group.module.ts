@@ -9,4 +9,4 @@ import { CommonModule } from '@angular/common';
     ],
     exports: []
 })
-export class TaskModule { }
+export class GroupModule { }

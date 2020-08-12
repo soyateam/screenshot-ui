@@ -9,7 +9,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from "rxjs/operators";
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
-import { UserService } from '../http/user.service';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

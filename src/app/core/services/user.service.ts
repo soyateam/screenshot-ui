@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from "ngx-cookie-service";
 
-import { IUser } from 'src/app/shared/models/user.model';
+import { IUser, ROLE } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,6 +13,15 @@ export class UserService {
   private cookieName: string = environment.auth.cookieTokenName;
 
   constructor(private cookieService: CookieService) { }
+
+  public get isUserCanWrite(): boolean {
+    if (!this.currentUser) {
+      this.login();
+      return false;
+    }
+    const role = this.currentUser.role;
+    return role === ROLE.WRITE;
+  }
 
   login() {
     if (!this.currentUser && !this.cookieService.get(this.cookieName)) {
