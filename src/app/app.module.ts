@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StatisticsModule } from './modules/statistics/statistics.module';
 import { GroupModule } from './modules/group/group.module';
 import { TaskModule } from './modules/tasks/tasks.module';
+import { MaterialModule } from './modules/material/material.module';
 
 import { CoreModule } from './core/core.module';
 
@@ -21,12 +22,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MaterialModule,
     CoreModule,
     GroupModule,
     TaskModule,

@@ -1,0 +1,22 @@
+<div class="container">
+    <div  class="item" *ngFor="let item of masterTasks">
+        <mat-card class="card">
+            <button class="menu" mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                  <mat-icon>delete_forever</mat-icon>
+                  <span>מחק משימה</span>
+                </button>
+              </mat-menu>
+              <div>        
+                <mat-card-title>{{item.name}}</mat-card-title>
+                <p>סה"כ משימות: {{item.tasksCount}}</p>
+            </div>
+      </mat-card>
+    </div>
+    <button mat-fab color="primary" class="add-button" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+</div>
