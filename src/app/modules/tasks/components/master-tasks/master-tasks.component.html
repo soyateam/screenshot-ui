@@ -1,6 +1,6 @@
 <div class="container">
     <div  class="item" *ngFor="let item of masterTasks">
-        <mat-card class="card">
+        <mat-card class="card"  >
             <button class="menu" mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
@@ -10,7 +10,7 @@
                   <span>מחק משימה</span>
                 </button>
               </mat-menu>
-              <div>        
+              <div routerLink="/task/{{item.id}}">        
                 <mat-card-title>{{item.name}}</mat-card-title>
                 <p>סה"כ משימות: {{item.tasksCount}}</p>
             </div>

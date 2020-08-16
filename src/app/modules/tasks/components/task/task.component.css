@@ -1,0 +1,28 @@
+.task-list{
+    width: 70%;
+    margin: 30px auto;
+}
+.title{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* .card-list{
+    display: flex;
+    flex-direction: column;
+} */
+
+.task{
+    margin-top: 1%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-button{
+    position: fixed;
+    left: 5%;
+    bottom: 5%;
+}
+.text{
+    width: 100%;
+}

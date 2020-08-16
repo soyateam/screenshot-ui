@@ -49,12 +49,12 @@ export class MasterTasksComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       console.log(result);
-    if(result != undefined && result != ''){
+    if(result != undefined && result.name != ''){
       this.originalMasterTasks = [...this.originalMasterTasks,{
         name:result.name,
         viewGroup: result.viewGroup,
         tasksCount: 2,
-        id:5
+        id:new Date().getTime()
       }]
       this.masterTasks = this.originalMasterTasks.filter(task => task.viewGroup == this.selectedView);
     }

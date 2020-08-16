@@ -24,13 +24,13 @@
 }
 
 .add-button{
-    position: absolute;
+    position: fixed;
     left: 5%;
     bottom: 5%;
 }
 
 .slide{
-    position: absolute;
+    position: fixed;
     left: 5%;
     top:80px;
 }
