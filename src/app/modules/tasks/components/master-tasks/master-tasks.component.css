@@ -28,3 +28,9 @@
     left: 5%;
     bottom: 5%;
 }
+
+.slide{
+    position: absolute;
+    left: 5%;
+    top:80px;
+}

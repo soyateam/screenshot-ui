@@ -1,8 +1,21 @@
-
-<div mat-dialog-content>
-    <input matInput [(ngModel)]="data.name"> 
-</div>
+<h1 mat-dialog-title>יצירת משימת אב</h1>
+<div mat-dialog-content class="form-task">
+    <form >
+        <mat-form-field>
+            <mat-label></mat-label>
+            <input matInput [(ngModel)]=data.name  [ngModelOptions]="{standalone: true}"> 
+    </mat-form-field>
+    <!-- <mat-slide-toggle [(ngModel)]=data.view  [ngModelOptions]="{standalone: true}">Slide me!</mat-slide-toggle> -->
+    <mat-form-field appearance="fill">
+        <mat-label>שיוך משימה:</mat-label>
+        <mat-select [(ngModel)]=data.viewGroup [ngModelOptions]="{standalone: true}">
+          <mat-option [value]=0>הפעלת כוח</mat-option>
+          <mat-option [value]=1>בנין כוח</mat-option>
+        </mat-select>
+      </mat-form-field>
+</form>
 <div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>הוסף</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>הוסף</button>
     <button mat-button (click)="onNoClick()">ביטול</button>
+</div>
 </div>

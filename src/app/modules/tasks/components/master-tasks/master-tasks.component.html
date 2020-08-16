@@ -5,7 +5,7 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>
+                <button mat-menu-item (click)="deleteTask(item)">
                   <mat-icon>delete_forever</mat-icon>
                   <span>מחק משימה</span>
                 </button>
@@ -16,7 +16,18 @@
             </div>
       </mat-card>
     </div>
+    <div>
+    <!-- <mat-slide-toggle class="slide" (change)="onChange($event)">Slide me!</mat-slide-toggle> -->
+    <mat-form-field appearance="fill" class="slide">
+      <mat-label>מצב תצוגה:</mat-label>
+      <mat-select [(ngModel)]="selectedView" (selectionChange)="onChange($event)">
+        <mat-option [value]=0>הפעלת כוח</mat-option>
+        <mat-option [value]=1>בנין כוח</mat-option>
+      </mat-select>
+    </mat-form-field>
     <button mat-fab color="primary" class="add-button" (click)="openDialog()">
         <mat-icon>add</mat-icon>
-      </button>
+    </button>
+  </div>
 </div>
+ 
