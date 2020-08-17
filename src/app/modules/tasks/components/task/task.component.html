@@ -1,14 +1,14 @@
 <div class="task-list">
     <mat-toolbar class="title">
-        <span>משימות מ: אפריקה</span>
-        <span>שיוך: בנין כוח</span>
+        <span>משימות מ: {{parentTask.name}}</span>
+        <span>שיוך: {{parentTask.type}}</span>
         <span>כמות משימות: 3</span>
     </mat-toolbar>
 
     <div class=card-list>
         <div  *ngFor="let item of tasks">
             <mat-card class="task" >
-                <div routerLink="/task/{{item.id}}" class="text">
+                <div routerLink="/task/{{item._id}}" class="text">
                     <mat-card-title>{{item.name}}</mat-card-title>
                     <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
                 </div>

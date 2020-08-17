@@ -34,3 +34,9 @@
     left: 5%;
     top:80px;
 }
+
+.link{
+    cursor: pointer;
+}:focus{
+    outline: 0;
+}

@@ -10,7 +10,7 @@
                   <span>מחק משימה</span>
                 </button>
               </mat-menu>
-              <div routerLink="/task/{{item.id}}">        
+              <div routerLink="/task/{{item._id}}" class="link">        
                 <mat-card-title>{{item.name}}</mat-card-title>
                 <p>סה"כ משימות: {{item.tasksCount}}</p>
             </div>
