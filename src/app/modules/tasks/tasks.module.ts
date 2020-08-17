@@ -7,13 +7,16 @@ import { FormsModule } from '@angular/forms';
 import { TaskComponent } from './components/task/task.component';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { SubTaskDialogComponent } from './components/sub-task-dialog/sub-task-dialog.component';
+import { StatisticsModule } from '../statistics/statistics.module';
+
 @NgModule({
     declarations: [MasterTasksComponent, AddTaskDialogComponent, TaskComponent, SubTaskDialogComponent],
     imports: [
         CommonModule,
         MaterialModule,
         FormsModule,
-        TasksRoutingModule
+        TasksRoutingModule,
+        StatisticsModule
     ],
     exports: [MasterTasksComponent]
 })
