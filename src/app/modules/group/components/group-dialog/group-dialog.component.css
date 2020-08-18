@@ -1,0 +1,11 @@
+.action{
+    position: relative;
+    bottom: 0;
+}
+.group{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 80%;
+    overflow: hidden;
+}

@@ -2,7 +2,7 @@
     <mat-toolbar class="title">
         <span>משימות מ: {{parentTask.name}}</span>
         <span>שיוך: {{parentTask.type}}</span>
-        <span>כמות משימות: 3</span>
+        <span>כמות משימות: {{tasks.length}}</span>
     </mat-toolbar>
 
     <div class=card-list>
@@ -21,6 +21,10 @@
                             <button mat-menu-item (click)="deleteTask(item)">
                                 <mat-icon>delete_forever</mat-icon>
                                 <span>מחק משימה</span>
+                            </button>
+                            <button mat-menu-item (click)="openGroupDialog(item)">
+                                <mat-icon>group_add</mat-icon>
+                                <span>שיוך משימה</span>
                             </button>
                         </mat-menu>
                     </mat-card-actions>

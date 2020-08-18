@@ -3,6 +3,7 @@ import { SubTaskDialogComponent } from '../sub-task-dialog/sub-task-dialog.compo
 import {MatDialog} from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TaskService } from '../../../../core/http/task.service';
+import { GroupDialogComponent } from 'src/app/modules/group/components/group-dialog/group-dialog.component';
 
 @Component({
   selector: 'app-task',
@@ -12,14 +13,13 @@ import { TaskService } from '../../../../core/http/task.service';
 export class TaskComponent implements OnInit {
 
   parentTaskId;
-  parentTask;
+  parentTask = {name:'', type:''};
   tasks = [];
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private taskService: TaskService) { 
     this.route.paramMap
     .subscribe( (pathParams) => {
       this.parentTaskId = pathParams.get('id');
-        console.log(this.parentTaskId);
         this.taskService.getTasksByParentId(this.parentTaskId).subscribe(tasks => this.tasks = tasks? tasks.tasks: [])
     })
   }
@@ -27,7 +27,6 @@ export class TaskComponent implements OnInit {
   ngOnInit(): void {
     this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask)
     // const id = this.route.snapshot.paramMap.get('id');
-    // console.log(id);
   }
   openDialog(): void {
     const dialogRef = this.dialog.open(SubTaskDialogComponent, {
@@ -55,12 +54,25 @@ export class TaskComponent implements OnInit {
     }
     });
   }
-  a(){
-    this.ngOnInit();
-  }
+
   deleteTask(taskToDelete): void {
     this.taskService.deleteTask(taskToDelete).subscribe(() => {
       this.tasks = this.tasks.filter(task => task._id !== taskToDelete._id);
     })
+  }
+
+  openGroupDialog(task): void {
+    const dialogRef = this.dialog.open(GroupDialogComponent, {
+      width: '30%',
+      data: {groups: new Set(), task}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+    if(result != undefined && result.name != ''){
+
+    }
+    });
   }
 }

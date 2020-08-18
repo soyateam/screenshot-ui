@@ -1,0 +1,13 @@
+
+<h1 mat-dialog-title>הוספת קבוצה</h1>
+<div mat-dialog-content class="group">
+
+<app-group-tree (clickGroup)="addGroup($event)" ></app-group-tree>
+<mat-chip-list>
+    <mat-chip *ngFor="let group of data.groups"> {{group.name}} <mat-icon matChipRemove (click)="removeGroup(group)">cancel</mat-icon></mat-chip>
+</mat-chip-list>
+<div mat-dialog-actions class="action">
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>הוסף</button>
+    <button mat-button (click)="onNoClick()">ביטול</button>
+</div>
+</div>

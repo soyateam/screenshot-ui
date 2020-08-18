@@ -10,7 +10,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [],
@@ -26,7 +29,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatInputModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTreeModule,
+    MatProgressBarModule,
+    MatChipsModule
   ],
   exports:[
     MatToolbarModule,
@@ -39,7 +45,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatInputModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTreeModule,
+    MatProgressBarModule,
+    MatChipsModule
   ]
 })
 export class MaterialModule { }
