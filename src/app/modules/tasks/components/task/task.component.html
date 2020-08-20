@@ -18,13 +18,17 @@
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
+                            <button mat-menu-item routerLink="/statistics/{{item._id}}">
+                                <mat-icon>show_chart</mat-icon>
+                                <span>סטטיסטיקות</span>
+                            </button>
                             <button mat-menu-item (click)="deleteTask(item)">
                                 <mat-icon>delete_forever</mat-icon>
                                 <span>מחק משימה</span>
                             </button>
                             <button mat-menu-item (click)="openGroupDialog(item)">
                                 <mat-icon>group_add</mat-icon>
-                                <span>שיוך משימה</span>
+                                <span>שיוך קבוצה</span>
                             </button>
                         </mat-menu>
                     </mat-card-actions>
