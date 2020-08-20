@@ -14,6 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [],
@@ -32,7 +33,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSnackBarModule,
     MatTreeModule,
     MatProgressBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonToggleModule
   ],
   exports:[
     MatToolbarModule,
@@ -48,7 +50,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSnackBarModule,
     MatTreeModule,
     MatProgressBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonToggleModule
   ]
 })
 export class MaterialModule { }

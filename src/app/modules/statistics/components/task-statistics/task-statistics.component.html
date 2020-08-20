@@ -1,1 +1,6 @@
-<app-graph></app-graph>
+<mat-button-toggle-group (change)="onChange($event.value)">
+    <mat-button-toggle value="pie">Pie</mat-button-toggle>
+    <mat-button-toggle value="bar" checked="true" >Bar</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <app-graph [options]="options" ></app-graph> 

@@ -4,6 +4,8 @@ import {Component, Injectable, Output, EventEmitter} from '@angular/core';
 import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { Group } from 'src/app/shared/models/group.model';
+import { HierarchyService } from 'src/app/core/http/hierarchy.service';
+import { async } from '@angular/core/testing';
 
 export class DynamicFlatNode {
   constructor(public item: Group, public level = 1, public expandable = false,
@@ -12,21 +14,34 @@ export class DynamicFlatNode {
 
 @Injectable({providedIn: 'root'})
 export class DynamicDatabase {
+
+  constructor(private hierarchyService: HierarchyService){}
   dataMap = new Map<string, Group[]>([
     ['1', [{name:'a', kartoffelID:'2'}]],
     ['2', [{name:'r', kartoffelID:'3'}]]
     ]);
 
-  rootLevelNodes: Group[] = [{name:'aman', kartoffelID:'1'}];
+  rootLevelNodes: Group[] = [{name:'aman', kartoffelID:'5e80998fe0673d70cf93cf10'}];
 
   /** Initial data from database */
   initialData(): DynamicFlatNode[] {
     return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
   }
 
-  getChildren(node: Group): Group[] | undefined {
+   getChildren(node: Group) {
     console.log(node)
-    return this.dataMap.get(node.kartoffelID);
+    if(this.dataMap.has(node.kartoffelID)){
+      return this.dataMap.get(node.kartoffelID);
+    }else{
+      this.hierarchyService.getGroupsByParentId(node.kartoffelID).subscribe((result)=>{
+        let groups = result.map((group) => {
+          return {name:group.name, kartoffelID:group.name};
+       })
+       this.dataMap.set(node.kartoffelID, groups)
+      });
+ 
+    }
+    
   }
 
   isExpandable(node: Group): boolean {

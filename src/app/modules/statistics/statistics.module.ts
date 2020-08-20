@@ -4,6 +4,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { GraphComponent } from './components/graph/graph.component';
 import { TaskStatisticsComponent } from './components/task-statistics/task-statistics.component';
 import { StatisticsRoutingModule } from './statistics-routing.module';
+import { MaterialModule } from '../material/material.module';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { StatisticsRoutingModule } from './statistics-routing.module';
     imports: [
         CommonModule,
         SharedModule,
+        MaterialModule,
         StatisticsRoutingModule
     ],
     exports: [GraphComponent]
