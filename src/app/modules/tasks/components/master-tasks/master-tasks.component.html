@@ -11,8 +11,8 @@
                 </button>
               </mat-menu>
               <div routerLink="/task/{{item._id}}" class="link">        
-                <mat-card-title>{{item.name}}</mat-card-title>
-                <p>סה"כ משימות: {{item.tasksCount}}</p>
+                <div class="task-title"><mat-card-title >{{item.name}}</mat-card-title></div>
+                <p>סה"כ משימות: {{item.subTasksCount}}</p>
             </div>
       </mat-card>
     </div>

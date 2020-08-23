@@ -1,6 +1,6 @@
 <div class="task-list">
     <mat-toolbar class="title">
-        <span>משימות מ: {{parentTask.name}}</span>
+        <span class="task-title">משימות מ: {{parentTask.name}}</span>
         <span>שיוך: {{parentTask.type}}</span>
         <span>כמות משימות: {{tasks.length}}</span>
     </mat-toolbar>
@@ -11,6 +11,17 @@
                 <div routerLink="/task/{{item._id}}" class="text">
                     <mat-card-title>{{item.name}}</mat-card-title>
                     <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
+                    <div class="footer">
+                        <div>
+                            <mat-chip-list>
+                                <mat-chip *ngFor="let group of item.groups"> {{group.name}}</mat-chip>
+                            </mat-chip-list>
+                        </div>
+                        <div class="count">
+                            <p >סה"כ משימות: {{item.subTasksCount}}</p>
+                        </div>
+                    </div>
+
                 </div>
                 <div>
                     <mat-card-actions>

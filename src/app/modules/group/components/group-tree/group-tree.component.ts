@@ -1,47 +1,50 @@
-import {CollectionViewer, SelectionChange, DataSource} from '@angular/cdk/collections';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, Injectable, Output, EventEmitter} from '@angular/core';
-import {BehaviorSubject, merge, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { CollectionViewer, SelectionChange, DataSource } from '@angular/cdk/collections';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Component, Injectable, Output, EventEmitter } from '@angular/core';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Group } from 'src/app/shared/models/group.model';
 import { HierarchyService } from 'src/app/core/http/hierarchy.service';
-import { async } from '@angular/core/testing';
 
 export class DynamicFlatNode {
   constructor(public item: Group, public level = 1, public expandable = false,
-              public isLoading = false) {}
+    public isLoading = false) { }
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DynamicDatabase {
 
-  constructor(private hierarchyService: HierarchyService){}
-  dataMap = new Map<string, Group[]>([
-    ['1', [{name:'a', kartoffelID:'2'}]],
-    ['2', [{name:'r', kartoffelID:'3'}]]
-    ]);
+  constructor(private hierarchyService: HierarchyService) { }
+  dataMap = new Map<string, Group[]>([]);
 
-  rootLevelNodes: Group[] = [{name:'aman', kartoffelID:'5e80998fe0673d70cf93cf10'}];
+  rootLevelNodes: Group[] = [{ name: 'aman', kartoffelID: '5e80998fe0673d70cf93cf10' }];
 
-  /** Initial data from database */
   initialData(): DynamicFlatNode[] {
     return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
   }
 
-   getChildren(node: Group) {
-    console.log(node)
-    if(this.dataMap.has(node.kartoffelID)){
+  async getChildren(node: Group) {
+    if (this.dataMap.has(node.kartoffelID) && !(this.dataMap.get(node.kartoffelID)[0].name === '')) {
       return this.dataMap.get(node.kartoffelID);
-    }else{
-      this.hierarchyService.getGroupsByParentId(node.kartoffelID).subscribe((result)=>{
-        let groups = result.map((group) => {
-          return {name:group.name, kartoffelID:group.name};
-       })
-       this.dataMap.set(node.kartoffelID, groups)
-      });
- 
+    } else {
+      try {
+        const groups = await this.hierarchyService.getGroupsByParentId(node.kartoffelID).toPromise();
+        const editGroups = groups.map((group) => {
+          return { name: group.name, kartoffelID: group.kartoffelID };
+        })
+        this.dataMap.set(node.kartoffelID, editGroups);
+        groups.forEach(group => {
+          if (group.children.length > 0) {
+            this.dataMap.set(group.kartoffelID, [{ name: '', kartoffelID: '0' }])
+          }
+        });
+        return editGroups;
+      } catch{
+
+      }
+
     }
-    
+
   }
 
   isExpandable(node: Group): boolean {
@@ -60,7 +63,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   }
 
   constructor(private _treeControl: FlatTreeControl<DynamicFlatNode>,
-              private _database: DynamicDatabase) {}
+    private _database: DynamicDatabase) { }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this._treeControl.expansionModel.changed.subscribe(change => {
@@ -73,7 +76,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     return merge(collectionViewer.viewChange, this.dataChange).pipe(map(() => this.data));
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {}
+  disconnect(collectionViewer: CollectionViewer): void { }
 
   /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
@@ -88,33 +91,30 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   /**
    * Toggle the node, remove from display list
    */
-  toggleNode(node: DynamicFlatNode, expand: boolean) {
-    const children = this._database.getChildren(node.item);
+  async toggleNode(node: DynamicFlatNode, expand: boolean) {
+    node.isLoading = true;
+    const children = await this._database.getChildren(node.item);
     const index = this.data.indexOf(node);
     if (!children || index < 0) { // If no children, or cannot find the node, no op
       return;
     }
 
-    node.isLoading = true;
+    if (expand) {
+      const nodes = children.map((name) => {
+        console.log(name)
+        return new DynamicFlatNode(name, node.level + 1, this._database.isExpandable(name))
+      });
+      this.data.splice(index + 1, 0, ...nodes);
+    } else {
+      let count = 0;
+      for (let i = index + 1; i < this.data.length
+        && this.data[i].level > node.level; i++, count++) { }
+      this.data.splice(index + 1, count);
+    }
 
-    setTimeout(() => {
-      if (expand) {
-        const nodes = children.map((name) => {
-          console.log(name)
-          return new DynamicFlatNode(name, node.level + 1, this._database.isExpandable(name))});
-          
-        this.data.splice(index + 1, 0, ...nodes);
-      } else {
-        let count = 0;
-        for (let i = index + 1; i < this.data.length
-          && this.data[i].level > node.level; i++, count++) {}
-        this.data.splice(index + 1, count);
-      }
-
-      // notify the change
-      this.dataChange.next(this.data);
-      node.isLoading = false;
-    }, 1000);
+    // notify the change
+    this.dataChange.next(this.data);
+    node.isLoading = false;
   }
 }
 
@@ -123,7 +123,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   templateUrl: './group-tree.component.html',
   styleUrls: ['./group-tree.component.css']
 })
-export class GroupTreeComponent{
+export class GroupTreeComponent {
 
   @Output('clickGroup') clickGroup = new EventEmitter();
   constructor(database: DynamicDatabase) {
@@ -142,7 +142,8 @@ export class GroupTreeComponent{
   isExpandable = (node: DynamicFlatNode) => node.expandable;
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
-  selectGroup(node){
+  
+  selectGroup(node) {
     this.clickGroup.emit(node)
   }
 }

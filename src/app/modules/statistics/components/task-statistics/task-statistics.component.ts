@@ -9,7 +9,8 @@ export class TaskStatisticsComponent implements OnInit {
 
   public barChartOptions: any = {
     chart: {
-        type: 'column'
+        type: 'column',
+        // width: ''
     },
     title: {
         text: 'Monthly Average Rainfall'
@@ -17,6 +18,7 @@ export class TaskStatisticsComponent implements OnInit {
     subtitle: {
         text: 'Source: WorldClimate.com'
     },
+    
     xAxis: {
         categories: [
             'Jan',

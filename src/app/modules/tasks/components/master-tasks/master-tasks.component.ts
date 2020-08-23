@@ -36,7 +36,7 @@ export class MasterTasksComponent implements OnInit {
     if(result != undefined && result.name != ''){
       this.taskService.addTask({task:{type: result.viewGroup ?'BuildForce' : 'OperativeForce', name: result.name}})
       .subscribe(task => {
-        console.log(task);
+        task = {...task, subTasksCount:0}
          this.masterTasks = [...this.masterTasks, task]
       })
     }

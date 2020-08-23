@@ -16,7 +16,7 @@ export class HierarchyService {
     constructor(private http: HttpClient) { }
   
     /** GET group by parent id. Return `undefined` when id not found */
-    getGroupsByParentId(id: string): Observable<any> {
+    getGroupsByParentId(id: any): Observable<any> {
       const url = `${this.groupsUrl}/parent/${id}`;
       return this.http.get<any>(url)
         .pipe(
@@ -38,8 +38,13 @@ export class HierarchyService {
       );
     }
 
-
-
+    /** POST: Assign Group to Task */
+    assignGroup(group: any): Observable<any> {
+      return this.http.put<any>(`http://localhost:3000/shared/assign`, group, this.httpOptions).pipe(
+        tap((newTask: any) => this.log(`added group to task w/ id=${newTask._id}`)),
+        catchError(this.handleError<any>('addGroupToTask'))
+      );
+    }
 
     /**
      * Handle Http operation that failed.

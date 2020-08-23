@@ -40,3 +40,11 @@
 }:focus{
     outline: 0;
 }
+
+.task-title{
+    width: 93%;
+    /* width: 100%; */
+    /* overflow: hidden;
+white-space: initial; /* Don't forget this one */
+/* text-overflow: ellipsis;  */
+}

@@ -47,7 +47,7 @@ export class TaskComponent implements OnInit {
         }
         })
       .subscribe(task => {
-        console.log(task);
+        task = {...task, subTasksCount:0}
          this.tasks = [...this.tasks, task]
       })
       console.log(result)
@@ -62,9 +62,10 @@ export class TaskComponent implements OnInit {
   }
 
   openGroupDialog(task): void {
+    console.log(task)
     const dialogRef = this.dialog.open(GroupDialogComponent, {
       width: '30%',
-      data: {groups: new Set(), task}
+      data: {task}
     });
 
     dialogRef.afterClosed().subscribe(result => {
