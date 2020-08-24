@@ -1,12 +1,24 @@
 <div class="container">
   <div class="toggle-graph">
-    <mat-button-toggle-group (change)="onChange($event.value)">
+    <!-- <mat-button-toggle-group (change)="onChange($event.value)">
       <mat-button-toggle value="pie">Pie</mat-button-toggle>
       <mat-button-toggle value="bar" checked="true">Bar</mat-button-toggle>
-    </mat-button-toggle-group>
+    </mat-button-toggle-group> -->
+    <mat-form-field appearance="fill">
+      <mat-label>בחר סטטיסטיקה</mat-label>
+      <mat-select [(value)]="selectedGraph" (selectionChange)="onChange($event.value)">
+        <mat-option *ngFor="let graph of graphs" [value]="graph.value">
+          {{graph.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div>
-    <app-graph [options]="options"></app-graph>
+    <ng-container [ngSwitch]="graphType">
+      <app-bar-graph *ngSwitchCase="'bar'"></app-bar-graph>
+      <app-pie-graph *ngSwitchCase="'pie'"></app-pie-graph>
+    </ng-container>
+
   </div>
 </div>
 
