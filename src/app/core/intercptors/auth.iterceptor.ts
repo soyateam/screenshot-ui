@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from "rxjs/operators";
+import { catchError } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../services/user.service';
@@ -17,15 +17,16 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService, private userService: UserService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (this.userService.expired()) {
-      this.userService.logout();
+    const token = this.cookieService.get(environment.auth.cookieTokenName);
+
+    if (!token || this.userService.expired()) {
+      this.userService.login();
       return;
     }
 
     request = request.clone({
-      withCredentials: true,
       setHeaders: {
-        Authorization: `Bearer ${this.cookieService.get(environment.auth.cookieTokenName)}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
