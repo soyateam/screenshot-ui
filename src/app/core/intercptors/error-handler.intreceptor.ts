@@ -16,7 +16,7 @@ import { SnackBarService } from '../services/snackbar.service';
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
 
-  constructor(private snackBarService: SnackBarService) {}
+  constructor(private snackBarService: SnackBarService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -25,10 +25,9 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
         // status 401 handled in auth.interceptor
         if (error.status !== 401) {
-          const message: string = `status: ${error.status}: ${error.statusText}`;
-          const action: string = 'close';
-          
-          this.snackBarService.open(message, action);
+          const message = `status: ${error.status}: ${error.message}`;
+
+          this.snackBarService.open(message, 'ERROR');
         }
         return throwError(error);
       })

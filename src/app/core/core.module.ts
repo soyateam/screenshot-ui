@@ -18,7 +18,7 @@ import { ErrorHandlerInterceptor } from './intercptors/error-handler.intreceptor
             useClass: LoaderInterceptor,
             multi: true,
         },
-       /*  {
+       {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
             multi: true,
@@ -27,7 +27,7 @@ import { ErrorHandlerInterceptor } from './intercptors/error-handler.intreceptor
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorHandlerInterceptor,
             multi: true,
-        }*/
+        }
     ]
 })
 export class CoreModule { }
