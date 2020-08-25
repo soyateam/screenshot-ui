@@ -17,15 +17,15 @@ export class TaskComponent implements OnInit {
   tasks = [];
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private taskService: TaskService) { 
-    this.route.paramMap
-    .subscribe( (pathParams) => {
+    this.route.paramMap.subscribe( (pathParams) => {
       this.parentTaskId = pathParams.get('id');
-        this.taskService.getTasksByParentId(this.parentTaskId).subscribe(tasks => this.tasks = tasks? tasks.tasks: [])
+      this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
+      this.taskService.getTasksByParentId(this.parentTaskId).subscribe(tasks => this.tasks = tasks? tasks.tasks: [])
     })
   }
 
   ngOnInit(): void {
-    this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask)
+    // this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
     // const id = this.route.snapshot.paramMap.get('id');
   }
   openDialog(): void {
