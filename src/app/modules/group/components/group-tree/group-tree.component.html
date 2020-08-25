@@ -11,7 +11,8 @@
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon>
       </button>
-      <button mat-button (click)="selectGroup(node.item)"> {{node.item.name}} </button> 
+      <button mat-button (click)="selectGroup(node.item)"  *ngIf="node.item.kartoffelID != ''"> {{node.item.name}} </button> 
+      <span *ngIf="node.item.kartoffelID == ''">{{node.item.name}}</span>
       <mat-progress-bar *ngIf="node.isLoading"
                         mode="indeterminate"></mat-progress-bar>
     </mat-tree-node>

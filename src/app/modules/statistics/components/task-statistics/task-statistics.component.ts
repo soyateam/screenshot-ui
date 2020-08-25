@@ -25,8 +25,6 @@ export class TaskStatisticsComponent implements OnInit {
 
   onChange(chartType:string){
       //TODO get data from server and insert to options as series
-      //this.options = chartType == 'bar' ? this.barChartOptions : this.pieChartOptions
     ["Sum", "ServiceSum", "RankSum"].includes(chartType) ? this.graphType ="bar" : this.graphType = "pie";
-    console.log(this.graphType)
   }
 }

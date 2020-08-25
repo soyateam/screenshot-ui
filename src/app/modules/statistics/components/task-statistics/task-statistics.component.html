@@ -6,7 +6,7 @@
     </mat-button-toggle-group> -->
     <mat-form-field appearance="fill">
       <mat-label>בחר סטטיסטיקה</mat-label>
-      <mat-select [(value)]="selectedGraph" (selectionChange)="onChange($event.value)">
+      <mat-select [(ngModel)]="selectedGraph" (selectionChange)="onChange($event.value)">
         <mat-option *ngFor="let graph of graphs" [value]="graph.value">
           {{graph.viewValue}}
         </mat-option>
@@ -15,8 +15,8 @@
   </div>
   <div>
     <ng-container [ngSwitch]="graphType">
-      <app-bar-graph *ngSwitchCase="'bar'"></app-bar-graph>
-      <app-pie-graph *ngSwitchCase="'pie'"></app-pie-graph>
+      <app-bar-graph *ngSwitchCase="'bar'" [graphType]="selectedGraph"></app-bar-graph>
+      <app-pie-graph *ngSwitchCase="'pie'" [graphType]="selectedGraph"></app-pie-graph>
     </ng-container>
 
   </div>

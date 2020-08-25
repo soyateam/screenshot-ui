@@ -1,8 +1,10 @@
 
 <h1 mat-dialog-title>הוספת קבוצה</h1>
 <div mat-dialog-content class="group">
+<div class="groups-select">
+    <app-group-tree (clickGroup)="addGroup($event)" ></app-group-tree>
+</div>
 
-<app-group-tree (clickGroup)="addGroup($event)" ></app-group-tree>
 <mat-chip-list>
     <mat-chip *ngFor="let group of data.task.groups"> {{group.name}} <mat-icon matChipRemove (click)="removeGroup(group)">cancel</mat-icon></mat-chip>
 </mat-chip-list>

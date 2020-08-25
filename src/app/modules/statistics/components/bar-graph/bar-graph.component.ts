@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-bar-graph',
@@ -6,12 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bar-graph.component.css']
 })
 export class BarGraphComponent implements OnInit {
+  @Input('graphType') graphType: object;
   public options: any = {
     chart: {
         type: 'column',
     },
     title: {
-        text: 'Monthly Average Rainfall'
+        text: this.graphType
     },
     subtitle: {
         text: 'Source: WorldClimate.com'
@@ -74,6 +75,9 @@ export class BarGraphComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    //console.log(this.graphType)
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(this.graphType)
+  }
 }

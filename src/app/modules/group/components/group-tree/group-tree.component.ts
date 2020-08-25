@@ -5,6 +5,7 @@ import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Group } from 'src/app/shared/models/group.model';
 import { HierarchyService } from 'src/app/core/http/hierarchy.service';
+import { async } from '@angular/core/testing';
 
 export class DynamicFlatNode {
   constructor(public item: Group, public level = 1, public expandable = false,
@@ -14,12 +15,18 @@ export class DynamicFlatNode {
 @Injectable({ providedIn: 'root' })
 export class DynamicDatabase {
 
-  constructor(private hierarchyService: HierarchyService) { }
+  constructor (private hierarchyService: HierarchyService) {
+    
+   }
   dataMap = new Map<string, Group[]>([]);
 
-  rootLevelNodes: Group[] = [{ name: 'aman', kartoffelID: '5e80998fe0673d70cf93cf10' }];
+  rootLevelNodes: Group[] = [{ name: 'aman', kartoffelID: '' }];
 
   initialData(): DynamicFlatNode[] {
+    // this.hierarchyService.getGroupsByParentId('').subscribe((result) => {
+    //   console.log(result);
+      
+    // })
     return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
   }
 
@@ -101,7 +108,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
     if (expand) {
       const nodes = children.map((name) => {
-        console.log(name)
         return new DynamicFlatNode(name, node.level + 1, this._database.isExpandable(name))
       });
       this.data.splice(index + 1, 0, ...nodes);

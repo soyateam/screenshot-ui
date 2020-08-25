@@ -37,7 +37,6 @@ export class TaskComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      console.log(result);
     if(result != undefined && result.name != ''){
       this.taskService.addTask({task:{
           parent: this.parentTaskId,
@@ -50,7 +49,6 @@ export class TaskComponent implements OnInit {
         task = {...task, subTasksCount:0}
          this.tasks = [...this.tasks, task]
       })
-      console.log(result)
     }
     });
   }
@@ -62,7 +60,6 @@ export class TaskComponent implements OnInit {
   }
 
   openGroupDialog(task): void {
-    console.log(task)
     const dialogRef = this.dialog.open(GroupDialogComponent, {
       width: '30%',
       data: {task}
@@ -70,7 +67,6 @@ export class TaskComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      console.log(result);
     if(result != undefined && result.name != ''){
 
     }

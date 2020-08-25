@@ -27,8 +27,10 @@ export class GroupDialogComponent implements OnInit {
     let newGroup = {name: group.name, id:group.kartoffelID};
     let found = this.data.task.groups.find(item => group.kartoffelID == item.id);
     if(!found){
-      this.hierarchyService.assignGroup({taskId: this.data.task._id, group:newGroup, isCountGrow:true}).subscribe(()=>{
-        this.data.task.groups.push(newGroup);
+      this.hierarchyService.assignGroup({taskId: this.data.task._id, group:newGroup, isCountGrow:true}).subscribe((result)=>{
+       if(result){
+          this.data.task.groups.push(newGroup);
+       }
       })
     }
   }
@@ -37,7 +39,7 @@ export class GroupDialogComponent implements OnInit {
     let found = this.data.task.groups.find(item => group.id == item.id);
     if(found){
       this.hierarchyService.assignGroup({taskId: this.data.task._id, group:group, isCountGrow:false}).subscribe((result)=>{
-        if(!result.error) 
+        if(result) 
           this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.id);
       })
     }

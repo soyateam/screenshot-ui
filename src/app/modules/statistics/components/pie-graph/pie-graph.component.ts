@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 
 @Component({
   selector: 'app-pie-graph',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pie-graph.component.css']
 })
 export class PieGraphComponent implements OnInit {
+  @Input('graphType') graphType: object;
   public options: any ={
     chart: {
         type: 'pie'
@@ -62,5 +63,7 @@ export class PieGraphComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(this.graphType)
+  }
 }
