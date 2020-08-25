@@ -25,7 +25,7 @@ export class PieGraphComponent implements OnInit {
         type: 'pie'
     },
     title: {
-        text: 'משימה בלה בלה'
+        text: ''
     },
     subtitle: {
         // text: 'חיתוך לפי כמות אנשים ביחידות'
@@ -60,8 +60,10 @@ export class PieGraphComponent implements OnInit {
         series: []
     }
   }
-  
-  constructor(private sharedService:SharedService, private route: ActivatedRoute) { }
+
+  constructor(private sharedService: SharedService, private route: ActivatedRoute) {
+    this.options.title.text = this.route.snapshot.paramMap.get('name');
+  }
 
   ngOnInit(): void {
   }

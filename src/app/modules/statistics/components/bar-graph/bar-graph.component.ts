@@ -50,7 +50,9 @@ export class BarGraphComponent implements OnInit {
     series: []
 }
 
-  constructor(private sharedService:SharedService, private route: ActivatedRoute) { }
+  constructor(private sharedService:SharedService, private route: ActivatedRoute) {
+    this.options.title.text = this.route.snapshot.paramMap.get('name');
+   }
 
   ngOnInit(): void {
     //console.log(this.graphType)
