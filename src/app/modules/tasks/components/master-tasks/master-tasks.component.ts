@@ -27,8 +27,8 @@ export class MasterTasksComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddTaskDialogComponent, {
-      width: '30%',
-      height:'30%',
+      width: '400px',
+      height:'270px',
       data: {name: '',viewGroup: this.selectedView}
     });
 
