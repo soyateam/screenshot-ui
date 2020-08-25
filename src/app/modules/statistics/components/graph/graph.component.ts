@@ -5,11 +5,13 @@ declare var require: any;
 let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
 let More = require('highcharts/highcharts-more');
+let drilldown = require('highcharts/modules/drilldown.src');
 
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
 noData(Highcharts);
+drilldown(Highcharts);
 
 @Component({
   selector: 'app-graph',

@@ -9,7 +9,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PieGraphComponent implements OnInit {
   @Input('graphType') graphType: string;
-  public options: any ={
+
+  private drilldownTooltip = {
+    headerFormat: '<table>',
+    pointFormat: '<tr><td><b>{point.total:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
+    footerFormat: '</table>',
+    useHTML: true
+  };
+
+  public options: any = {
+    lang: {
+      drillUpText: `<  חזור ליחידות`
+    },
     chart: {
         type: 'pie'
     },
@@ -19,15 +30,32 @@ export class PieGraphComponent implements OnInit {
     subtitle: {
         // text: 'חיתוך לפי כמות אנשים ביחידות'
     },
+    tooltip: {
+      useHTML: true
+    },
     plotOptions: {
         series: {
             dataLabels: {
                 enabled: true,
-                format: '{point.name}'
+                format: '<span>{point.name}</span><br><span>({point.percentage:.1f}%)</span>',
+                useHTML: true
             }
         }
     },
-    series: [],
+    series: [{
+      tooltip: {
+        headerFormat: '<table>',
+        // pointFormat: '<tr><td>ביחידה</td><td><b>{point.fullSize:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
+        pointFormatter: function () {
+          return `<tr><td>מתוך סך היחידה</td><td><b>${Math.round((this.y / this.fullSize) * 100)}%</b></td></tr>`;
+        },
+        footerFormat: '</table>',
+        useHTML: true
+      },
+      name: 'יחידות',
+      colorByPoint: true,
+      data: []
+    }],
     drilldown: {
         series: []
     }
@@ -46,10 +74,21 @@ export class PieGraphComponent implements OnInit {
     })
   }
 
-  createChart(data){
-    this.options = {...this.options, 
-        drilldown:{series:data.drilldownSeries},
-        series: [{data: data.mainSeries}] 
+  createChart(data) {
+    const updatedSeries = this.options.series;
+    updatedSeries[0].data = data.mainSeries;
+
+    const updatedDrilldownSeries = [];
+
+    for (const drilldownData of data.drilldownSeries) {
+      updatedDrilldownSeries.push({ ...drilldownData, tooltip: this.drilldownTooltip });
     }
+    console.log(updatedSeries);
+    console.log(updatedDrilldownSeries);
+    this.options = {
+      ...this.options,
+      drilldown: { series: updatedDrilldownSeries },
+      series: updatedSeries
+    };
   }
 }
