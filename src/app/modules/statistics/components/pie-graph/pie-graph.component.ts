@@ -1,4 +1,6 @@
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
+import { SharedService } from 'src/app/core/http/shared.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pie-graph',
@@ -6,64 +8,48 @@ import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
   styleUrls: ['./pie-graph.component.css']
 })
 export class PieGraphComponent implements OnInit {
-  @Input('graphType') graphType: object;
+  @Input('graphType') graphType: string;
   public options: any ={
     chart: {
         type: 'pie'
     },
     title: {
-        text: 'Browser market shares in January, 2018'
+        text: 'משימה בלה בלה'
     },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
+    subtitle: {
+        // text: 'חיתוך לפי כמות אנשים ביחידות'
     },
     plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
+        series: {
             dataLabels: {
-                enabled: false
-            },
-            showInLegend: true
+                enabled: true,
+                format: '{point.name}'
+            }
         }
     },
-    series: [{
-        name: 'Brands',
-        colorByPoint: true,
-        data: [{
-            name: 'Chrome',
-            y: 61.41,
-            sliced: true,
-            selected: true
-        }, {
-            name: 'Internet Explorer',
-            y: 11.84
-        }, {
-            name: 'Firefox',
-            y: 10.85
-        }, {
-            name: 'Edge',
-            y: 4.67
-        }, {
-            name: 'Safari',
-            y: 4.18
-        }, {
-            name: 'Other',
-            y: 7.05
-        }]
-    }]
+    series: [],
+    drilldown: {
+        series: []
+    }
   }
   
-  constructor() { }
+  constructor(private sharedService:SharedService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
+
   ngOnChanges(changes: SimpleChanges) {
+    const taskId = this.route.snapshot.paramMap.get('id');
     console.log(this.graphType)
+    this.sharedService.getStats(taskId, this.graphType).subscribe((result)=>{
+        this.createChart(result);
+    })
+  }
+
+  createChart(data){
+    this.options = {...this.options, 
+        drilldown:{series:data.drilldownSeries},
+        series: [{data: data.mainSeries}] 
+    }
   }
 }
