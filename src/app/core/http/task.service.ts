@@ -7,7 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class TaskService {
 
-  private tasksUrl = 'http://localhost:3000/task';
+  private tasksUrl = 'http://localhost:3001/task';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

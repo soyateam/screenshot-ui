@@ -7,7 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class HierarchyService {
 
-  private groupsUrl = 'http://localhost:3000/group';
+  private groupsUrl = 'http://localhost:3001/group';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -40,7 +40,7 @@ export class HierarchyService {
 
   /** POST: Assign Group to Task */
   assignGroup(group: any): Observable<any> {
-    return this.http.put<any>(`http://localhost:3000/shared/assign`, group, this.httpOptions).pipe(
+    return this.http.put<any>(`http://localhost:3001/shared/assign`, group, this.httpOptions).pipe(
       tap((newTask: any) => this.log(`added group to task w/ id=${newTask._id}`)),
       catchError(this.handleError<any>('addGroupToTask'))
     );

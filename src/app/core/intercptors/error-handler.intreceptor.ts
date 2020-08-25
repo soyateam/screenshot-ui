@@ -25,9 +25,9 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
         // status 401 handled in auth.interceptor
         if (error.status !== 401) {
-          const message = `status: ${error.status}: ${error.message}`;
+          const message = `status: ${error.status}: ${error.statusText}`;
 
-          this.snackBarService.open(message, 'ERROR');
+          this.snackBarService.open(message, 'close');
         }
         return throwError(error);
       })
