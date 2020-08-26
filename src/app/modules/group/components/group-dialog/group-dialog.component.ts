@@ -10,9 +10,9 @@ import { SharedService } from 'src/app/core/http/shared.service';
 })
 export class GroupDialogComponent implements OnInit {
   selectedGroup;
-  constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,private sharedService: SharedService,
-    @Inject(MAT_DIALOG_DATA) public data) { 
-      //this.selectedGroup = this.data.groups; 
+  constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,
+              private sharedService: SharedService,
+              @Inject(MAT_DIALOG_DATA) public data) {
     }
 
   ngOnInit(): void {
@@ -21,25 +21,26 @@ export class GroupDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  addGroup(group){
-    let newGroup = {name: group.name, id:group.kartoffelID};
-    let found = this.data.task.groups.find(item => group.kartoffelID == item.id);
-    if(!found){
-      this.sharedService.assignGroup({taskId: this.data.task._id, group:newGroup, isCountGrow:true}).subscribe((result)=>{
-       if(result){
+  addGroup(group) {
+    const newGroup = {name: group.name, id: group.kartoffelID};
+    const found = this.data.task.groups.find(item => group.kartoffelID === item.id);
+    if (!found) {
+      this.sharedService.assignGroup({taskId: this.data.task._id, group: newGroup, isCountGrow: true}).subscribe((result) => {
+       if (result) {
           this.data.task.groups.push(newGroup);
        }
-      })
+      });
     }
   }
 
-  removeGroup(group){
-    let found = this.data.task.groups.find(item => group.id == item.id);
-    if(found){
-      this.sharedService.assignGroup({taskId: this.data.task._id, group:group, isCountGrow:false}).subscribe((result)=>{
-        if(result) 
+  removeGroup(group) {
+    const found = this.data.task.groups.find(item => group.id === item.id);
+    if (found) {
+      this.sharedService.assignGroup({taskId: this.data.task._id, group, isCountGrow: false}).subscribe((result) => {
+        if (result) {
           this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.id);
-      })
+        }
+      });
     }
   }
 }

@@ -15,11 +15,14 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    MatTooltipModule,
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,
@@ -34,10 +37,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatTreeModule,
     MatProgressBarModule,
     MatChipsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
   ],
-  exports:[
+  exports: [
     MatToolbarModule,
+    MatTooltipModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
@@ -51,7 +56,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatTreeModule,
     MatProgressBarModule,
     MatChipsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class MaterialModule { }

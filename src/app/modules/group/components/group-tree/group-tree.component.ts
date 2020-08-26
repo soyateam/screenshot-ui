@@ -9,15 +9,14 @@ import { async } from '@angular/core/testing';
 
 export class DynamicFlatNode {
   constructor(public item: Group, public level = 1, public expandable = false,
-    public isLoading = false) { }
+              public isLoading = false) { }
 }
 
 @Injectable({ providedIn: 'root' })
 export class DynamicDatabase {
 
-  constructor (private hierarchyService: HierarchyService) {
-    
-   }
+  constructor(private hierarchyService: HierarchyService) {
+  }
   dataMap = new Map<string, Group[]>([]);
 
   rootLevelNodes: Group[] = [{ name: 'aman', kartoffelID: '' }];
@@ -25,7 +24,6 @@ export class DynamicDatabase {
   initialData(): DynamicFlatNode[] {
     // this.hierarchyService.getGroupsByParentId('').subscribe((result) => {
     //   console.log(result);
-      
     // })
     return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
   }
@@ -38,15 +36,15 @@ export class DynamicDatabase {
         const groups = await this.hierarchyService.getGroupsByParentId(node.kartoffelID).toPromise();
         const editGroups = groups.map((group) => {
           return { name: group.name, kartoffelID: group.kartoffelID };
-        })
+        });
         this.dataMap.set(node.kartoffelID, editGroups);
         groups.forEach(group => {
           if (group.children.length > 0) {
-            this.dataMap.set(group.kartoffelID, [{ name: '', kartoffelID: '0' }])
+            this.dataMap.set(group.kartoffelID, [{ name: '', kartoffelID: '0' }]);
           }
         });
         return editGroups;
-      } catch{
+      } catch {
 
       }
 
@@ -69,8 +67,10 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     this.dataChange.next(value);
   }
 
+  // tslint:disable-next-line: variable-name
   constructor(private _treeControl: FlatTreeControl<DynamicFlatNode>,
-    private _database: DynamicDatabase) { }
+              // tslint:disable-next-line: variable-name
+              private _database: DynamicDatabase) { }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this._treeControl.expansionModel.changed.subscribe(change => {
@@ -108,7 +108,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
     if (expand) {
       const nodes = children.map((name) => {
-        return new DynamicFlatNode(name, node.level + 1, this._database.isExpandable(name))
+        return new DynamicFlatNode(name, node.level + 1, this._database.isExpandable(name));
       });
       this.data.splice(index + 1, 0, ...nodes);
     } else {
@@ -131,6 +131,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 })
 export class GroupTreeComponent {
 
+  // tslint:disable-next-line: no-output-rename
   @Output('clickGroup') clickGroup = new EventEmitter();
   constructor(database: DynamicDatabase) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
@@ -147,9 +148,10 @@ export class GroupTreeComponent {
 
   isExpandable = (node: DynamicFlatNode) => node.expandable;
 
+  // tslint:disable-next-line: variable-name
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
-  
+
   selectGroup(node) {
-    this.clickGroup.emit(node)
+    this.clickGroup.emit(node);
   }
 }
