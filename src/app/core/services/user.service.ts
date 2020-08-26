@@ -23,7 +23,7 @@ export class UserService {
   }
 
   login() {
-    if (!this.currentUser && !this.cookieService.get(this.cookieName)) {
+    if (!this.cookieService.get(this.cookieName)) {
       window.location.href = this.loginURL;
     }
   }
@@ -40,12 +40,11 @@ export class UserService {
 
   public get currentUser(): IUser {
     const token = this.cookieService.get(this.cookieName);
-    if (token) {
-      const decodedData = this.parseJwt(token);
-      return decodedData as IUser;
-    }
 
-    this.login();
+    if (!token) { throw new Error('user is not authorized'); }
+
+    const decodedData = this.parseJwt(token);
+    return decodedData as IUser;
   }
 
   private parseJwt(token) {
