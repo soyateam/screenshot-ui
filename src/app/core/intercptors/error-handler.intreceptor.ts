@@ -33,7 +33,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
             message = `status: ${error.status}: ${error.statusText}`;
           }
 
-          this.snackBarService.open(message, 'close');
+          this.snackBarService.open(message, 'סגור');
         }
         return throwError(error);
       })

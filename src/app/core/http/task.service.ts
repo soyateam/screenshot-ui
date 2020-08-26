@@ -56,6 +56,14 @@ export class TaskService {
     );
   }
 
+  updateTask(task): Observable<any> {
+    console.log(task);
+    return this.http.put<any>(this.tasksUrl, { task }, this.httpOptions).pipe(
+      tap((updatedTask: any) => this.log(`Updated task w/ id=${updatedTask.id}`)),
+      catchError(this.handleError<any>('updateTask'))
+    );
+  }
+
   /** DELETE: delete the task from the server */
   deleteTask(task: any | number): Observable<any> {
     const id = typeof task === 'number' ? task : task._id;

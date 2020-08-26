@@ -5,6 +5,10 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
+                <button mat-menu-item *ngIf="isUserCanWrite" (click)="editTask(item)">
+                  <mat-icon>edit</mat-icon>
+                  <span>ערוך משימה</span>
+                </button>
                 <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above">
                 <button mat-menu-item [disabled]="item.subTasksCount > 0" (click)="deleteTask(item)">
                   <mat-icon>delete_forever</mat-icon>

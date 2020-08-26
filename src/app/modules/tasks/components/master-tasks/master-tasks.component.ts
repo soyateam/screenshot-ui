@@ -3,6 +3,8 @@ import {MatDialog} from '@angular/material/dialog';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
 import { TaskService } from '../../../../core/http/task.service';
 import { UserService } from '../../../../core/services/user.service';
+import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
+import { SnackBarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-master-tasks',
@@ -15,7 +17,7 @@ export class MasterTasksComponent implements OnInit {
   isUserCanWrite: boolean;
 
   constructor(public dialog: MatDialog, private taskService: TaskService,
-              private userService: UserService) { }
+              private userService: UserService, private snackBarService: SnackBarService) { }
 
   ngOnInit() {
     this.isUserCanWrite = this.userService.isUserCanWrite;
@@ -31,6 +33,36 @@ export class MasterTasksComponent implements OnInit {
     });
   }
 
+  async editTask(task) {
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
+      width: '400px',
+      height: '210px',
+      data: {
+        task
+      }
+    });
+
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result && result.name) {
+      const updatedTask = await this.taskService.updateTask(result).toPromise();
+
+      if (updatedTask) {
+        for (const currTaskIndex in this.masterTasks) {
+          if (updatedTask._id === this.masterTasks[currTaskIndex]._id) {
+            if (task.type !== updatedTask.type) {
+              this.masterTasks.splice(currTaskIndex as any, 1);
+            } else {
+              this.masterTasks[currTaskIndex] = updatedTask;
+            }
+
+            this.snackBarService.open('המשימה עודכנה בהצלחה', 'סגור');
+            break;
+          }
+        }
+      }
+    }
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(AddTaskDialogComponent, {
       width: '400px',
@@ -44,7 +76,13 @@ export class MasterTasksComponent implements OnInit {
       .subscribe(task => {
         if (task) {
           const newTask = {...task, subTasksCount: 0};
-          this.masterTasks = [...this.masterTasks, newTask];
+          let displayView;
+
+          this.selectedView === 0 ? displayView = 'OperativeForce' : displayView = 'BuildForce';
+
+          if (newTask.type === displayView) {
+            this.masterTasks = [...this.masterTasks, newTask];
+          }
         }
       });
     }

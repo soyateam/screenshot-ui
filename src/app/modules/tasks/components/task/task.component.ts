@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { TaskService } from '../../../../core/http/task.service';
 import { GroupDialogComponent } from 'src/app/modules/group/components/group-dialog/group-dialog.component';
 import { UserService } from '../../../../core/services/user.service';
+import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
+import { SnackBarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-task',
@@ -19,7 +21,7 @@ export class TaskComponent implements OnInit {
   isUserCanWrite: boolean;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private taskService: TaskService,
-              private userService: UserService) {
+              private userService: UserService, private snackBarService: SnackBarService) {
     this.route.paramMap.subscribe( (pathParams) => {
       this.parentTaskId = pathParams.get('id');
       this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
@@ -65,9 +67,34 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  async editTask(task) {
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
+      width: '400px',
+      height: '280px',
+      data: {
+        task
+      }
+    });
+
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result && result.name) {
+      const updatedTask = await this.taskService.updateTask(result).toPromise();
+
+      if (updatedTask) {
+        for (const currTaskIndex in this.tasks) {
+          if (updatedTask._id === this.tasks[currTaskIndex]._id) {
+            this.tasks[currTaskIndex] = updatedTask;
+            this.snackBarService.open('המשימה עודכנה בהצלחה', 'סגור');
+          }
+        }
+      }
+    }
+  }
+
   openGroupDialog(task): void {
     const dialogRef = this.dialog.open(GroupDialogComponent, {
-      width: '30%',
+      width: '1000px',
+      height: '660px',
       data: {task}
     });
 

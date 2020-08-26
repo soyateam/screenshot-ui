@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SubTaskDialogComponent } from 'src/app/modules/tasks/components/sub-task-dialog/sub-task-dialog.component';
 import { SharedService } from 'src/app/core/http/shared.service';
+import { SnackBarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-group-dialog',
@@ -12,12 +13,13 @@ export class GroupDialogComponent implements OnInit {
   selectedGroup;
   constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,
               private sharedService: SharedService,
+              private snackBarService: SnackBarService,
               @Inject(MAT_DIALOG_DATA) public data) {
     }
 
   ngOnInit(): void {
   }
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 
@@ -28,6 +30,7 @@ export class GroupDialogComponent implements OnInit {
       this.sharedService.assignGroup({taskId: this.data.task._id, group: newGroup, isCountGrow: true}).subscribe((result) => {
        if (result) {
           this.data.task.groups.push(newGroup);
+          this.snackBarService.open('קבוצה שויכה בהצלחה', 'סגור');
        }
       });
     }
@@ -39,6 +42,7 @@ export class GroupDialogComponent implements OnInit {
       this.sharedService.assignGroup({taskId: this.data.task._id, group, isCountGrow: false}).subscribe((result) => {
         if (result) {
           this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.id);
+          this.snackBarService.open('קבוצה נמחקה בהצלחה', 'סגור');
         }
       });
     }

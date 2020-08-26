@@ -8,9 +8,10 @@ import { TaskComponent } from './components/task/task.component';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { SubTaskDialogComponent } from './components/sub-task-dialog/sub-task-dialog.component';
 import { StatisticsModule } from '../statistics/statistics.module';
+import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task-dialog.component';
 
 @NgModule({
-    declarations: [MasterTasksComponent, AddTaskDialogComponent, TaskComponent, SubTaskDialogComponent],
+    declarations: [MasterTasksComponent, AddTaskDialogComponent, TaskComponent, SubTaskDialogComponent, EditTaskDialogComponent],
     imports: [
         CommonModule,
         MaterialModule,

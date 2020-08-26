@@ -38,18 +38,22 @@
                         <mat-menu #menu="matMenu">
                             <button mat-menu-item (click)="openGroupDialog(item)" *ngIf="isUserCanWrite">
                                 <mat-icon>group_add</mat-icon>
-                                <span>שיוך קבוצה</span>
+                                <span style="font-weight: bold;">ניהול קבוצות</span>
                             </button>
                             <span [matTooltipDisabled]="item.groups && item.groups.length > 0" matTooltip="לא ניתן לספק סטטיסטיקות ללא קבוצות משויכות למשימה" matTooltipPosition="above">
                                 <button mat-menu-item routerLink="/statistics/{{item._id}}/{{item.name}}" disabled="{{!item.groups || item.groups.length === 0}}">
                                     <mat-icon>show_chart</mat-icon>
-                                    <span>סטטיסטיקות</span>
+                                    <span style="font-weight: bold;">סטטיסטיקות</span>
                                 </button>
                             </span>
+                            <button mat-menu-item *ngIf="isUserCanWrite" (click)="editTask(item)">
+                                <mat-icon>edit</mat-icon>
+                                <span style="font-weight: bold;">ערוך משימה</span>
+                            </button>
                             <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above" *ngIf="isUserCanWrite">
                                 <button [disabled]="item.subTasksCount > 0" mat-menu-item (click)="deleteTask(item)">
                                     <mat-icon>delete_forever</mat-icon>
-                                    <span>מחק משימה</span>
+                                    <span style="font-weight: bold;">מחק משימה</span>
                                 </button>
                             </span>
                         </mat-menu>
