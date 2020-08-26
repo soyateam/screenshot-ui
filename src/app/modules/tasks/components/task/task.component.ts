@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TaskService } from '../../../../core/http/task.service';
 import { GroupDialogComponent } from 'src/app/modules/group/components/group-dialog/group-dialog.component';
+import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-task',
@@ -15,8 +16,10 @@ export class TaskComponent implements OnInit {
   parentTaskId;
   parentTask = {name: '', type: ''};
   tasks;
+  isUserCanWrite: boolean;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private taskService: TaskService) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private taskService: TaskService,
+              private userService: UserService) {
     this.route.paramMap.subscribe( (pathParams) => {
       this.parentTaskId = pathParams.get('id');
       this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
@@ -25,13 +28,14 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isUserCanWrite = this.userService.isUserCanWrite;
     // this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
     // const id = this.route.snapshot.paramMap.get('id');
   }
   openDialog(): void {
     const dialogRef = this.dialog.open(SubTaskDialogComponent, {
-      width: '30%',
-      height: '30%',
+      width: '400px',
+      height: '280px',
       data: {}
     });
 

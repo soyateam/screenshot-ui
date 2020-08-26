@@ -1,9 +1,16 @@
-<h1 mat-dialog-title>יצירת תת משימה</h1>
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span>יצירת תת משימה</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
 <div mat-dialog-content class="form-task">
-    <form >
+    <form autocomplete="off">
         <mat-form-field>
             <mat-label>שם המשימה:</mat-label>
-            <input matInput [(ngModel)]=data.name  [ngModelOptions]="{standalone: true}"> 
+            <input matInput [(ngModel)]=data.name  [ngModelOptions]="{standalone: true}" cdkFocusInitial> 
     </mat-form-field>
 
 <mat-form-field>
@@ -13,7 +20,7 @@
 
 </form>
 <div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>הוסף</button>
-    <button mat-button (click)="onNoClick()">ביטול</button>
+    <button style="font-weight:bold; position:relative; right: 5px;" mat-button color="primary" [mat-dialog-close]="data">הוסף</button>
+    <button style="font-weight:bold; position:relative; right: 5px;" mat-button color="warn" (click)="close()">ביטול</button>
 </div>
 </div>

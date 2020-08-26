@@ -36,7 +36,7 @@
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item (click)="openGroupDialog(item)">
+                            <button mat-menu-item (click)="openGroupDialog(item)" *ngIf="isUserCanWrite">
                                 <mat-icon>group_add</mat-icon>
                                 <span>שיוך קבוצה</span>
                             </button>
@@ -46,7 +46,7 @@
                                     <span>סטטיסטיקות</span>
                                 </button>
                             </span>
-                            <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above">
+                            <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above" *ngIf="isUserCanWrite">
                                 <button [disabled]="item.subTasksCount > 0" mat-menu-item (click)="deleteTask(item)">
                                     <mat-icon>delete_forever</mat-icon>
                                     <span>מחק משימה</span>
@@ -59,6 +59,6 @@
         </div>
     </div>
 </div>
-<button mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת תת משימה חדשה" matTooltipPosition="above">
+<button mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת תת משימה חדשה" matTooltipPosition="above" *ngIf="isUserCanWrite">
     <mat-icon>add</mat-icon>
 </button>

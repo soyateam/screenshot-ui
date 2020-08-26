@@ -1,7 +1,7 @@
 <div class="container">
     <div  class="item" *ngFor="let item of masterTasks">
         <mat-card class="card" routerLink="/task/{{item._id}}">
-            <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+            <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()" *ngIf="isUserCanWrite">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
@@ -29,7 +29,7 @@
     </mat-form-field>
   </div>
 </div>
-<button mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת משימה חדשה" matTooltipPosition="above">
+<button *ngIf="isUserCanWrite" mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת משימה חדשה" matTooltipPosition="above">
   <mat-icon>add</mat-icon>
 </button>
  

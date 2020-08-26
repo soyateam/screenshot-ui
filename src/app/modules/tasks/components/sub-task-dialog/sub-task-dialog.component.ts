@@ -14,7 +14,7 @@ export class SubTaskDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 }

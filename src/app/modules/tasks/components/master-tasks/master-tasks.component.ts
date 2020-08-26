@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
 import { TaskService } from '../../../../core/http/task.service';
+import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-master-tasks',
@@ -11,10 +12,13 @@ import { TaskService } from '../../../../core/http/task.service';
 export class MasterTasksComponent implements OnInit {
   selectedView = 0;
   masterTasks = [];
+  isUserCanWrite: boolean;
 
-  constructor(public dialog: MatDialog, private taskService: TaskService) { }
+  constructor(public dialog: MatDialog, private taskService: TaskService,
+              private userService: UserService) { }
 
   ngOnInit() {
+    this.isUserCanWrite = this.userService.isUserCanWrite;
     this.getTasks();
   }
 

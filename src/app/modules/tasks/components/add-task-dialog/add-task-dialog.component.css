@@ -1,12 +1,12 @@
-.form-task{
-   overflow: unset;
-   width: 100%;
-   text-align: center;
-   position: relative;
-top: 20px;
+.form-task {
+    overflow: unset;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    top: 20px;
 }
 
-mat-form-field{
+mat-form-field {
     width: 100%;
 }
 
@@ -15,5 +15,5 @@ mat-form-field{
 }
 
 form {
-    margin: 0px 40px 0px 40px;
+    margin: 0px 40px;
 }

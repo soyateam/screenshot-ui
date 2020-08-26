@@ -5,8 +5,9 @@
     <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
   </mat-toolbar-row>
 </mat-toolbar>
+
 <div mat-dialog-content class="form-task">
-    <form>
+    <form autocomplete="off">
         <mat-form-field>
             <mat-label>שם משימת האב</mat-label>
             <input autofocus matInput [(ngModel)]=data.name  [ngModelOptions]="{standalone: true}" cdkFocusInitial> 

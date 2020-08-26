@@ -12,6 +12,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { SnackBarService } from '../services/snackbar.service';
+import { MESSAGES_CONTAINER_ID } from '@angular/cdk/a11y';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
@@ -22,10 +23,15 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       retry(environment.httpRequestRetryAmount),
       catchError((error: HttpErrorResponse) => {
-
         // status 401 handled in auth.interceptor
         if (error.status !== 401) {
-          const message = `status: ${error.status}: ${error.statusText}`;
+          let message: string;
+
+          if (error.error && error.error.message) {
+            message = error.error.message;
+          } else {
+            message = `status: ${error.status}: ${error.statusText}`;
+          }
 
           this.snackBarService.open(message, 'close');
         }
