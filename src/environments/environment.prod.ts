@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  api: '',
+  api: '/api',
   auth: {
     loginURL: '/auth/login',
     logoutURL: '/auth/logout',
