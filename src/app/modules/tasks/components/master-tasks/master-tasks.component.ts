@@ -13,7 +13,7 @@ import { SnackBarService } from '../../../../core/services/snackbar.service';
 })
 export class MasterTasksComponent implements OnInit {
   selectedView = 0;
-  masterTasks = [];
+  masterTasks;
   isUserCanWrite: boolean;
 
   constructor(public dialog: MatDialog, private taskService: TaskService,

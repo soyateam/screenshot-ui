@@ -49,3 +49,26 @@
 white-space: initial; /* Don't forget this one */
 /* text-overflow: ellipsis;  */
 }
+
+.icon-empty {
+    color: #AAAAAA;
+    text-align: center;
+    font-size: 140px;
+    width: 140px;
+    height: 140px;
+    cursor: default;
+}
+
+.div-empty {
+    position:relative;
+    top:150px;
+    height:400px;
+    text-align: center;
+}
+
+.span-empty {
+    font-family: Arial;
+    text-align:center;
+    font-size: 20px;
+    color: #AAAAAA;
+}

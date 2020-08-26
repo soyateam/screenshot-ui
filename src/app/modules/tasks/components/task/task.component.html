@@ -1,10 +1,10 @@
 <div class="task-list">
     <mat-toolbar class="title" *ngIf="tasks">
-        <span class="task-title">משימות מ: {{parentTask.name}}</span>
-        <span>שיוך: {{parentTask.type}}</span>
-        <span>כמות משימות: {{tasks.length}}</span>
+        <span class="task-title"><mat-icon style="position:relative; top:9px; left:5px; font-size:30px; width:30px; height:30px;">assignment</mat-icon><span style="font-weight:bold;">משימות מ: </span> <span>{{parentTask.name}}</span></span>
+        <span><mat-icon style="position:relative; top:9px; left:5px; font-size:30px; width:30px; height:30px;">attach_file</mat-icon><span style="font-weight: bold;">שיוך: </span>{{parentTask.type}}</span>
+        <span><mat-icon style="position:relative; top:9px; left:5px; font-size:30px; width:30px; height:30px;">line_weight</mat-icon><span style="font-weight: bold;">כמות משימות: </span>{{tasks.length}}</span>
     </mat-toolbar>
-    
+    <mat-divider></mat-divider>
     <div *ngIf="tasks && tasks.length === 0">
         <div class="div-empty">
             <mat-icon class="icon-empty">assignment</mat-icon>
@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <mat-card-actions>
-                        <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                        <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()"  matTooltip="אפשרויות נוספות" matTooltipPosition="above">
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
