@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment';
 })
 export class UserService {
   private loginURL: string = environment.auth.loginURL;
-  private logoutURL: string = environment.auth.logoutURL;
   private cookieName: string = environment.auth.cookieTokenName;
 
   constructor(private cookieService: CookieService) { }
@@ -26,13 +25,6 @@ export class UserService {
   login() {
     if (!this.currentUser && !this.cookieService.get(this.cookieName)) {
       window.location.href = this.loginURL;
-    }
-  }
-
-  logout() {
-    if (this.currentUser) {
-      this.cookieService.delete(this.cookieName);
-      window.location.href = this.logoutURL;
     }
   }
 
