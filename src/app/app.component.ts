@@ -10,7 +10,9 @@ export class AppComponent implements OnInit {
   title = 'screenshot-ui';
   user;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+    this.userService.login();
+  }
 
   ngOnInit() {
     this.user = this.userService.currentUser;

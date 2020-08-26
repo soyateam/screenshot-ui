@@ -3,7 +3,6 @@ export const environment = {
   api: '/api',
   auth: {
     loginURL: '/auth/login',
-    logoutURL: '/auth/logout',
     cookieTokenName: 'token',
   },
   httpRequestRetryAmount: 1,
