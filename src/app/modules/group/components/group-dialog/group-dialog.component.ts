@@ -1,9 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SubTaskDialogComponent } from 'src/app/modules/tasks/components/sub-task-dialog/sub-task-dialog.component';
-import { Group } from 'src/app/shared/models/group.model';
-import { HierarchyService } from 'src/app/core/http/hierarchy.service';
-import { ThrowStmt } from '@angular/compiler';
+import { SharedService } from 'src/app/core/http/shared.service';
 
 @Component({
   selector: 'app-group-dialog',
@@ -12,7 +10,7 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class GroupDialogComponent implements OnInit {
   selectedGroup;
-  constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,private hierarchyService: HierarchyService,
+  constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,private sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data) { 
       //this.selectedGroup = this.data.groups; 
     }
@@ -27,7 +25,7 @@ export class GroupDialogComponent implements OnInit {
     let newGroup = {name: group.name, id:group.kartoffelID};
     let found = this.data.task.groups.find(item => group.kartoffelID == item.id);
     if(!found){
-      this.hierarchyService.assignGroup({taskId: this.data.task._id, group:newGroup, isCountGrow:true}).subscribe((result)=>{
+      this.sharedService.assignGroup({taskId: this.data.task._id, group:newGroup, isCountGrow:true}).subscribe((result)=>{
        if(result){
           this.data.task.groups.push(newGroup);
        }
@@ -38,7 +36,7 @@ export class GroupDialogComponent implements OnInit {
   removeGroup(group){
     let found = this.data.task.groups.find(item => group.id == item.id);
     if(found){
-      this.hierarchyService.assignGroup({taskId: this.data.task._id, group:group, isCountGrow:false}).subscribe((result)=>{
+      this.sharedService.assignGroup({taskId: this.data.task._id, group:group, isCountGrow:false}).subscribe((result)=>{
         if(result) 
           this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.id);
       })

@@ -1,4 +1,6 @@
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
+import { SharedService } from 'src/app/core/http/shared.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pie-graph',
@@ -6,64 +8,89 @@ import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
   styleUrls: ['./pie-graph.component.css']
 })
 export class PieGraphComponent implements OnInit {
-  @Input('graphType') graphType: object;
-  public options: any ={
+  @Input('graphType') graphType: string;
+
+  private drilldownTooltip = {
+    headerFormat: '<table>',
+    pointFormat: '<tr><td><b>{point.total:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
+    footerFormat: '</table>',
+    useHTML: true
+  };
+
+  public options: any = {
+    lang: {
+      drillUpText: `<  חזור ליחידות`
+    },
     chart: {
         type: 'pie'
     },
     title: {
-        text: 'Browser market shares in January, 2018'
+        text: ''
+    },
+    subtitle: {
+        // text: 'חיתוך לפי כמות אנשים ביחידות'
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
+      useHTML: true
     },
     plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
+        series: {
             dataLabels: {
-                enabled: false
-            },
-            showInLegend: true
+                enabled: true,
+                format: '<span>{point.name}</span><br><span>({point.percentage:.1f}%)</span>',
+                useHTML: true
+            }
         }
     },
     series: [{
-        name: 'Brands',
-        colorByPoint: true,
-        data: [{
-            name: 'Chrome',
-            y: 61.41,
-            sliced: true,
-            selected: true
-        }, {
-            name: 'Internet Explorer',
-            y: 11.84
-        }, {
-            name: 'Firefox',
-            y: 10.85
-        }, {
-            name: 'Edge',
-            y: 4.67
-        }, {
-            name: 'Safari',
-            y: 4.18
-        }, {
-            name: 'Other',
-            y: 7.05
-        }]
-    }]
+      tooltip: {
+        headerFormat: '<table>',
+        // pointFormat: '<tr><td>ביחידה</td><td><b>{point.fullSize:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
+        pointFormatter: function () {
+          return `<tr><td>מתוך סך היחידה</td><td><b>${Math.round((this.y / this.fullSize) * 100)}%</b></td></tr>`;
+        },
+        footerFormat: '</table>',
+        useHTML: true
+      },
+      name: 'יחידות',
+      colorByPoint: true,
+      data: []
+    }],
+    drilldown: {
+        series: []
+    }
   }
-  
-  constructor() { }
+
+  constructor(private sharedService: SharedService, private route: ActivatedRoute) {
+    this.options.title.text = this.route.snapshot.paramMap.get('name');
+  }
 
   ngOnInit(): void {
   }
+
   ngOnChanges(changes: SimpleChanges) {
+    const taskId = this.route.snapshot.paramMap.get('id');
     console.log(this.graphType)
+    this.sharedService.getStats(taskId, this.graphType).subscribe((result)=>{
+        this.createChart(result);
+    })
+  }
+
+  createChart(data) {
+    const updatedSeries = this.options.series;
+    updatedSeries[0].data = data.mainSeries;
+
+    const updatedDrilldownSeries = [];
+
+    for (const drilldownData of data.drilldownSeries) {
+      updatedDrilldownSeries.push({ ...drilldownData, tooltip: this.drilldownTooltip });
+    }
+    console.log(updatedSeries);
+    console.log(updatedDrilldownSeries);
+    this.options = {
+      ...this.options,
+      drilldown: { series: updatedDrilldownSeries },
+      series: updatedSeries
+    };
   }
 }

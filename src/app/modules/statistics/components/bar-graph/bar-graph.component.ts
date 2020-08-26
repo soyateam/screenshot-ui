@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { SharedService } from 'src/app/core/http/shared.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bar-graph',
@@ -6,44 +8,35 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
   styleUrls: ['./bar-graph.component.css']
 })
 export class BarGraphComponent implements OnInit {
-  @Input('graphType') graphType: object;
+  @Input('graphType') graphType: string;
   public options: any = {
     chart: {
-        type: 'column',
+        type: 'column'
     },
     title: {
-        text: this.graphType
+        text: 'משימה בלה בלה'
     },
-    subtitle: {
-        text: 'Source: WorldClimate.com'
-    },
+    subtitle: {},
     xAxis: {
-        categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
+        categories: [],
         crosshair: true
+    },
+    legend: {
+    	labelFormatter: function() {
+        let sum = this.yData.reduce(function(pv, cv) { return pv + cv; }, 0);
+        return '('+ Math.floor(sum) + ') ' + this.name;   
+      }    
     },
     yAxis: {
         min: 0,
         title: {
-            text: 'Rainfall (mm)'
+            text: 'מספר אנשים'
         }
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
@@ -54,30 +47,27 @@ export class BarGraphComponent implements OnInit {
             borderWidth: 0
         }
     },
-    series: [{
-        name: 'Tokyo',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-    }, {
-        name: 'New York',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-    }, {
-        name: 'London',
-        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-    }, {
-        name: 'Berlin',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
-    }]
+    series: []
 }
-  constructor() { }
+
+  constructor(private sharedService:SharedService, private route: ActivatedRoute) {
+    this.options.title.text = this.route.snapshot.paramMap.get('name');
+   }
 
   ngOnInit(): void {
     //console.log(this.graphType)
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.graphType)
+    const taskId = this.route.snapshot.paramMap.get('id');
+    this.sharedService.getStats(taskId, this.graphType).subscribe((result)=>{
+        this.createChart(result);
+    })
+  }
+
+  createChart(data){
+    this.options = {...this.options,
+         xAxis:{categories:data.categories},
+         series: data.series
+        }
   }
 }

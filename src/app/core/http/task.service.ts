@@ -3,11 +3,12 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
 
-  private tasksUrl = 'http://localhost:3001/task';
+  private tasksUrl = `${environment.api}/task`;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

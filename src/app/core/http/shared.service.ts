@@ -4,40 +4,34 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-@Injectable({ providedIn: 'root' })
-export class HierarchyService {
+@Injectable({
+  providedIn: 'root'
+})
+export class SharedService {
+  private sharedUrl = `${environment.api}/shared`;
 
-  private groupsUrl = `${environment.api}/group`;
+  constructor(private http: HttpClient) { }
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private http: HttpClient) { }
-
-  /** GET group by parent id. Return `undefined` when id not found */
-  getGroupsByParentId(id: any): Observable<any> {
-    const url = `${this.groupsUrl}/parent/${id}`;
-    return this.http.get<any>(url)
-      .pipe(
-        map(groups => groups),
-        tap(t => {
-          const outcome = t ? `fetched` : `did not find`;
-          this.log(`${outcome} groups id=${id}`);
-        }),
-        catchError(this.handleError<any>(`getGroupsByParentId id=${id}`))
-      );
-  }
-
-  /** GET group by id. Will 404 if id not found */
-  getGroup(id: string): Observable<any> {
-    const url = `${this.groupsUrl}/${id}`;
+  /** GET stats by type. Will 404 if id not found */
+  getStats(taskId: string, stats:string): Observable<any> {
+    const url = `${this.sharedUrl}/stats/?taskId=${taskId}&stats=${stats}`;
     return this.http.get<any>(url).pipe(
-      tap(_ => this.log(`fetched group id=${id}`)),
-      catchError(this.handleError<any>(`getGroup id=${id}`))
+      tap(_ => this.log(`fetched stats id=${taskId}`)),
+      catchError(this.handleError<any>(`getStats id=${taskId}`))
     );
   }
 
+  /** POST: Assign Group to Task */
+  assignGroup(group: any): Observable<any> {
+    return this.http.put<any>(`${this.sharedUrl}/assign`, group, this.httpOptions).pipe(
+      tap((newTask: any) => this.log(`added group to task w/ id=${newTask._id}`)),
+      catchError(this.handleError<any>('addGroupToTask'))
+    );
+  }
   /**
    * Handle Http operation that failed.
    * Let the app continue.
