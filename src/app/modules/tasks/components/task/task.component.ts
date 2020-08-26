@@ -13,15 +13,15 @@ import { GroupDialogComponent } from 'src/app/modules/group/components/group-dia
 export class TaskComponent implements OnInit {
 
   parentTaskId;
-  parentTask = {name:'', type:''};
-  tasks = [];
+  parentTask = {name: '', type: ''};
+  tasks;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private taskService: TaskService) { 
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private taskService: TaskService) {
     this.route.paramMap.subscribe( (pathParams) => {
       this.parentTaskId = pathParams.get('id');
       this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
-      this.taskService.getTasksByParentId(this.parentTaskId).subscribe(tasks => this.tasks = tasks? tasks.tasks: [])
-    })
+      this.taskService.getTasksByParentId(this.parentTaskId).subscribe(tasks => this.tasks = tasks ? tasks.tasks : []);
+    });
   }
 
   ngOnInit(): void {
@@ -31,14 +31,14 @@ export class TaskComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(SubTaskDialogComponent, {
       width: '30%',
-      height:'30%',
+      height: '30%',
       data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-    if(result != undefined && result.name != ''){
-      this.taskService.addTask({task:{
+      if (result !== undefined && result.name !== '') {
+      this.taskService.addTask({task: {
           parent: this.parentTaskId,
           type: this.parentTask.type,
           name: result.name,
@@ -46,9 +46,11 @@ export class TaskComponent implements OnInit {
         }
         })
       .subscribe(task => {
-        task = {...task, subTasksCount:0}
-         this.tasks = [...this.tasks, task]
-      })
+        if (task) {
+        const newTask = {...task, subTasksCount: 0};
+        this.tasks = [...this.tasks, newTask];
+        }
+      });
     }
     });
   }
@@ -56,7 +58,7 @@ export class TaskComponent implements OnInit {
   deleteTask(taskToDelete): void {
     this.taskService.deleteTask(taskToDelete).subscribe(() => {
       this.tasks = this.tasks.filter(task => task._id !== taskToDelete._id);
-    })
+    });
   }
 
   openGroupDialog(task): void {
@@ -67,9 +69,9 @@ export class TaskComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-    if(result != undefined && result.name != ''){
+      if (result !== undefined && result.name !== '') {
 
-    }
+      }
     });
   }
 }

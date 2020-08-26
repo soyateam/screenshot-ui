@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input, OnChanges } from '@angular/core';
 import { SharedService } from 'src/app/core/http/shared.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,7 +7,8 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './pie-graph.component.html',
   styleUrls: ['./pie-graph.component.css']
 })
-export class PieGraphComponent implements OnInit {
+export class PieGraphComponent implements OnInit, OnChanges {
+  // tslint:disable-next-line: no-input-rename
   @Input('graphType') graphType: string;
 
   private drilldownTooltip = {
@@ -22,7 +23,8 @@ export class PieGraphComponent implements OnInit {
       drillUpText: `<  חזור ליחידות`
     },
     chart: {
-        type: 'pie'
+        type: 'pie',
+        backgroundColor: '#F5F5F5',
     },
     title: {
         text: ''
@@ -46,7 +48,8 @@ export class PieGraphComponent implements OnInit {
       tooltip: {
         headerFormat: '<table>',
         // pointFormat: '<tr><td>ביחידה</td><td><b>{point.fullSize:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
-        pointFormatter: function () {
+        // tslint:disable-next-line: object-literal-shorthand
+        pointFormatter: function() {
           return `<tr><td>מתוך סך היחידה</td><td><b>${Math.round((this.y / this.fullSize) * 100)}%</b></td></tr>`;
         },
         footerFormat: '</table>',
@@ -59,7 +62,7 @@ export class PieGraphComponent implements OnInit {
     drilldown: {
         series: []
     }
-  }
+  };
 
   constructor(private sharedService: SharedService, private route: ActivatedRoute) {
     this.options.title.text = this.route.snapshot.paramMap.get('name');
@@ -70,10 +73,10 @@ export class PieGraphComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     const taskId = this.route.snapshot.paramMap.get('id');
-    console.log(this.graphType)
-    this.sharedService.getStats(taskId, this.graphType).subscribe((result)=>{
+    console.log(this.graphType);
+    this.sharedService.getStats(taskId, this.graphType).subscribe((result) => {
         this.createChart(result);
-    })
+    });
   }
 
   createChart(data) {

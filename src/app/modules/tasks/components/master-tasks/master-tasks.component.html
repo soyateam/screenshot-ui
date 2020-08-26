@@ -1,16 +1,18 @@
 <div class="container">
     <div  class="item" *ngFor="let item of masterTasks">
-        <mat-card class="card"  >
-            <button class="menu" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-card class="card" routerLink="/task/{{item._id}}">
+            <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="deleteTask(item)">
+                <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above">
+                <button mat-menu-item [disabled]="item.subTasksCount > 0" (click)="deleteTask(item)">
                   <mat-icon>delete_forever</mat-icon>
                   <span>מחק משימה</span>
                 </button>
+                </span>
               </mat-menu>
-              <div routerLink="/task/{{item._id}}" class="link">        
+              <div>        
                 <div class="task-title"><mat-card-title >{{item.name}}</mat-card-title></div>
                 <p>סה"כ משימות: {{item.subTasksCount}}</p>
             </div>
@@ -18,16 +20,16 @@
     </div>
     <div>
     <!-- <mat-slide-toggle class="slide" (change)="onChange($event)">Slide me!</mat-slide-toggle> -->
-    <mat-form-field appearance="fill" class="slide">
+    <mat-form-field appearance="" class="slide">
       <mat-label>מצב תצוגה:</mat-label>
       <mat-select [(ngModel)]="selectedView" (selectionChange)="onChange($event)">
         <mat-option [value]=0>הפעלת כוח</mat-option>
         <mat-option [value]=1>בנין כוח</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-fab color="primary" class="add-button" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
   </div>
 </div>
+<button mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת משימה חדשה" matTooltipPosition="above">
+  <mat-icon>add</mat-icon>
+</button>
  

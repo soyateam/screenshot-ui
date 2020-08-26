@@ -9,12 +9,12 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 export class AddTaskDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<AddTaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data) { }
+              @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit(): void {
   }
 
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 }

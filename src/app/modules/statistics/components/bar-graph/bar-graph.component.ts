@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { SharedService } from 'src/app/core/http/shared.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,11 +7,13 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './bar-graph.component.html',
   styleUrls: ['./bar-graph.component.css']
 })
-export class BarGraphComponent implements OnInit {
+export class BarGraphComponent implements OnInit, OnChanges {
+  // tslint:disable-next-line: no-input-rename
   @Input('graphType') graphType: string;
   public options: any = {
     chart: {
-        type: 'column'
+        type: 'column',
+        backgroundColor: '#F5F5F5',
     },
     title: {
         text: 'משימה בלה בלה'
@@ -22,10 +24,11 @@ export class BarGraphComponent implements OnInit {
         crosshair: true
     },
     legend: {
-    	labelFormatter: function() {
-        let sum = this.yData.reduce(function(pv, cv) { return pv + cv; }, 0);
-        return '('+ Math.floor(sum) + ') ' + this.name;   
-      }    
+      // tslint:disable-next-line: object-literal-shorthand
+      labelFormatter: function() {
+          const sum = this.yData.reduce((pv, cv) => pv + cv, 0);
+          return '(' + Math.floor(sum) + ') ' + this.name;
+      }
     },
     yAxis: {
         min: 0,
@@ -48,26 +51,26 @@ export class BarGraphComponent implements OnInit {
         }
     },
     series: []
-}
+};
 
-  constructor(private sharedService:SharedService, private route: ActivatedRoute) {
+  constructor(private sharedService: SharedService, private route: ActivatedRoute) {
     this.options.title.text = this.route.snapshot.paramMap.get('name');
    }
 
   ngOnInit(): void {
-    //console.log(this.graphType)
+    // console.log(this.graphType)
   }
   ngOnChanges(changes: SimpleChanges) {
     const taskId = this.route.snapshot.paramMap.get('id');
-    this.sharedService.getStats(taskId, this.graphType).subscribe((result)=>{
+    this.sharedService.getStats(taskId, this.graphType).subscribe((result) => {
         this.createChart(result);
-    })
+    });
   }
 
-  createChart(data){
+  createChart(data) {
     this.options = {...this.options,
-         xAxis:{categories:data.categories},
+         xAxis: {categories: data.categories},
          series: data.series
-        }
+        };
   }
 }

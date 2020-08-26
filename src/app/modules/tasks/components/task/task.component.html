@@ -1,14 +1,21 @@
 <div class="task-list">
-    <mat-toolbar class="title">
+    <mat-toolbar class="title" *ngIf="tasks">
         <span class="task-title">משימות מ: {{parentTask.name}}</span>
         <span>שיוך: {{parentTask.type}}</span>
         <span>כמות משימות: {{tasks.length}}</span>
     </mat-toolbar>
+    
+    <div *ngIf="tasks && tasks.length === 0">
+        <div class="div-empty">
+            <mat-icon class="icon-empty">assignment</mat-icon>
+            <div class="span-empty">לא קיימות משימות להצגה</div><br>
+        </div>
+    </div>
 
-    <div class=card-list>
+    <div class=card-list *ngIf="tasks && tasks.length > 0" >
         <div  *ngFor="let item of tasks">
-            <mat-card class="task" >
-                <div routerLink="/task/{{item._id}}" class="text">
+            <mat-card class="task" routerLink="/task/{{item._id}}">
+                <div class="text">
                     <mat-card-title>{{item.name}}</mat-card-title>
                     <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
                     <div class="footer">
@@ -25,29 +32,33 @@
                 </div>
                 <div>
                     <mat-card-actions>
-                        <button class="menu" mat-icon-button [matMenuTriggerFor]="menu">
+                        <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item routerLink="/statistics/{{item._id}}/{{item.name}}" disabled="{{item.groups.length == 0}}">
-                                <mat-icon>show_chart</mat-icon>
-                                <span>סטטיסטיקות</span>
-                            </button>
-                            <button mat-menu-item (click)="deleteTask(item)">
-                                <mat-icon>delete_forever</mat-icon>
-                                <span>מחק משימה</span>
-                            </button>
                             <button mat-menu-item (click)="openGroupDialog(item)">
                                 <mat-icon>group_add</mat-icon>
                                 <span>שיוך קבוצה</span>
                             </button>
+                            <span [matTooltipDisabled]="item.groups && item.groups.length > 0" matTooltip="לא ניתן לספק סטטיסטיקות ללא קבוצות משויכות למשימה" matTooltipPosition="above">
+                                <button mat-menu-item routerLink="/statistics/{{item._id}}/{{item.name}}" disabled="{{!item.groups || item.groups.length === 0}}">
+                                    <mat-icon>show_chart</mat-icon>
+                                    <span>סטטיסטיקות</span>
+                                </button>
+                            </span>
+                            <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above">
+                                <button [disabled]="item.subTasksCount > 0" mat-menu-item (click)="deleteTask(item)">
+                                    <mat-icon>delete_forever</mat-icon>
+                                    <span>מחק משימה</span>
+                                </button>
+                            </span>
                         </mat-menu>
                     </mat-card-actions>
                 </div>
             </mat-card>
         </div>
     </div>
-    <button mat-fab color="primary" class="add-button" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>
+<button mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת תת משימה חדשה" matTooltipPosition="above">
+    <mat-icon>add</mat-icon>
+</button>

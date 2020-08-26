@@ -9,11 +9,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 export class SubTaskDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data) { }
+              @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit(): void {
   }
-  
+
   onNoClick(): void {
     this.dialogRef.close();
   }

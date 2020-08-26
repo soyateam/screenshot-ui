@@ -18,27 +18,31 @@ export class MasterTasksComponent implements OnInit {
     this.getTasks();
   }
 
-  getTasks(): void{
+  getTasks(): void {
     this.taskService.getTasks(this.selectedView)
     .subscribe(tasks => {
-      this.masterTasks = tasks
+      if (tasks) {
+        this.masterTasks = tasks;
+      }
     });
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddTaskDialogComponent, {
-      width: '30%',
-      height:'30%',
-      data: {name: '',viewGroup: this.selectedView}
+      width: '400px',
+      height: '270px',
+      data: {name: '', viewGroup: this.selectedView}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-    if(result != undefined && result.name != ''){
-      this.taskService.addTask({task:{type: result.viewGroup ?'BuildForce' : 'OperativeForce', name: result.name}})
+    if (result !== undefined && result.name !== '') {
+      this.taskService.addTask({task: {type: result.viewGroup ? 'BuildForce' : 'OperativeForce', name: result.name}})
       .subscribe(task => {
-        task = {...task, subTasksCount:0}
-         this.masterTasks = [...this.masterTasks, task]
-      })
+        if (task) {
+          const newTask = {...task, subTasksCount: 0};
+          this.masterTasks = [...this.masterTasks, newTask];
+        }
+      });
     }
     });
   }
@@ -46,11 +50,11 @@ export class MasterTasksComponent implements OnInit {
   deleteTask(taskToDelete): void {
     this.taskService.deleteTask(taskToDelete).subscribe(() => {
       this.masterTasks = this.masterTasks.filter(task => task._id !== taskToDelete._id);
-    })
-   
+    });
+
   }
 
-  onChange(event):void{
+  onChange(event): void {
     this.getTasks();
   }
 
