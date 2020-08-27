@@ -34,6 +34,10 @@ export class TaskComponent implements OnInit {
     // this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
     // const id = this.route.snapshot.paramMap.get('id');
   }
+
+  /**
+   * Add subtask
+   */
   openDialog(): void {
     const dialogRef = this.dialog.open(SubTaskDialogComponent, {
       width: '400px',
@@ -53,8 +57,9 @@ export class TaskComponent implements OnInit {
         })
       .subscribe(task => {
         if (task) {
-        const newTask = {...task, subTasksCount: 0};
-        this.tasks = [...this.tasks, newTask];
+          const newTask = {...task, subTasksCount: 0};
+          this.tasks = [...this.tasks, newTask];
+          this.snackBarService.open('המשימה הִתְוָוסְּפָה בהצלחה', 'סגור');
         }
       });
     }
@@ -62,8 +67,11 @@ export class TaskComponent implements OnInit {
   }
 
   deleteTask(taskToDelete): void {
-    this.taskService.deleteTask(taskToDelete).subscribe(() => {
-      this.tasks = this.tasks.filter(task => task._id !== taskToDelete._id);
+    this.taskService.deleteTask(taskToDelete).subscribe((data) => {
+      if (data) {
+        this.tasks = this.tasks.filter(task => task._id !== taskToDelete._id);
+        this.snackBarService.open('המשימה נמחקה בהצלחה', 'סגור');
+      }
     });
   }
 

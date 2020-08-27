@@ -63,6 +63,9 @@ export class MasterTasksComponent implements OnInit {
     }
   }
 
+  /**
+   * Add master-task
+   */
   openDialog(): void {
     const dialogRef = this.dialog.open(AddTaskDialogComponent, {
       width: '400px',
@@ -82,6 +85,7 @@ export class MasterTasksComponent implements OnInit {
 
           if (newTask.type === displayView) {
             this.masterTasks = [...this.masterTasks, newTask];
+            this.snackBarService.open('המשימה הִתְוָוסְּפָה בהצלחה', 'סגור');
           }
         }
       });
@@ -90,8 +94,11 @@ export class MasterTasksComponent implements OnInit {
   }
 
   deleteTask(taskToDelete): void {
-    this.taskService.deleteTask(taskToDelete).subscribe(() => {
-      this.masterTasks = this.masterTasks.filter(task => task._id !== taskToDelete._id);
+    this.taskService.deleteTask(taskToDelete).subscribe((data) => {
+      if (data) {
+        this.masterTasks = this.masterTasks.filter(task => task._id !== taskToDelete._id);
+        this.snackBarService.open('המשימה נמחקה בהצלחה', 'סגור');
+      }
     });
 
   }

@@ -8,6 +8,7 @@ import { MaterialModule } from '../material/material.module';
 import { PieGraphComponent } from './components/pie-graph/pie-graph.component';
 import { BarGraphComponent } from './components/bar-graph/bar-graph.component';
 import { FormsModule } from '@angular/forms';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import { FormsModule } from '@angular/forms';
         SharedModule,
         MaterialModule,
         FormsModule,
-        StatisticsRoutingModule
+        AppRoutingModule,
     ],
     exports: [GraphComponent]
 })

@@ -9,6 +9,7 @@ import { TasksRoutingModule } from './tasks-routing.module';
 import { SubTaskDialogComponent } from './components/sub-task-dialog/sub-task-dialog.component';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task-dialog.component';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 
 @NgModule({
     declarations: [MasterTasksComponent, AddTaskDialogComponent, TaskComponent, SubTaskDialogComponent, EditTaskDialogComponent],
@@ -16,7 +17,7 @@ import { EditTaskDialogComponent } from './components/edit-task-dialog/edit-task
         CommonModule,
         MaterialModule,
         FormsModule,
-        TasksRoutingModule,
+        AppRoutingModule,
         StatisticsModule
     ],
     exports: [MasterTasksComponent]
