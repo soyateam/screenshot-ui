@@ -50,7 +50,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
         // pointFormat: '<tr><td>ביחידה</td><td><b>{point.fullSize:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
         // tslint:disable-next-line: object-literal-shorthand
         pointFormatter: function() {
-          return `<tr><td>מתוך סך היחידה</td><td><b>${Math.round((this.y / this.fullSize) * 100)}%</b></td></tr>`;
+          return `<tr><td>מתוך סך היחידה</td><td><b>${((this.y / this.fullSize) * 100).toFixed(2)}%</b></td></tr>`;
         },
         footerFormat: '</table>',
         useHTML: true
