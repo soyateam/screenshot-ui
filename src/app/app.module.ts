@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { HttpClient } from "@angular/common/http";
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,7 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TaskModule,
     StatisticsModule,
     TranslateModule.forRoot({
-      defaultLanguage: "he",
+      defaultLanguage: 'he',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,

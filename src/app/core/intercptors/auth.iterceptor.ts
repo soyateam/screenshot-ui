@@ -19,20 +19,20 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.cookieService.get(environment.auth.cookieTokenName);
 
-    if (!token || this.userService.expired()) {
+    if (this.userService.expired()) {
       this.userService.login();
-      return;
+      return throwError('user token is expired');
     }
 
     request = request.clone({
       setHeaders: {
-        // tslint:disable-next-line: max-line-length
         Authorization: `Bearer ${token}`,
       },
     });
 
     return next.handle(request).pipe(catchError((error: any, caught: Observable<any>) => {
       if (error && error.status === 401) {
+        this.cookieService.delete(environment.auth.cookieTokenName);
         this.userService.login();
       } else {
         return throwError(error);
