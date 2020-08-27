@@ -12,7 +12,7 @@
       </button>
       <button color="primary" mat-button (click)="selectGroup(node.item)"  *ngIf="node.item.kartoffelID !== ''"> <mat-icon style="position:relative; left: 6px; bottom: 1px;">supervisor_account</mat-icon> <span style="font-weight: bold;">{{node.item.name}}</span> </button> 
       <span *ngIf="node.item.kartoffelID == ''" style="font-weight: bold; cursor:default;">{{node.item.name}}</span>
-      <mat-progress-bar *ngIf="node.isLoading"
+      <mat-progress-bar style="position: absolute; top:64px; right: 0;" *ngIf="node.isLoading"
                         mode="indeterminate"></mat-progress-bar>
     </mat-tree-node>
   </mat-tree>

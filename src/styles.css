@@ -13,3 +13,7 @@ mat-dialog-container {
     overflow-x: hidden !important;
     position: relative;
 }
+
+.mat-list-item-content {
+    padding: 0 2px !important;
+}

@@ -18,6 +18,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [],
@@ -41,6 +42,7 @@ import {MatDividerModule} from '@angular/material/divider';
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    MatListModule
   ],
   exports: [
     MatToolbarModule,
@@ -61,6 +63,7 @@ import {MatDividerModule} from '@angular/material/divider';
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    MatListModule
   ]
 })
 export class MaterialModule { }
