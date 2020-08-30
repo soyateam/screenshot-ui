@@ -23,7 +23,7 @@ export class UserService {
   }
 
   login() {
-    if (!this.cookieService.get(this.cookieName)) {
+    if (!this.cookieService.get(this.cookieName) || this.expired()) {
       window.location.href = this.loginURL;
     }
   }
