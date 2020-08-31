@@ -24,10 +24,10 @@ export class GraphComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(){
+  ngOnInit() {
     Highcharts.chart(this.container, this.options);
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     Highcharts.chart(this.container, this.options).redraw();
   }

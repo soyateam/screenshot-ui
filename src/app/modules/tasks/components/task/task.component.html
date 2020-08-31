@@ -54,12 +54,12 @@
                                 <mat-icon>group_add</mat-icon>
                                 <span style="font-weight: bold;">ניהול קבוצות</span>
                             </button>
-                            <span [matTooltipDisabled]="item.groups && item.groups.length > 0" matTooltip="לא ניתן לספק סטטיסטיקות ללא קבוצות משויכות למשימה" matTooltipPosition="above">
-                                <button mat-menu-item routerLink="/statistics/{{item._id}}/{{item.name}}" disabled="{{!item.groups || item.groups.length === 0}}">
+                            <!-- <span [matTooltipDisabled]="item.groups && item.groups.length > 0" matTooltip="לא ניתן לספק סטטיסטיקות ללא קבוצות משויכות למשימה" matTooltipPosition="above"> -->
+                                <button mat-menu-item routerLink="/statistics/{{item._id}}/{{item.name}}"> <!-- disabled="{{!item.groups || item.groups.length === 0}}"> -->
                                     <mat-icon>show_chart</mat-icon>
                                     <span style="font-weight: bold;">סטטיסטיקות</span>
                                 </button>
-                            </span>
+                            <!-- </span> -->
                             <button mat-menu-item *ngIf="isUserCanWrite" (click)="editTask(item)">
                                 <mat-icon>edit</mat-icon>
                                 <span style="font-weight: bold;">ערוך משימה</span>
