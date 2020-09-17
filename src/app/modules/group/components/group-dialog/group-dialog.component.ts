@@ -23,23 +23,50 @@ export class GroupDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  addGroup(group) {
+  async addGroup(group) {
+    console.log(group);
+    for (const currGroup of group.groupsAssignAbove) {
+      const foundGroup = this.data.task.groups.find(item => currGroup.id === item.id);
+      if (!foundGroup) {
+        try {
+          const result = await this.sharedService.assignGroup({
+            taskId: this.data.task._id,
+            group: { name: currGroup.name, id: currGroup.id },
+            isCountGrow: true,
+          }).toPromise();
+          if (result) {
+            this.data.task.groups.push({ name: currGroup.name, id: currGroup.id });
+          }
+        } catch (err) {
+          this.snackBarService.open(err.message, 'סגור');
+        }
+
+      }
+    }
     const newGroup = {name: group.name, id: group.kartoffelID};
     const found = this.data.task.groups.find(item => group.kartoffelID === item.id);
     if (!found) {
-      this.sharedService.assignGroup({taskId: this.data.task._id, group: newGroup, isCountGrow: true}).subscribe((result) => {
-       if (result) {
+      try {
+        const result = await this.sharedService.assignGroup({taskId: this.data.task._id, group: newGroup, isCountGrow: true}).toPromise();
+
+        if (result) {
           this.data.task.groups.push(newGroup);
           this.snackBarService.open('קבוצה שויכה בהצלחה', 'סגור');
-       }
-      });
+        }
+      } catch (err) {
+        this.snackBarService.open(err.message, 'סגור');
+      }
     }
   }
 
   removeGroup(group) {
     const found = this.data.task.groups.find(item => group.id === item.id);
     if (found) {
-      this.sharedService.assignGroup({taskId: this.data.task._id, group, isCountGrow: false}).subscribe((result) => {
+      this.sharedService.assignGroup({
+        taskId: this.data.task._id,
+        group: { name: group.name, id: group.id },
+        isCountGrow: false,
+      }).subscribe((result) => {
         if (result) {
           this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.id);
           this.snackBarService.open('קבוצה נמחקה בהצלחה', 'סגור');

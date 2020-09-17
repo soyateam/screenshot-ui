@@ -35,7 +35,26 @@ export class DynamicDatabase {
       try {
         const groups = await this.hierarchyService.getGroupsByParentId(node.kartoffelID).toPromise();
         const editGroups = groups.map((group) => {
-          return { name: group.name, kartoffelID: group.kartoffelID };
+          const groupsAssignAbove = [];
+          for (let index = 0; index < group.ancestors.length - 2; index += 1) {
+            const parentGroup = group.ancestors[index + 1];
+            const selectedGroup = group.ancestors[index];
+            const fullSelectedGroup = {
+              name: this.dataMap.get(parentGroup).filter((currGroup) => currGroup.kartoffelID === selectedGroup)[0].name,
+              id: selectedGroup,
+            };
+            groupsAssignAbove.push(fullSelectedGroup);
+          }
+
+          if (group.ancestors.length >= 2) {
+            groupsAssignAbove.push({
+              name: this.dataMap.get('')
+                    .filter((currGroup) => currGroup.kartoffelID === group.ancestors[group.ancestors.length - 2])[0].name,
+              id: group.ancestors[group.ancestors.length - 2]
+            });
+          }
+
+          return { groupsAssignAbove, name: group.name, kartoffelID: group.kartoffelID };
         });
         this.dataMap.set(node.kartoffelID, editGroups);
         groups.forEach(group => {
@@ -44,8 +63,8 @@ export class DynamicDatabase {
           }
         });
         return editGroups;
-      } catch {
-
+      } catch (err) {
+        console.log(err);
       }
 
     }
