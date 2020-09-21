@@ -1,20 +1,16 @@
 <div class="task-list">
-    <mat-progress-bar style="margin-top:82px;" mode="indeterminate" *ngIf="parentTask.ancestors.length !== ancestorsDetails.length"></mat-progress-bar>
+    <mat-progress-bar style="margin-top:82px;" mode="indeterminate" *ngIf="parentTask && parentTask.ancestors.length !== ancestorsDetails.length"></mat-progress-bar>
     <mat-list role="list" style="display:flex; position:relative;" *ngIf="tasks && parentTask && parentTask.ancestors.length === ancestorsDetails.length">
-        <mat-list-item style="width:initial !important;" role="listitem">
-            <button mat-button color="primary" style="font-weight: bold;" routerLink="/tasks">דף ראשי</button>
-            <span style="color: #9a9a9a; font-weight: bold; position:relative;right:2px;">></span>
-        </mat-list-item>
         <mat-list-item *ngFor="let currAncest of ancestorsDetails" style="width:initial !important;" role="listitem">
-            <button mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;" routerLink="/task/{{currAncest._id}}" [matTooltip]="currAncest.name" matTooltipPosition="above">{{ currAncest.name }}</button>
+            <button *ngIf="currAncest._id !== '5f4cc73b4201366c45b83925'" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;" routerLink="/task/{{currAncest._id}}" [matTooltip]="currAncest.name" matTooltipPosition="above">{{ currAncest.name }}</button>
+            <button *ngIf="currAncest._id === '5f4cc73b4201366c45b83925'" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;" routerLink="/task/{{currAncest._id}}">דף ניהול</button>
             <span style="color: #9a9a9a; font-weight: bold; position:relative;right:2px;">></span>
         </mat-list-item>
         <mat-list-item style="width:initial !important" role="listitem">
-            <span style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" [matTooltip]="parentTask.name" matTooltipPosition="above">{{ parentTask.name }}</span>
+            <span *ngIf="parentTask._id !== '5f4cc73b4201366c45b83925'" style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" [matTooltip]="parentTask.name" matTooltipPosition="above">{{ parentTask.name }}</span>
+            <span *ngIf="parentTask._id === '5f4cc73b4201366c45b83925'" style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; font-weight: bold;">דף ניהול</span>
         </mat-list-item>
         <mat-list-item style="width: initial !important; position: absolute; left: 0px;" role="listitem">
-            
-            <span *ngIf="parentTask" style="font-size:15px; position:relative; left:25px; color:#5a5a5a;"><mat-icon style="position:relative; top:6px; left:1px; font-size:20px; width:20px; height:20px;">attach_file</mat-icon><span style="font-weight: bold;">שיוך: </span><span style="font-weight: bold;">{{parentTask.type}}</span></span>
             <span *ngIf="tasks" style="font-size:15px; color:#5a5a5a;"><mat-icon style="position:relative; top:6px; left:4px; font-size:20px; width:20px; height:20px;">line_weight</mat-icon><span style="font-weight: bold; ">כמות משימות: </span><span style="font-weight: bold;">{{tasks.length}}</span></span>
         </mat-list-item>
     </mat-list>

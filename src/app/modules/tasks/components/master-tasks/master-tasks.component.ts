@@ -21,6 +21,9 @@ export class MasterTasksComponent implements OnInit {
 
   ngOnInit() {
     this.isUserCanWrite = this.userService.isUserCanWrite;
+    if (window.location.pathname === '/tasks') {
+       window.location.href = '/task/5f4cc73b4201366c45b83925';
+    }
     this.getTasks();
   }
 
