@@ -35,7 +35,7 @@
                     <div class="footer">
                         <div>
                             <mat-chip-list>
-                                <mat-chip *ngFor="let group of item.groups"> {{group.name}}</mat-chip>
+                                <mat-chip *ngFor="let group of item.groups" matTooltip="{{group.hierarchy || group.name}}"> {{group.name}}</mat-chip>
                             </mat-chip-list>
                         </div>
                         <div class="count">

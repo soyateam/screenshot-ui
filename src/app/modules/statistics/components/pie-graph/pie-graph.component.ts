@@ -13,7 +13,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
 
   private drilldownTooltip = {
     headerFormat: '<table>',
-    pointFormat: '<tr><td><b>{point.total:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
+    pointFormat: '<tr><td>{point.hierarchy}</td></tr><tr><td><b>{point.total:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
     footerFormat: '</table>',
     useHTML: true
   };
