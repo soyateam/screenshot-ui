@@ -7,6 +7,7 @@ import { DashboardComponent } from './modules/statistics/dashboard/dashboard.com
 
 const routes: Routes = [ { path: 'task/:id', component: TaskComponent },
                           { path: 'statistics/:id/:name', component: TaskStatisticsComponent },
+                          { path: 'dashboard/:id/:name', component: DashboardComponent},
                           { path: 'dashboard', component: DashboardComponent},
                           { path: '**', redirectTo: '/dashboard' }];
 

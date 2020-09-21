@@ -73,6 +73,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const taskId = this.route.snapshot.paramMap.get('id');
+    console.log(taskId);
     console.log(this.graphType);
     this.sharedService.getStats(taskId, this.graphType).subscribe((result) => {
         this.createChart(result);
