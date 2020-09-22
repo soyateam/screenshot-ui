@@ -1,12 +1,14 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import customEvents from 'highcharts-custom-events';
 
 declare var require: any;
-let Boost = require('highcharts/modules/boost');
-let noData = require('highcharts/modules/no-data-to-display');
-let More = require('highcharts/highcharts-more');
-let drilldown = require('highcharts/modules/drilldown.src');
+const Boost = require('highcharts/modules/boost');
+const noData = require('highcharts/modules/no-data-to-display');
+const More = require('highcharts/highcharts-more');
+const drilldown = require('highcharts/modules/drilldown.src');
 
+customEvents(Highcharts);
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
@@ -18,8 +20,10 @@ drilldown(Highcharts);
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.css']
 })
-export class GraphComponent implements OnInit {
+export class GraphComponent implements OnInit, OnChanges {
+  // tslint:disable-next-line: no-input-rename
   @Input('options') options: object;
+  // tslint:disable-next-line: no-input-rename
   @Input('container') container: string;
 
   constructor() { }

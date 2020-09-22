@@ -10,10 +10,11 @@ import { BarGraphComponent } from './components/bar-graph/bar-graph.component';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SecondaryBarGraphComponent } from './components/secondary-bar-graph/secondary-bar-graph.component';
 
 
 @NgModule({
-    declarations: [GraphComponent, TaskStatisticsComponent, PieGraphComponent, BarGraphComponent, DashboardComponent],
+    declarations: [GraphComponent, TaskStatisticsComponent, PieGraphComponent, BarGraphComponent, DashboardComponent, SecondaryBarGraphComponent],
     imports: [
         CommonModule,
         SharedModule,

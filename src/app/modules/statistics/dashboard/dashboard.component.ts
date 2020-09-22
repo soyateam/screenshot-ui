@@ -54,13 +54,29 @@ export class DashboardComponent implements OnInit {
     this.pieId = taskType.id;
     this.mainBarId = taskType.id;
     this.mainBarName = taskType.name;
+    this.secondaryBarId = '';
+    this.secondaryBarName = '';
   }
 
   setGraphValues(): void {
     if (this.selectedFilterBy === 'UnitTaskCount') {
       this.barGraphType = 'UnitTaskCount';
+      this.secondaryBarId = '';
+      this.secondaryBarName = '';
     } else {
       this.barGraphType = this.selectedStatisticsType;
     }
+  }
+
+  oneClickChange(task): void {
+    this.secondaryBarId = task.id;
+    this.secondaryBarName = task.name;
+  }
+
+  dblClickChange(task): void {
+    this.mainBarId = task.id;
+    this.mainBarName = task.name;
+    this.secondaryBarId = '';
+    this.secondaryBarName = '';
   }
 }

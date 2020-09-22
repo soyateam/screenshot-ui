@@ -29,7 +29,7 @@
             </div>
         </div>
         <div style="flex:75%; width:0;">
-            <app-bar-graph [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" ></app-bar-graph>
+            <app-bar-graph (dblClick)="dblClickChange($event)" (oneClick)="oneClickChange($event)" [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" ></app-bar-graph>
         </div>
     </div>
     <!--Second Card-->
@@ -38,7 +38,7 @@
             <app-pie-graph graphType="UnitSum" [name]="pieName" [id]="pieId" getFromDashboard="true"></app-pie-graph>
         </div>
         <div style="flex: 75%; border-top:1px solid #EAEAEA; width:0;">
-            <app-bar-graph [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" ></app-bar-graph>
+            <app-secondary-bar-graph [graphType]="barGraphType" getFromDashboard="true" [name]="secondaryBarName" [id]="secondaryBarId"></app-secondary-bar-graph>
         </div>
     </div>
 </div>
