@@ -10,10 +10,21 @@ import { ActivatedRoute } from '@angular/router';
 export class BarGraphComponent implements OnInit, OnChanges {
   // tslint:disable-next-line: no-input-rename
   @Input('graphType') graphType: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('id') id: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('name') name: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('getFromDashboard') getFromDashboard: boolean;
+
+
   public options: any = {
+    lang: {
+      noData: 'לא קיימים נתונים להצגת הגרף'
+    },
     chart: {
         type: 'column',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: 'rgba(255, 255, 255, 0)',
     },
     title: {
         text: 'משימה בלה בלה'
@@ -39,7 +50,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
@@ -54,15 +65,27 @@ export class BarGraphComponent implements OnInit, OnChanges {
 };
 
   constructor(private sharedService: SharedService, private route: ActivatedRoute) {
-    this.options.title.text = this.route.snapshot.paramMap.get('name');
+    if (!!this.getFromDashboard) {
+      this.options.title.text = 'הפעלת כוח';
+    } else {
+      this.options.title.text = this.route.snapshot.paramMap.get('name');
+    }
    }
 
   ngOnInit(): void {
     // console.log(this.graphType)
   }
   ngOnChanges(changes: SimpleChanges) {
-    const taskId = this.route.snapshot.paramMap.get('id');
-    this.sharedService.getStats(taskId, this.graphType).subscribe((result) => {
+    let taskId;
+
+    if (!!this.getFromDashboard && this.name && this.id) {
+      this.options.title.text = this.name;
+      taskId = this.id;
+    } else {
+      taskId = this.route.snapshot.paramMap.get('id');
+    }
+
+    this.sharedService.getStats(taskId, this.graphType, !!this.getFromDashboard).subscribe((result) => {
         this.createChart(result);
     });
   }

@@ -10,6 +10,12 @@ import { ActivatedRoute } from '@angular/router';
 export class PieGraphComponent implements OnInit, OnChanges {
   // tslint:disable-next-line: no-input-rename
   @Input('graphType') graphType: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('id') id: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('name') name: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('getFromDashboard') getFromDashboard: boolean;
 
   private drilldownTooltip = {
     headerFormat: '<table>',
@@ -24,7 +30,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
     },
     chart: {
         type: 'pie',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: 'rgba(255, 255, 255, 0)',
     },
     title: {
         text: ''
@@ -65,16 +71,24 @@ export class PieGraphComponent implements OnInit, OnChanges {
   };
 
   constructor(private sharedService: SharedService, private route: ActivatedRoute) {
-    this.options.title.text = this.route.snapshot.paramMap.get('name');
+    if (!!this.getFromDashboard) {
+      this.options.title.text = 'הפעלת כוח';
+    } else {
+      this.options.title.text = this.route.snapshot.paramMap.get('name');
+    }
   }
 
   ngOnInit(): void {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const taskId = this.route.snapshot.paramMap.get('id');
-    console.log(taskId);
-    console.log(this.graphType);
+    let taskId;
+    if (!!this.getFromDashboard && this.name && this.id) {
+      this.options.title.text = this.name;
+      taskId = this.id;
+    } else {
+      taskId = this.route.snapshot.paramMap.get('id');
+    }
     this.sharedService.getStats(taskId, this.graphType).subscribe((result) => {
         this.createChart(result);
     });

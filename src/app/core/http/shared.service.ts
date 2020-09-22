@@ -17,8 +17,8 @@ export class SharedService {
   };
 
   /** GET stats by type. Will 404 if id not found */
-  getStats(taskId: string, stats: string): Observable<any> {
-    const url = `${this.sharedUrl}/stats/?taskId=${taskId}&stats=${stats}`;
+  getStats(taskId: string, stats: string, showSubTasks?: boolean): Observable<any> {
+    const url = `${this.sharedUrl}/stats/?taskId=${taskId}&stats=${stats}${showSubTasks ? '&showSubTasks=true' : ''}`;
     return this.http.get<any>(url).pipe(
       tap(_ => this.log(`fetched stats id=${taskId}`)),
       catchError(this.handleError<any>(`getStats id=${taskId}`))

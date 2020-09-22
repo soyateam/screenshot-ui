@@ -1,22 +1,22 @@
 <div style="background-color: white;box-shadow: 0 0 4px -1px; margin: 30px;">
     <!--First Card-->
-    <div style="display: flex;height: 420px;text-align: center;justify-content: center;">
-        <div style="flex:25%; border-left:1px solid #EAEAEA;">
+    <div style="display: flex;height: 400px;text-align: center;justify-content: center;">
+        <div style="flex:25%; border-left:1px solid #EAEAEA; min-width: 205px">
             <mat-form-field style="position: relative; top:30px;">
                 <mat-label>פילוח לפי</mat-label>
-                <mat-select>
-                <mat-option *ngFor="let food of ['יחידות','משימות']" [value]="food">
-                    {{food}}
-                </mat-option>
+                <mat-select [(ngModel)]="selectedFilterBy" (selectionChange)="setGraphValues()">
+                    <mat-option *ngFor="let currFilter of filterBy" [value]="currFilter.id">
+                        {{ currFilter.displayName }}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
             <br>
             <mat-form-field style="position: relative; top:30px;">
                 <mat-label>סוג סטטיסטיקה</mat-label>
-                <mat-select>
-                <mat-option *ngFor="let food of ['כמות אנשים', 'כמות אנשים לפי סוגי שירות', 'כמות אנשים לפי תקנים']" [value]="food">
-                    {{food}}
-                </mat-option>
+                <mat-select [(ngModel)]="selectedStatisticsType" [disabled]="selectedFilterBy === 'UnitTaskCount'" (selectionChange)="setGraphValues()">
+                    <mat-option *ngFor="let currStatisticsType of statisticsType" [value]="currStatisticsType.id">
+                        {{ currStatisticsType.displayName }}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
             <br>
@@ -28,13 +28,17 @@
                 </span>
             </div>
         </div>
-        <div style="flex:75%;"></div>
+        <div style="flex:75%; width:0;">
+            <app-bar-graph [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" ></app-bar-graph>
+        </div>
     </div>
     <!--Second Card-->
     <div style="display: flex;height: 400px;text-align: center;justify-content: center;">
-        <div style="flex: 25%;border-left:1px solid #EAEAEA; border-top:1px solid #EAEAEA;">
-            <app-pie-graph graphType="UnitSum"></app-pie-graph>
+        <div style="flex: 25%;border-left:1px solid #EAEAEA; border-top:1px solid #EAEAEA; min-width: 205px">
+            <app-pie-graph graphType="UnitSum" [name]="pieName" [id]="pieId" getFromDashboard="true"></app-pie-graph>
         </div>
-        <div style="flex: 75%; border-top:1px solid #EAEAEA;"></div>
+        <div style="flex: 75%; border-top:1px solid #EAEAEA; width:0;">
+            <app-bar-graph [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" ></app-bar-graph>
+        </div>
     </div>
 </div>
