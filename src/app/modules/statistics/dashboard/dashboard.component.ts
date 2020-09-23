@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { VirtualTimeScheduler } from 'rxjs';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,6 +21,7 @@ export class DashboardComponent implements OnInit {
                     {id: 'ServiceSum', displayName: 'כמות אנשים לפי סוגי שירות'},
                     {id: 'RankSum', displayName: 'כמות אנשים לפי תקנים'}];
 
+  currentUser;
   pieName = '';
   pieId = '';
   mainBarName = '';
@@ -31,9 +33,10 @@ export class DashboardComponent implements OnInit {
   currStat = {id: '', name: ''};
   barGraphType = '';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
+    this.currentUser = this.userService.currentUser;
     this.barGraphType = this.statisticsType[0].id;
     this.currStat = this.taskTypes[0];
     this.selectedFilterBy = this.filterBy[0].id;

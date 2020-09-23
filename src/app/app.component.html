@@ -21,16 +21,16 @@
     margin: 0;
   }
 </style>
-<mat-toolbar color="primary" class="mat-elevation-z4" style="position:sticky; top:0; z-index:999;">
+<mat-toolbar color="primary" class="mat-elevation-z4" style="position:sticky; top:0; z-index:999;" *ngIf="user">
   <span>Screenshot</span>
   
   <button mat-button routerLink="/dashboard" style="position:relative; right: 40px; font-weight:bold">
     <span style="font-size: 17px; position: relative; left:2px; bottom: 1px;">דף ראשי</span>
-    <mat-icon>home</mat-icon>
+    <mat-icon style="position:relative; right:3px;">donut_small</mat-icon>
   </button>
   <button mat-button routerLink="/task/5f4cc73b4201366c45b83925" style="position:relative; right: 40px; font-weight:bold">
-    <span style="font-size: 17px; position: relative; left:2px; bottom: 1px;">דף ניהול </span>
-    <mat-icon>settings</mat-icon>
+    <span style="font-size: 17px; position: relative; left:2px; bottom: 1px;">משימות</span>
+    <mat-icon style="position:relative; right: 3px;">assignment</mat-icon>
   </button>
   <span class="example-spacer"></span>
   <span *ngIf="user">שלום, {{ user.name.firstName }} {{ user.name.lastName || '' }}</span>
