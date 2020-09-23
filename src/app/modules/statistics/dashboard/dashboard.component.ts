@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   statisticsType = [{id: 'Sum', displayName: 'כמות אנשים'},
                     {id: 'ServiceSum', displayName: 'כמות אנשים לפי סוגי שירות'},
                     {id: 'RankSum', displayName: 'כמות אנשים לפי תקנים'}];
+  defaultParentId = '5db805a8216dad5ed3b9efbf';
 
   currentUser;
   pieName = '';
@@ -32,6 +33,9 @@ export class DashboardComponent implements OnInit {
   selectedStatisticsType = '';
   currStat = {id: '', name: ''};
   barGraphType = '';
+  mainParentGroupId = '5db805a8216dad5ed3b9efbf';
+  secondaryParentGroupId = '';
+  onUnitTaskCount = false;
 
   constructor(private router: Router, private userService: UserService) { }
 
@@ -45,6 +49,9 @@ export class DashboardComponent implements OnInit {
     this.pieId = this.currStat.id;
     this.mainBarId = this.currStat.id;
     this.mainBarName = this.currStat.name;
+    this.onUnitTaskCount = false;
+    this.mainParentGroupId = this.defaultParentId;
+    this.secondaryParentGroupId = '';
     this.hierarchy.push({ id: this.mainBarId, name: this.mainBarName });
   }
 
@@ -65,51 +72,128 @@ export class DashboardComponent implements OnInit {
     this.pieId = taskType.id;
     this.mainBarId = taskType.id;
     this.mainBarName = taskType.name;
-    this.secondaryBarId = '';
-    this.secondaryBarName = '';
+    if (this.onUnitTaskCount && this.selectedFilterBy === 'UnitTaskCount') {
+      this.mainParentGroupId = this.defaultParentId;
+      this.secondaryParentGroupId = '';
+      this.secondaryBarId = '';
+      this.secondaryBarName = '';
+    } else {
+      this.secondaryBarId = '';
+      this.secondaryBarName = '';
+      this.secondaryParentGroupId = '';
+    }
+    // this.secondaryBarId = '';
+    // this.secondaryBarName = '';
+    // this.secondaryParentGroupId = '';
     this.hierarchy.push({ id: taskType.id, name: taskType.name });
   }
 
   setGraphValues(): void {
     if (this.selectedFilterBy === 'UnitTaskCount') {
       this.barGraphType = 'UnitTaskCount';
-      this.secondaryBarId = '';
+      this.mainBarId = this.pieId;
+      this.mainBarName = this.pieName;
+      this.secondaryBarId = this.pieId;
       this.secondaryBarName = '';
+      this.secondaryParentGroupId = '';
+      this.onUnitTaskCount = true;
+      this.hierarchy = [];
+      this.hierarchy.push({ id: this.pieId, name: this.pieName });
     } else {
+      // The caused from changing Units to Tasks in the filterBy,
+      // So the onUnitTaskCount flag is still on.
+      // Need to return to the previous tasks context instead of parentGroupId context.
+      if (this.onUnitTaskCount) {
+        this.mainBarId = this.pieId;
+        this.mainBarName = this.pieName;
+        this.mainParentGroupId = this.defaultParentId;
+        this.secondaryBarId = '';
+        this.secondaryBarName = '';
+        this.secondaryParentGroupId = '';
+        this.onUnitTaskCount = false;
+        this.hierarchy = [];
+        this.hierarchy.push({ id: this.pieId, name: this.pieName });
+      }
       this.barGraphType = this.selectedStatisticsType;
     }
   }
 
   rightClickChange(task): void {
-    this.secondaryBarId = task.id;
-    this.secondaryBarName = task.name;
+    if (this.selectedFilterBy === 'UnitTaskCount' && this.onUnitTaskCount) {
+      this.secondaryParentGroupId = task.id;
+      this.secondaryBarId = this.mainBarId;
+      this.secondaryBarName = task.name;
+    } else {
+      this.secondaryBarId = task.id;
+      this.secondaryBarName = task.name;
+    }
   }
 
   leftClickChange(task): void {
-    this.mainBarId = task.id;
-    this.mainBarName = task.name;
-    this.secondaryBarId = '';
-    this.secondaryBarName = '';
-    this.hierarchy.push({ id: task.id, name: task.name });
+    if (this.selectedFilterBy === 'UnitTaskCount' && this.onUnitTaskCount) {
+      this.mainParentGroupId = task.id;
+      this.mainBarName = task.name;
+      this.secondaryBarName = '';
+      this.secondaryBarId = this.mainBarId;
+      this.secondaryParentGroupId = '';
+      this.hierarchy.push({ id: task.id, name: task.name });
+    } else {
+      this.mainBarId = task.id;
+      this.mainBarName = task.name;
+      this.secondaryBarId = '';
+      this.secondaryBarName = '';
+      this.hierarchy.push({ id: task.id, name: task.name });
+    }
   }
 
   changeHierarchy(taskId) {
-    this.secondaryBarId = '';
-    this.secondaryBarName = '';
+    if (this.onUnitTaskCount) {
 
-    const newHierarchy = [];
+      this.secondaryBarId = this.mainBarId;
+      this.secondaryBarName = '';
+      this.secondaryParentGroupId = '';
 
-    // tslint:disable-next-line: prefer-for-of
-    for (let currTaskIndex = 0; currTaskIndex < this.hierarchy.length; currTaskIndex++) {
-      newHierarchy.push(this.hierarchy[currTaskIndex]);
+      const newHierarchy = [];
 
-      if (taskId === this.hierarchy[currTaskIndex].id) {
-        this.mainBarId = this.hierarchy[currTaskIndex].id;
-        this.mainBarName = this.hierarchy[currTaskIndex].name;
-        break;
+      // tslint:disable-next-line: prefer-for-of
+      for (let currTaskIndex = 0; currTaskIndex < this.hierarchy.length; currTaskIndex++) {
+        newHierarchy.push(this.hierarchy[currTaskIndex]);
+
+        if (taskId === this.hierarchy[currTaskIndex].id) {
+          if (currTaskIndex === 0) {
+            this.mainBarId = this.hierarchy[currTaskIndex].id;
+            this.mainParentGroupId = this.defaultParentId;
+            this.mainBarName = this.hierarchy[currTaskIndex].name;
+          } else {
+            this.mainParentGroupId = this.hierarchy[currTaskIndex].id;
+            this.mainBarName = this.hierarchy[currTaskIndex].name;
+          }
+
+          break;
+        }
       }
+
+      this.hierarchy = newHierarchy;
+
+    } else {
+      this.secondaryBarId = '';
+      this.secondaryBarName = '';
+
+      const newHierarchy = [];
+
+      // tslint:disable-next-line: prefer-for-of
+      for (let currTaskIndex = 0; currTaskIndex < this.hierarchy.length; currTaskIndex++) {
+        newHierarchy.push(this.hierarchy[currTaskIndex]);
+
+        if (taskId === this.hierarchy[currTaskIndex].id) {
+          this.mainBarId = this.hierarchy[currTaskIndex].id;
+          this.mainBarName = this.hierarchy[currTaskIndex].name;
+          break;
+        }
+      }
+
+      this.hierarchy = newHierarchy;
     }
 
-    this.hierarchy = newHierarchy;
   }
 }

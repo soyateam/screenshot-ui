@@ -29,6 +29,10 @@ export class BarGraphComponent implements OnInit, OnChanges {
   @Input('name') name: string;
   // tslint:disable-next-line: no-input-rename
   @Input('getFromDashboard') getFromDashboard: boolean;
+  // tslint:disable-next-line: no-input-rename
+  @Input('parentGroupId') parentGroupId: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('onUnitTaskCount') onUnitTaskCount: boolean;
 
   public options: any = {
     lang: {
@@ -135,7 +139,8 @@ export class BarGraphComponent implements OnInit, OnChanges {
       taskId = this.route.snapshot.paramMap.get('id');
     }
 
-    this.sharedService.getStats(taskId, this.graphType, !!this.getFromDashboard).subscribe((result) => {
+    // tslint:disable-next-line: max-line-length
+    this.sharedService.getStats(taskId, this.graphType, !!this.getFromDashboard, (this.onUnitTaskCount ? this.parentGroupId : null)).subscribe((result) => {
         if (currChart) {
           currChart.hideLoading();
         }
