@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import customEvents from 'highcharts-custom-events';
 
@@ -22,17 +22,28 @@ drilldown(Highcharts);
 })
 export class GraphComponent implements OnInit, OnChanges {
   // tslint:disable-next-line: no-input-rename
-  @Input('options') options: object;
+  @Input('options') options: any;
   // tslint:disable-next-line: no-input-rename
   @Input('container') container: string;
 
   constructor() { }
 
+  currGraph;
+
   ngOnInit() {
-    Highcharts.chart(this.container, this.options);
+    this.options.lang.noData = '';
+    this.currGraph = Highcharts.chart(this.container, this.options);
+    this.currGraph.showLoading('...טוען נתונים');
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    Highcharts.chart(this.container, this.options).redraw();
+    this.options.lang.noData = 'לא קיימים נתונים להצגת הגרף';
+    this.currGraph = Highcharts.chart(this.container, this.options);
+    this.currGraph.redraw();
+    this.currGraph.hideLoading();
+  }
+
+  showLoad(event) {
+    this.currGraph.showLoading();
   }
 }

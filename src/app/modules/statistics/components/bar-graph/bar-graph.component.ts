@@ -6,6 +6,7 @@ let oneClickHandle;
 let dblClickHandle;
 let categoryIds;
 let currChart;
+let getFromDashboardReal;
 
 @Component({
   selector: 'app-bar-graph',
@@ -36,6 +37,11 @@ export class BarGraphComponent implements OnInit, OnChanges {
     chart: {
         type: 'column',
         backgroundColor: 'rgba(255, 255, 255, 0)',
+        events: {
+          load() {
+            this.hideLoading();
+          }
+        }
     },
     title: {
         text: 'משימה בלה בלה'
@@ -76,13 +82,26 @@ export class BarGraphComponent implements OnInit, OnChanges {
           point: {
             events: {
               click() {
-                currChart = this.series.chart;
-                currChart.showLoading('...טוען נתונים');
-                dblClickHandle.emit({name: this.category, id: categoryIds[this.x]});
+                if (!!getFromDashboardReal) {
+                  currChart = this.series.chart;
+                  currChart.showLoading('...טוען נתונים');
+                  dblClickHandle.emit({name: this.category, id: categoryIds[this.x]});
+                }
               },
               contextmenu(e) {
-                oneClickHandle.emit({name: this.category, id: categoryIds[this.x]});
-                e.preventDefault();
+                if (!!getFromDashboardReal) {
+                  // tslint:disable-next-line: prefer-for-of
+                  for (let currChildIndex = 0; currChildIndex < this.series.xAxis.labelGroup.element.children.length; currChildIndex++) {
+                    this.series.xAxis.labelGroup.element.children[currChildIndex].style.cssText =
+                    'color: rgb(102,102,102); cursor: default; font-size: 11px; fill: rgb(102, 102, 102);';
+                    // this.series.xAxis.labelGroup.element.children[this.x].style[4] = 'nothing';
+                  }
+                  // this.series.xAxis.labelGroup.element.children[this.x].style.fontWeight = 'bold';
+                  this.series.xAxis.labelGroup.element.children[this.x].style.cssText =
+                    'color: rgb(0,0,0); cursor: default; font-size: 11px; fill: rgb(0, 0, 0); font-weight: bold; text-decoration: overline';
+                  oneClickHandle.emit({name: this.category, id: categoryIds[this.x]});
+                  e.preventDefault();
+                }
               }
             }
           }
@@ -106,6 +125,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
     // console.log(this.graphType)
   }
   ngOnChanges(changes: SimpleChanges) {
+    getFromDashboardReal = this.getFromDashboard;
     let taskId;
 
     if (!!this.getFromDashboard && this.name && this.id) {

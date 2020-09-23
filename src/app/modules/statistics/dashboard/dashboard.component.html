@@ -1,4 +1,4 @@
-<div style="background-color: white;box-shadow: 0 0 4px -1px; margin: 30px;">
+<div style="background-color: white;box-shadow: 0 0 4px -1px; margin: 30px; position:relative;">
     <!--First Card-->
     <div style="display: flex;height: 400px;text-align: center;justify-content: center;">
         <div style="flex:25%; border-left:1px solid #EAEAEA; min-width: 205px">
@@ -22,14 +22,31 @@
             <br>
             <div style="position:relative;top:70px">
                 <span *ngFor="let currTaskType of taskTypes">
-                <button color="primary" (click)="changeStats(currTaskType)" mat-raised-button style="margin: 10px 0; font-weight: bold; width: 120px;">
+                <button [color]="currTaskType.color" (click)="changeStats(currTaskType)" mat-raised-button style="margin: 10px 0; font-weight: bold; width: 120px;">
                     {{ currTaskType.name }}
                 </button><br>
                 </span>
             </div>
         </div>
-        <div style="flex:75%; width:0;">
-            <app-bar-graph (dblClick)="dblClickChange($event)" (oneClick)="oneClickChange($event)" [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" ></app-bar-graph>
+        <div style="flex:75%; width:0; position:relative;">
+            <mat-list role="list" style="display:flex; position: absolute;top: 4px; z-index:2;" *ngIf="hierarchy.length > 1">
+                <mat-list-item style="width:initial !important" role="listitem">
+                    <button mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="hierarchy[0].name" matTooltipPosition="above" (click)="changeHierarchy(hierarchy[0].id)">{{ hierarchy[0].name }}</button>
+                    <span *ngIf="hierarchy.length >= 2" style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
+                </mat-list-item>
+                <mat-list-item *ngFor="let currHierarchy of hierarchy; let i = index;" style="width:initial !important;" role="listitem">
+                    <span *ngIf="i !== 0 && i !== hierarchy.length - 1;">
+                        <button (click)="changeHierarchy(currHierarchy.id)" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</button>
+                        <span style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
+                    </span>
+                    <span *ngIf="i === hierarchy.length - 1;">
+                        <span mat-button color="primary" style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</span>
+                    </span>
+                </mat-list-item>
+                
+            </mat-list>
+
+            <app-bar-graph (dblClick)="leftClickChange($event)" (oneClick)="rightClickChange($event)" [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" ></app-bar-graph>
         </div>
     </div>
     <!--Second Card-->
