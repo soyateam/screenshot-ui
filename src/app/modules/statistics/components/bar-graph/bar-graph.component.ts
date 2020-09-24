@@ -34,6 +34,9 @@ export class BarGraphComponent implements OnInit, OnChanges {
   // tslint:disable-next-line: no-input-rename
   @Input('onUnitTaskCount') onUnitTaskCount: boolean;
 
+
+  public titleTexts = ['קבוצות מתוך - ', 'משימות מתוך - '];
+  public yAxisTexts = ['כמות משימות', 'כמות אנשים'];
   public options: any = {
     lang: {
       noData: 'לא קיימים נתונים להצגת הגרף'
@@ -48,7 +51,12 @@ export class BarGraphComponent implements OnInit, OnChanges {
         }
     },
     title: {
-        text: 'משימה בלה בלה'
+      text: '',
+      align: 'center',
+      useHTML: true,
+      style: {
+        direction: 'rtl'
+      }
     },
     subtitle: {},
     xAxis: {
@@ -65,7 +73,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
     yAxis: {
         min: 0,
         title: {
-            text: 'מספר אנשים'
+            text: 'כמות אנשים'
         }
     },
     tooltip: {
@@ -119,7 +127,8 @@ export class BarGraphComponent implements OnInit, OnChanges {
     dblClickHandle = this.dblClick;
 
     if (!!this.getFromDashboard) {
-      this.options.title.text = 'הפעלת כוח';
+      this.options.title.text = (this.onUnitTaskCount ? this.titleTexts[0] : this.titleTexts[1]) + 'הפעלת כוח';
+      this.options.yAxis.title.text = (this.onUnitTaskCount ? this.yAxisTexts[0] : this.yAxisTexts[1]);
     } else {
       this.options.title.text = this.route.snapshot.paramMap.get('name');
     }
@@ -133,7 +142,8 @@ export class BarGraphComponent implements OnInit, OnChanges {
     let taskId;
 
     if (!!this.getFromDashboard && this.name && this.id) {
-      this.options.title.text = this.name;
+      this.options.title.text = (this.onUnitTaskCount ? this.titleTexts[0] : this.titleTexts[1]) + this.name;
+      this.options.yAxis.title.text = (this.onUnitTaskCount ? this.yAxisTexts[0] : this.yAxisTexts[1]);
       taskId = this.id;
     } else {
       taskId = this.route.snapshot.paramMap.get('id');

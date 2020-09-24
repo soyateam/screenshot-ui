@@ -21,7 +21,8 @@ export class SecondaryBarGraphComponent implements OnInit, OnChanges {
   // tslint:disable-next-line: no-input-rename
   @Input('onUnitTaskCount') onUnitTaskCount: boolean;
 
-
+  public titleTexts = ['תת קבוצות מתוך - ', 'תת משימות מתוך - '];
+  public yAxisTexts = ['כמות משימות', 'כמות אנשים'];
   public options: any = {
     lang: {
       noData: 'לא קיימים נתונים להצגת הגרף'
@@ -31,7 +32,12 @@ export class SecondaryBarGraphComponent implements OnInit, OnChanges {
         backgroundColor: 'rgba(255, 255, 255, 0)',
     },
     title: {
-        text: 'משימה בלה בלה'
+        text: '',
+        align: 'center',
+        useHTML: true,
+        style: {
+          direction: 'rtl'
+        }
     },
     subtitle: {},
     xAxis: {
@@ -48,7 +54,7 @@ export class SecondaryBarGraphComponent implements OnInit, OnChanges {
     yAxis: {
         min: 0,
         title: {
-            text: 'מספר אנשים'
+            text: 'כמות אנשים'
         }
     },
     tooltip: {
@@ -70,7 +76,8 @@ export class SecondaryBarGraphComponent implements OnInit, OnChanges {
 
   constructor(private sharedService: SharedService, private route: ActivatedRoute) {
     if (!!this.getFromDashboard) {
-      this.options.title.text = 'הפעלת כוח';
+      this.options.title.text = (this.onUnitTaskCount ? this.titleTexts[0] : this.titleTexts[1]) + 'הפעלת כוח';
+      this.options.yAxis.title.text = (this.onUnitTaskCount ? this.yAxisTexts[0] : this.yAxisTexts[1]);
     } else {
       this.options.title.text = this.route.snapshot.paramMap.get('name');
     }
@@ -83,8 +90,9 @@ export class SecondaryBarGraphComponent implements OnInit, OnChanges {
     let taskId;
 
     if (!!this.getFromDashboard) {
+      this.options.yAxis.title.text = (this.onUnitTaskCount ? this.yAxisTexts[0] : this.yAxisTexts[1]);
       if (this.name && this.id) {
-        this.options.title.text = this.name;
+        this.options.title.text = (this.onUnitTaskCount ? this.titleTexts[0] : this.titleTexts[1]) + this.name;
         taskId = this.id;
       } else {
         this.options.title.text = '';
