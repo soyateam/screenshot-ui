@@ -52,23 +52,37 @@ export class PieGraphComponent implements OnInit, OnChanges {
         }
     },
     exporting: {
-      filename: `pie-chart-${(new Date().toLocaleString()).replace(/PM/g, '').replace(/,/g, '-').replace(/\//g, '-').replace(/ /g, '')}`,
       buttons: {
           contextButton: {
               enabled: true,
               menuItems: [{
                   text: 'Export XLS',
                   onclick() {
+                      this.options.exporting.filename =
+                        `pie-chart-${(new Date().toLocaleString())
+                          .replace(/,/g, '-')
+                          .replace(/\//g, '-')
+                          .replace(/ /g, '')}`;
                       this.downloadXLS();
                   }
               }, {
                   text: 'Export CSV',
                   onclick() {
+                      this.options.exporting.filename =
+                        `pie-chart-${(new Date().toLocaleString())
+                          .replace(/,/g, '-')
+                          .replace(/\//g, '-')
+                          .replace(/ /g, '')}`;
                       this.downloadCSV();
                   }
               }, {
                   text: 'Export PNG',
                   onclick() {
+                      this.options.exporting.filename =
+                        `pie-chart-${(new Date().toLocaleString())
+                          .replace(/,/g, '-')
+                          .replace(/\//g, '-')
+                          .replace(/ /g, '')}`;
                       this.exportChart({
                           type: 'image/png'
                       });
@@ -76,6 +90,11 @@ export class PieGraphComponent implements OnInit, OnChanges {
               }, {
                   text: 'Export PDF',
                   onclick() {
+                      this.options.exporting.filename =
+                        `pie-chart-${(new Date().toLocaleString())
+                          .replace(/,/g, '-')
+                          .replace(/\//g, '-')
+                          .replace(/ /g, '')}`;
                       this.exportChart({
                           type: 'application/pdf'
                       });
@@ -86,9 +105,9 @@ export class PieGraphComponent implements OnInit, OnChanges {
       csv: {
         columnHeaderFormatter(item, key) {
             if (!item || item instanceof Axis) {
-                return 'יחידות';
+                return 'קבוצות';
             } else {
-                return item.name;
+                return item.name !== 'כמות אנשים לפי יחידה' ? `כמות אנשים ב${item.name}` : item.name;
             }
         }
       },

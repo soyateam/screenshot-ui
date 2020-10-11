@@ -122,37 +122,56 @@ export class BarGraphComponent implements OnInit, OnChanges {
         }
     },
     exporting: {
-      filename: `bar-chart-${(new Date().toLocaleString()).replace(/PM/g, '').replace(/,/g, '-').replace(/\//g, '-').replace(/ /g, '')}`,
       buttons: {
-          contextButton: {
-              enabled: true,
-              menuItems: [{
-                  text: 'Export XLS',
-                  onclick() {
-                      this.downloadXLS();
-                  }
-              }, {
-                  text: 'Export CSV',
-                  onclick() {
-                      this.downloadCSV();
-                  }
-              }, {
-                  text: 'Export PNG',
-                  onclick() {
-                      this.exportChart({
-                          type: 'image/png'
-                      });
-                  }
-              }, {
-                  text: 'Export PDF',
-                  onclick() {
-                      this.exportChart({
-                          type: 'application/pdf'
-                      });
-                  }
-              }]
-          }
-      },
+        contextButton: {
+            enabled: true,
+            menuItems: [{
+                text: 'Export XLS',
+                onclick() {
+                    this.options.exporting.filename =
+                      `bar-chart-${(new Date().toLocaleString())
+                        .replace(/,/g, '-')
+                        .replace(/\//g, '-')
+                        .replace(/ /g, '')}`;
+                    this.downloadXLS();
+                }
+            }, {
+                text: 'Export CSV',
+                onclick() {
+                    this.options.exporting.filename =
+                      `bar-chart-${(new Date().toLocaleString())
+                        .replace(/,/g, '-')
+                        .replace(/\//g, '-')
+                        .replace(/ /g, '')}`;
+                    this.downloadCSV();
+                }
+            }, {
+                text: 'Export PNG',
+                onclick() {
+                    this.options.exporting.filename =
+                      `bar-chart-${(new Date().toLocaleString())
+                        .replace(/,/g, '-')
+                        .replace(/\//g, '-')
+                        .replace(/ /g, '')}`;
+                    this.exportChart({
+                        type: 'image/png'
+                    });
+                }
+            }, {
+                text: 'Export PDF',
+                onclick() {
+                    this.options.exporting.filename =
+                      `bar-chart-${(new Date().toLocaleString())
+                        .replace(/,/g, '-')
+                        .replace(/\//g, '-')
+                        .replace(/ /g, '')}`;
+                    this.exportChart({
+                        type: 'application/pdf'
+                    });
+                }
+            }]
+        }
+    },
       csv: {
         columnHeaderFormatter(item, key) {
             if (!item || item instanceof Axis) {
