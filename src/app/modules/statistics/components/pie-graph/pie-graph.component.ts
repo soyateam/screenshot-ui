@@ -1,6 +1,7 @@
 import { Component, OnInit, SimpleChanges, Input, OnChanges } from '@angular/core';
 import { SharedService } from 'src/app/core/http/shared.service';
 import { ActivatedRoute } from '@angular/router';
+import { Axis } from 'highcharts';
 
 @Component({
   selector: 'app-pie-graph',
@@ -50,6 +51,48 @@ export class PieGraphComponent implements OnInit, OnChanges {
             }
         }
     },
+    exporting: {
+      filename: `pie-chart-${(new Date().toLocaleString()).replace(/PM/g, '').replace(/,/g, '-').replace(/\//g, '-').replace(/ /g, '')}`,
+      buttons: {
+          contextButton: {
+              enabled: true,
+              menuItems: [{
+                  text: 'Export XLS',
+                  onclick() {
+                      this.downloadXLS();
+                  }
+              }, {
+                  text: 'Export CSV',
+                  onclick() {
+                      this.downloadCSV();
+                  }
+              }, {
+                  text: 'Export PNG',
+                  onclick() {
+                      this.exportChart({
+                          type: 'image/png'
+                      });
+                  }
+              }, {
+                  text: 'Export PDF',
+                  onclick() {
+                      this.exportChart({
+                          type: 'application/pdf'
+                      });
+                  }
+              }]
+          }
+      },
+      csv: {
+        columnHeaderFormatter(item, key) {
+            if (!item || item instanceof Axis) {
+                return 'יחידות';
+            } else {
+                return item.name;
+            }
+        }
+      },
+    },
     series: [{
       tooltip: {
         headerFormat: '<table>',
@@ -61,7 +104,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
         footerFormat: '</table>',
         useHTML: true
       },
-      name: 'יחידות',
+      name: 'כמות אנשים לפי יחידה',
       colorByPoint: true,
       data: []
     }],

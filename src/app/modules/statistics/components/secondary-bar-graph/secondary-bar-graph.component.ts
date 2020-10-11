@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { SharedService } from 'src/app/core/http/shared.service';
 import { ActivatedRoute } from '@angular/router';
+import { Axis } from 'highcharts';
+
+let onUnitTaskCountGlobal;
 
 @Component({
   selector: 'app-secondary-bar-graph',
@@ -71,10 +74,53 @@ export class SecondaryBarGraphComponent implements OnInit, OnChanges {
             borderWidth: 0
         }
     },
+    exporting: {
+      filename: `bar-chart-${(new Date().toLocaleString()).replace(/PM/g, '').replace(/,/g, '-').replace(/\//g, '-').replace(/ /g, '')}`,
+      buttons: {
+          contextButton: {
+              enabled: true,
+              menuItems: [{
+                  text: 'Export XLS',
+                  onclick() {
+                      this.downloadXLS();
+                  }
+              }, {
+                  text: 'Export CSV',
+                  onclick() {
+                      this.downloadCSV();
+                  }
+              }, {
+                  text: 'Export PNG',
+                  onclick() {
+                      this.exportChart({
+                          type: 'image/png'
+                      });
+                  }
+              }, {
+                  text: 'Export PDF',
+                  onclick() {
+                      this.exportChart({
+                          type: 'application/pdf'
+                      });
+                  }
+              }]
+          }
+      },
+      csv: {
+        columnHeaderFormatter(item, key) {
+            if (!item || item instanceof Axis) {
+                return onUnitTaskCountGlobal ? 'קבוצות' : 'משימות';
+            } else {
+                return item.name;
+            }
+        }
+      },
+    },
     series: []
 };
 
   constructor(private sharedService: SharedService, private route: ActivatedRoute) {
+    onUnitTaskCountGlobal = this.onUnitTaskCount;
     if (!!this.getFromDashboard) {
       this.options.title.text = (this.onUnitTaskCount ? this.titleTexts[0] : this.titleTexts[1]) + 'הפעלת כוח';
       this.options.yAxis.title.text = (this.onUnitTaskCount ? this.yAxisTexts[0] : this.yAxisTexts[1]);
@@ -87,6 +133,8 @@ export class SecondaryBarGraphComponent implements OnInit, OnChanges {
     // console.log(this.graphType)
   }
   ngOnChanges(changes: SimpleChanges) {
+    onUnitTaskCountGlobal = this.onUnitTaskCount;
+
     let taskId;
 
     if (!!this.getFromDashboard) {

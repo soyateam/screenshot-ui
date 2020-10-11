@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 import { SharedService } from 'src/app/core/http/shared.service';
 import { ActivatedRoute } from '@angular/router';
+import { Axis } from 'highcharts';
 
 let oneClickHandle;
 let dblClickHandle;
 let categoryIds;
 let currChart;
 let getFromDashboardReal;
+let onUnitTaskCountGlobal;
 
 @Component({
   selector: 'app-bar-graph',
@@ -119,12 +121,55 @@ export class BarGraphComponent implements OnInit, OnChanges {
           }
         }
     },
+    exporting: {
+      filename: `bar-chart-${(new Date().toLocaleString()).replace(/PM/g, '').replace(/,/g, '-').replace(/\//g, '-').replace(/ /g, '')}`,
+      buttons: {
+          contextButton: {
+              enabled: true,
+              menuItems: [{
+                  text: 'Export XLS',
+                  onclick() {
+                      this.downloadXLS();
+                  }
+              }, {
+                  text: 'Export CSV',
+                  onclick() {
+                      this.downloadCSV();
+                  }
+              }, {
+                  text: 'Export PNG',
+                  onclick() {
+                      this.exportChart({
+                          type: 'image/png'
+                      });
+                  }
+              }, {
+                  text: 'Export PDF',
+                  onclick() {
+                      this.exportChart({
+                          type: 'application/pdf'
+                      });
+                  }
+              }]
+          }
+      },
+      csv: {
+        columnHeaderFormatter(item, key) {
+            if (!item || item instanceof Axis) {
+                return onUnitTaskCountGlobal ? 'קבוצות' : 'משימות';
+            } else {
+                return item.name;
+            }
+        }
+      },
+    },
     series: []
 };
 
   constructor(private sharedService: SharedService, private route: ActivatedRoute) {
     oneClickHandle = this.oneClick;
     dblClickHandle = this.dblClick;
+    onUnitTaskCountGlobal = this.onUnitTaskCount;
 
     if (!!this.getFromDashboard) {
       this.options.title.text = (this.onUnitTaskCount ? this.titleTexts[0] : this.titleTexts[1]) + 'הפעלת כוח';
@@ -138,6 +183,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
     // console.log(this.graphType)
   }
   ngOnChanges(changes: SimpleChanges) {
+    onUnitTaskCountGlobal = this.onUnitTaskCount;
     getFromDashboardReal = this.getFromDashboard;
     let taskId;
 
