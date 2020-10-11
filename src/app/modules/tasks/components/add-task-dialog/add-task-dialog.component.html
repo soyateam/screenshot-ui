@@ -1,0 +1,28 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>יצירת משימת אב</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div mat-dialog-content class="form-task">
+    <form autocomplete="off">
+        <mat-form-field>
+            <mat-label>שם משימת האב</mat-label>
+            <input autofocus matInput [(ngModel)]=data.name  [ngModelOptions]="{standalone: true}" cdkFocusInitial> 
+    </mat-form-field>
+    <!-- <mat-slide-toggle [(ngModel)]=data.view  [ngModelOptions]="{standalone: true}">Slide me!</mat-slide-toggle> -->
+    <mat-form-field>
+        <mat-label>שיוך משימה:</mat-label>
+        <mat-select [(ngModel)]=data.viewGroup [ngModelOptions]="{standalone: true}">
+          <mat-option [value]=0>הפעלת כוח</mat-option>
+          <mat-option [value]=1>בנין כוח</mat-option>
+        </mat-select>
+      </mat-form-field>
+</form>
+<div mat-dialog-actions>
+    <button style="font-weight:bold; position:relative; right: 5px;" mat-button color="primary" [mat-dialog-close]="data">הוסף</button>
+    <button style="font-weight:bold; position:relative; right: 5px;" mat-button color="warn" (click)="close()">ביטול</button>
+</div>
+</div>

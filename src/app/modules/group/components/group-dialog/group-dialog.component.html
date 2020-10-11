@@ -1,0 +1,26 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span>ניהול קבוצות של משימה</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="groups-select scrollbar scrollbar-primary">
+    <span style="position: relative; top: 5px; right: 13px; font-size: 14px; font-weight: bold; color: #7a7a7a">נא לבחור קבוצה אירגונית בכדי לשייך אותה למשימה</span>
+    <app-group-tree (clickGroup)="addGroup($event)"></app-group-tree>
+</div>
+
+<mat-divider></mat-divider>
+<div class="scrollbar scrollbar-primary" style="padding: 31px 21px 13px 0;position: relative;top: 0px;height: 83px;overflow-y: auto;overflow-x: hidden;">
+    <span style="position: absolute;top: 2px;font-weight: bold;color: #7a7a7a;">קבוצות משוייכות:</span>
+    <mat-chip-list>
+        <mat-chip *ngFor="let group of data.task.groups" matTooltip="{{group.hierarchy || group.name}}"> {{group.name}} <mat-icon matChipRemove (click)="removeGroup(group)">cancel</mat-icon></mat-chip>
+    </mat-chip-list>
+</div>
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-actions class="action">
+    <button color="warn" mat-button [mat-dialog-close]="data" style="font-weight:bold;">סגור</button>
+</div>

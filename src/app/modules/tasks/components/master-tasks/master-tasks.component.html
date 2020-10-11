@@ -1,0 +1,48 @@
+<div *ngIf="false">
+  <!-- <mat-slide-toggle class="slide" (change)="onChange($event)">Slide me!</mat-slide-toggle> -->
+  <mat-form-field appearance="" class="slide">
+    <mat-label>מצב תצוגה:</mat-label>
+    <mat-select [(ngModel)]="selectedView" (selectionChange)="onChange($event)">
+      <mat-option [value]=0>הפעלת כוח</mat-option>
+      <mat-option [value]=1>בנין כוח</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div *ngIf="masterTasks && masterTasks.length === 0">
+  <div class="div-empty">
+      <mat-icon class="icon-empty">assignment</mat-icon>
+      <div class="span-empty">לא קיימות משימות להצגה</div><br>
+  </div>
+</div>
+
+<div class="container" *ngIf="masterTasks && masterTasks.length > 0">
+    <div class="item" *ngFor="let item of masterTasks">
+        <mat-card class="card" routerLink="/task/{{item._id}}">
+            <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()" *ngIf="isUserCanWrite" matTooltip="אפשרויות נוספות" matTooltipPosition="above">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item *ngIf="isUserCanWrite" (click)="editTask(item)">
+                  <mat-icon>edit</mat-icon>
+                  <span>ערוך משימה</span>
+                </button>
+                <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above">
+                <button mat-menu-item [disabled]="item.subTasksCount > 0" (click)="deleteTask(item)">
+                  <mat-icon>delete_forever</mat-icon>
+                  <span>מחק משימה</span>
+                </button>
+                </span>
+              </mat-menu>
+              <div>        
+                <div class="task-title"><mat-card-title style="font-size:19px;">{{item.name}}</mat-card-title></div>
+                <p>סה"כ משימות: {{item.subTasksCount}}</p>
+            </div>
+      </mat-card>
+    </div>
+    
+</div>
+<button *ngIf="isUserCanWrite" mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת משימה חדשה" matTooltipPosition="above">
+  <mat-icon>add</mat-icon>
+</button>
+ 

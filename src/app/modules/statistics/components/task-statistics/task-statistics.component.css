@@ -1,0 +1,9 @@
+.container{
+    /* height: 100%; */
+    width: 70%;
+    margin: 30px auto;
+}
+.toggle-graph{
+    padding: 1%;
+    /* width: 90%; */
+}

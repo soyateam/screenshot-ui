@@ -1,0 +1,74 @@
+.container{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 100px;
+    position: relative;
+    top: 82px;
+}
+
+.item{
+    width: 250px;
+    margin: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.card{
+    width: 100%;
+    cursor: pointer;
+}
+.menu{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.add-button{
+    position: fixed;
+    left: 60px;
+    bottom: 50px;
+}
+
+.slide{
+    position: fixed;
+    right: 115px;
+    top: 92px;
+}
+
+.link{
+    cursor: pointer;
+}:focus{
+    outline: 0;
+}
+
+.task-title{
+    width: 93%;
+    /* width: 100%; */
+    /* overflow: hidden;
+white-space: initial; /* Don't forget this one */
+/* text-overflow: ellipsis;  */
+}
+
+.icon-empty {
+    color: #AAAAAA;
+    text-align: center;
+    font-size: 140px;
+    width: 140px;
+    height: 140px;
+    cursor: default;
+}
+
+.div-empty {
+    position:relative;
+    top:150px;
+    height:400px;
+    text-align: center;
+}
+
+.span-empty {
+    font-family: Arial;
+    text-align:center;
+    font-size: 20px;
+    color: #AAAAAA;
+}

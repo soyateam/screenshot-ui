@@ -1,0 +1,78 @@
+<div class="task-list">
+    <mat-progress-bar style="margin-top:82px;" mode="indeterminate" *ngIf="parentTask && parentTask.ancestors.length !== ancestorsDetails.length"></mat-progress-bar>
+    <mat-list role="list" style="display:flex; position:relative;" *ngIf="tasks && parentTask && parentTask.ancestors.length === ancestorsDetails.length">
+        <mat-list-item *ngFor="let currAncest of ancestorsDetails" style="width:initial !important;" role="listitem">
+            <button *ngIf="currAncest._id !== '5f4cc73b4201366c45b83925'" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;" routerLink="/task/{{currAncest._id}}" [matTooltip]="currAncest.name" matTooltipPosition="above">{{ currAncest.name }}</button>
+            <button *ngIf="currAncest._id === '5f4cc73b4201366c45b83925'" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;" routerLink="/task/{{currAncest._id}}">משימות</button>
+            <span style="color: #9a9a9a; font-weight: bold; position:relative;right:2px;">></span>
+        </mat-list-item>
+        <mat-list-item style="width:initial !important" role="listitem">
+            <span *ngIf="parentTask._id !== '5f4cc73b4201366c45b83925'" style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" [matTooltip]="parentTask.name" matTooltipPosition="above">{{ parentTask.name }}</span>
+            <span *ngIf="parentTask._id === '5f4cc73b4201366c45b83925'" style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; font-weight: bold;">משימות</span>
+        </mat-list-item>
+        <mat-list-item style="width: initial !important; position: absolute; left: 0px;" role="listitem">
+            <span *ngIf="tasks" style="font-size:15px; color:#5a5a5a;"><mat-icon style="position:relative; top:6px; left:4px; font-size:20px; width:20px; height:20px;">line_weight</mat-icon><span style="font-weight: bold; ">כמות משימות: </span><span style="font-weight: bold;">{{tasks.length}}</span></span>
+        </mat-list-item>
+    </mat-list>
+    <mat-divider *ngIf="tasks"></mat-divider>
+    <div *ngIf="tasks && tasks.length === 0">
+        <div class="div-empty">
+            <mat-icon class="icon-empty">assignment</mat-icon>
+            <div class="span-empty">לא קיימות משימות להצגה</div><br>
+        </div>
+    </div>
+
+    <div class=card-list *ngIf="tasks && tasks.length > 0" >
+        <div  *ngFor="let item of tasks">
+            <mat-card class="task" routerLink="/task/{{item._id}}">
+                <div class="text">
+                    <mat-card-title>{{item.name}}</mat-card-title>
+                    <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
+                    <div class="footer">
+                        <div>
+                            <mat-chip-list>
+                                <mat-chip *ngFor="let group of item.groups" matTooltip="{{group.hierarchy || group.name}}"> {{group.name}}</mat-chip>
+                            </mat-chip-list>
+                        </div>
+                        <div class="count">
+                            <p >סה"כ משימות: {{item.subTasksCount}}</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <mat-card-actions>
+                        <button class="menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()"  matTooltip="אפשרויות נוספות" matTooltipPosition="above">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="openGroupDialog(item)" *ngIf="isUserCanWrite">
+                                <mat-icon>group_add</mat-icon>
+                                <span style="font-weight: bold;">ניהול קבוצות</span>
+                            </button>
+                            <!-- <span [matTooltipDisabled]="item.groups && item.groups.length > 0" matTooltip="לא ניתן לספק סטטיסטיקות ללא קבוצות משויכות למשימה" matTooltipPosition="above"> -->
+                                <button mat-menu-item routerLink="/statistics/{{item._id}}/{{item.name}}"> <!-- disabled="{{!item.groups || item.groups.length === 0}}"> -->
+                                    <mat-icon>show_chart</mat-icon>
+                                    <span style="font-weight: bold;">סטטיסטיקות</span>
+                                </button>
+                            <!-- </span> -->
+                            <button mat-menu-item *ngIf="isUserCanWrite" (click)="editTask(item)">
+                                <mat-icon>edit</mat-icon>
+                                <span style="font-weight: bold;">ערוך משימה</span>
+                            </button>
+                            <span [matTooltipDisabled]="item.subTasksCount === 0" matTooltip="לא ניתן למחוק משימה עם תת משימות" matTooltipPosition="above" *ngIf="isUserCanWrite">
+                                <button [disabled]="item.subTasksCount > 0" mat-menu-item (click)="deleteTask(item)">
+                                    <mat-icon>delete_forever</mat-icon>
+                                    <span style="font-weight: bold;">מחק משימה</span>
+                                </button>
+                            </span>
+                        </mat-menu>
+                    </mat-card-actions>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<button mat-fab color="primary" class="add-button" (click)="openDialog()" matTooltip="הוספת תת משימה חדשה" matTooltipPosition="above" *ngIf="isUserCanWrite">
+    <mat-icon>add</mat-icon>
+</button>
