@@ -75,30 +75,6 @@ export class PieGraphComponent implements OnInit, OnChanges {
                           .replace(/ /g, '')}`;
                       this.downloadCSV();
                   }
-              }, {
-                  text: 'Export PNG',
-                  onclick() {
-                      this.options.exporting.filename =
-                        `pie-chart-${(new Date().toLocaleString())
-                          .replace(/,/g, '-')
-                          .replace(/\//g, '-')
-                          .replace(/ /g, '')}`;
-                      this.exportChart({
-                          type: 'image/png'
-                      });
-                  }
-              }, {
-                  text: 'Export PDF',
-                  onclick() {
-                      this.options.exporting.filename =
-                        `pie-chart-${(new Date().toLocaleString())
-                          .replace(/,/g, '-')
-                          .replace(/\//g, '-')
-                          .replace(/ /g, '')}`;
-                      this.exportChart({
-                          type: 'application/pdf'
-                      });
-                  }
               }]
           }
       },
