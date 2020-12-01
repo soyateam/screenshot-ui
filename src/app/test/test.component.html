@@ -1,0 +1,52 @@
+<div class="main-div">
+    <div class="secondary-div-first">
+        <div class="vertical-align">
+            <div class="rotate">בדיקת כוחחחחחחחחחחח</div>
+        </div>
+        <div class="first-view">
+            <div class="first-tasks-main" *ngFor="let currOpTask of forceOpTasks">
+                <div class="first-tasks-names"> {{ currOpTask.name }} </div>
+                <div class="first-subtasks-main">
+                    <div class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.tasks">
+                        {{ currOpSubTask.name }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="secondary-div-second">
+        <div class="vertical-align">
+            <div class="rotate">עוד בדיקה</div>
+        </div>
+        <div class="second-view">
+            <div class="second-tasks-main" *ngFor="let currBuildTask of buildForceTasks">
+                <div class="second-tasks-names" [matTooltip]="currBuildTask.name" matTooltipPosition="above">
+                    {{ currBuildTask.name }}
+                </div>
+                <div class="second-subtasks-main">
+                    <div class="second-subtasks-secondary" *ngFor="let currSubBuildTask of currBuildTask.tasks">
+                        {{ currSubBuildTask.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="secondary-div-third">
+        <div class="vertical-align">
+            <div class="rotate">רוחב</div>
+        </div>
+        <div class="third-view">
+            <div class="third-tasks-main" *ngFor="let a of [1,2,3,4,5,6,7,8,9,10]">
+                משימה של רוחב</div>
+        </div>
+    </div>
+    <div class="secondary-div-fourth">
+        <div class="vertical-align">
+            <div class="rotate">בדיקה</div>
+        </div>
+        <div class="fourth-view">
+            <div class="fourth-tasks-main" *ngFor="let b of [1,2,3,4,5]">
+                בדיקה
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,6 +15,7 @@ import { TaskModule } from './modules/tasks/tasks.module';
 import { MaterialModule } from './modules/material/material.module';
 
 import { CoreModule } from './core/core.module';
+import { TestComponent } from './test/test.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -23,6 +24,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
