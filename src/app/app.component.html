@@ -32,6 +32,10 @@
     <span style="font-size: 17px; position: relative; left:2px; bottom: 1px;">משימות</span>
     <mat-icon style="position:relative; right: 3px;">assignment</mat-icon>
   </button>
+  <button mat-button routerLink="/test" style="position:relative; right: 40px; font-weight:bold">
+    <span style="font-size: 17px; position: relative; left:2px; bottom: 1px;">בדיקה</span>
+    <mat-icon style="position:relative; right: 3px;">check</mat-icon>
+  </button>
   <span class="example-spacer"></span>
   <span *ngIf="user">שלום, {{ user.name.firstName }} {{ user.name.lastName || '' }}</span>
 </mat-toolbar>
