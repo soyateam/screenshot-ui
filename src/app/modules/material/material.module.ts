@@ -17,8 +17,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatListModule} from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [],
@@ -42,7 +43,8 @@ import {MatListModule} from '@angular/material/list';
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatRippleModule,
   ],
   exports: [
     MatToolbarModule,
@@ -63,7 +65,8 @@ import {MatListModule} from '@angular/material/list';
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatRippleModule,
   ]
 })
 export class MaterialModule { }

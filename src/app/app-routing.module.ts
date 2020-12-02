@@ -9,8 +9,8 @@ import { TestComponent } from './test/test.component';
 const routes: Routes = [  { path: 'task/:id', component: TaskComponent },
                           { path: 'test', component: TestComponent },
                           { path: 'statistics/:id/:name', component: TaskStatisticsComponent },
-                          { path: 'dashboard/:id/:name', component: DashboardComponent},
-                          { path: 'dashboard', component: DashboardComponent},
+                          { path: 'dashboard/:id/:name', component: TestComponent},
+                          { path: 'dashboard', component: TestComponent},
                           { path: '**', redirectTo: '/dashboard' }];
 
 @NgModule({
