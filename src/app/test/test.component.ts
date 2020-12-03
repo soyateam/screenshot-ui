@@ -15,6 +15,7 @@ const PARENT_IDS = [
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
+  defaultParentNew = '5f4cc73b4201366c45b83925'; // amn
   forceOpTasks;
   buildForceTasks;
   wrapTasks;
@@ -38,21 +39,19 @@ export class TestComponent implements OnInit {
       this.buildForceTasks[currBuildTask].tasks =
         (await this.taskService.getTasksByParentId(this.buildForceTasks[currBuildTask]._id).toPromise()).tasks;
     }
+    console.log(this.forceOpTasks);
 
     this.wrapTasks = (await this.taskService.getTasksByParentId(PARENT_IDS[2].id).toPromise()).tasks;
 
     this.finishedLoading = true;
   }
 
-  taskStatistics(taskId, name) {
+  taskStatistics(givenTask) {
     const dialogRef = this.dialog.open(DashboardComponent, {
       width: '1300px',
-      height: '880px',
+      height: '881px',
       data: {
-        task: {
-                taskId,
-                name
-              }
+        task: givenTask
       }
     });
   }

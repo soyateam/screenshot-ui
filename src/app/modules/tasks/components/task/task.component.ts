@@ -26,18 +26,12 @@ export class TaskComponent implements OnInit {
               private userService: UserService, private snackBarService: SnackBarService) {
     this.route.paramMap.subscribe( (pathParams) => {
       this.parentTaskId = pathParams.get('id');
-      // tslint:disable-next-line: max-line-length
+
       this.taskService.getTask(this.parentTaskId).subscribe(async (parentTask) => {
         this.ancestorsDetails = [];
         this.parentTask = parentTask;
         this.parentTask.ancestors.reverse();
         let data;
-        // data = await this.taskService.getTask(this.parentTask._id).toPromise();
-        // if (data) {
-        //   this.ancestorsDetails.push(data);
-        // }
-
-        // data = null;
 
         // tslint:disable-next-line: prefer-for-of
         for (let i = 0; i < this.parentTask.ancestors.length; i++) {
@@ -48,9 +42,8 @@ export class TaskComponent implements OnInit {
 
           data = null;
         }
+      });
 
-        console.log(this.ancestorsDetails);
-       });
       this.taskService.getTasksByParentId(this.parentTaskId).subscribe(tasks => this.tasks = tasks ? tasks.tasks : []);
     });
   }

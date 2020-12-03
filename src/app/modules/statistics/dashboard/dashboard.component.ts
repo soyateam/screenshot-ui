@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { VirtualTimeScheduler } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { TaskService } from 'src/app/core/http/task.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +23,6 @@ export class DashboardComponent implements OnInit {
                     {id: 'ServiceSum', displayName: 'כמות אנשים לפי סוגי שירות'},
                     {id: 'RankSum', displayName: 'כמות אנשים לפי תקנים'}];
   defaultParentId = '5db805a8216dad5ed3b9efbf';
-
   currentUser;
   pieName = '';
   pieId = '';
@@ -37,35 +37,50 @@ export class DashboardComponent implements OnInit {
   mainParentGroupId = '5db805a8216dad5ed3b9efbf';
   secondaryParentGroupId = '';
   onUnitTaskCount = false;
-
-  constructor(private router: Router, private userService: UserService,
+  ancestors;
+  constructor(private router: Router, private userService: UserService, private taskService: TaskService,
               public dialogRef: MatDialogRef<DashboardComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-                this.pieName = data.task.name;
-                this.pieId = data.task.taskId;
-                this.mainBarId = data.task.taskId;
-                this.mainBarName = data.task.name;
-                this.secondaryParentGroupId = '';
-              }
+    this.pieName = data.task.name;
+    this.pieId = data.task._id;
+    this.mainBarId = data.task._id;
+    this.mainBarName = data.task.name;
+    this.secondaryParentGroupId = '';
+    this.ancestors = data.task.ancestors;
+
+    if (this.ancestors[0] === data.task.parent) {
+      this.ancestors.reverse();
+    }
+
+    this.taskService.getTask(data.task._id).subscribe(async (parentTask) => {
+      this.hierarchy = [];
+      let result;
+
+      // tslint:disable-next-line: prefer-for-of
+      for (let i = 0; i < this.ancestors.length; i++) {
+        result = await this.taskService.getTask(this.ancestors[i]).toPromise();
+        if (result) {
+          this.hierarchy.push(result);
+        }
+
+        result = null;
+      }
+
+      this.hierarchy.push(data.task);
+
+      console.log(this.hierarchy);
+      });
+    }
 
   ngOnInit(): void {
     this.currentUser = this.userService.currentUser;
     this.barGraphType = this.statisticsType[0].id;
-    // this.currStat = this.taskTypes[0];
     this.selectedFilterBy = this.filterBy[0].id;
     this.selectedStatisticsType = this.statisticsType[0].id;
-    /*this.pieName = this.currStat.name;
-    this.pieId = this.currStat.id;
-    this.mainBarId = this.currStat.id;
-    this.mainBarName = this.currStat.name;*/
     this.onUnitTaskCount = false;
     this.mainParentGroupId = this.defaultParentId;
-    /*this.secondaryParentGroupId = '';*/
-    this.hierarchy.push({ id: this.mainBarId, name: this.mainBarName });
   }
 
   changeStats(taskType): void {
-    this.hierarchy = [];
-
     // tslint:disable-next-line: prefer-for-of
     for (let currTaskType = 0; currTaskType < this.taskTypes.length; currTaskType++) {
       if (taskType.id === this.taskTypes[currTaskType].id) {
@@ -93,7 +108,6 @@ export class DashboardComponent implements OnInit {
     // this.secondaryBarId = '';
     // this.secondaryBarName = '';
     // this.secondaryParentGroupId = '';
-    this.hierarchy.push({ id: taskType.id, name: taskType.name });
   }
 
   setGraphValues(): void {
@@ -105,8 +119,6 @@ export class DashboardComponent implements OnInit {
       this.secondaryBarName = '';
       this.secondaryParentGroupId = '';
       this.onUnitTaskCount = true;
-      this.hierarchy = [];
-      this.hierarchy.push({ id: this.pieId, name: this.pieName });
     } else {
       // The caused from changing Units to Tasks in the filterBy,
       // So the onUnitTaskCount flag is still on.
@@ -119,8 +131,6 @@ export class DashboardComponent implements OnInit {
         this.secondaryBarName = '';
         this.secondaryParentGroupId = '';
         this.onUnitTaskCount = false;
-        this.hierarchy = [];
-        this.hierarchy.push({ id: this.pieId, name: this.pieName });
       }
       this.barGraphType = this.selectedStatisticsType;
     }
@@ -146,7 +156,7 @@ export class DashboardComponent implements OnInit {
       this.secondaryParentGroupId = '';
       this.pieId = task.id;
       this.pieName = task.name;
-      this.hierarchy.push({ id: task.id, name: task.name });
+      this.hierarchy.push(task);
     } else {
       this.mainBarId = task.id;
       this.mainBarName = task.name;
@@ -154,64 +164,29 @@ export class DashboardComponent implements OnInit {
       this.secondaryBarName = '';
       this.pieId = task.id;
       this.pieName = task.name;
-      this.hierarchy.push({ id: task.id, name: task.name });
+      this.hierarchy.push(task);
     }
   }
 
-  changeHierarchy(taskId) {
-    if (this.onUnitTaskCount) {
-
-      this.secondaryBarId = this.mainBarId;
-      this.secondaryBarName = '';
-      this.secondaryParentGroupId = '';
-
-      const newHierarchy = [];
-
-      // tslint:disable-next-line: prefer-for-of
-      for (let currTaskIndex = 0; currTaskIndex < this.hierarchy.length; currTaskIndex++) {
-        newHierarchy.push(this.hierarchy[currTaskIndex]);
-
-        if (taskId === this.hierarchy[currTaskIndex].id) {
-          if (currTaskIndex === 0) {
-            this.mainBarId = this.hierarchy[currTaskIndex].id;
-            this.mainParentGroupId = this.defaultParentId;
-            this.mainBarName = this.hierarchy[currTaskIndex].name;
-            this.pieId = this.hierarchy[currTaskIndex].id;
-            this.pieName = this.hierarchy[currTaskIndex].name;
-          } else {
-            this.mainParentGroupId = this.hierarchy[currTaskIndex].id;
-            this.mainBarName = this.hierarchy[currTaskIndex].name;
-            this.pieId = this.hierarchy[currTaskIndex].id;
-            this.pieName = this.hierarchy[currTaskIndex].name;
-          }
-
-          break;
-        }
+  changeHierarchy(taskId, taskName) {
+    // tslint:disable-next-line: prefer-for-of
+    for (let currHierarchyIndex = 0; currHierarchyIndex < this.hierarchy.length; currHierarchyIndex++) {
+      if (this.hierarchy[currHierarchyIndex]._id === taskId) {
+        this.hierarchy.splice(currHierarchyIndex + 1);
+        console.log(this.hierarchy);
+        break;
       }
-
-      this.hierarchy = newHierarchy;
-
-    } else {
-      this.secondaryBarId = '';
-      this.secondaryBarName = '';
-
-      const newHierarchy = [];
-
-      // tslint:disable-next-line: prefer-for-of
-      for (let currTaskIndex = 0; currTaskIndex < this.hierarchy.length; currTaskIndex++) {
-        newHierarchy.push(this.hierarchy[currTaskIndex]);
-
-        if (taskId === this.hierarchy[currTaskIndex].id) {
-          this.mainBarId = this.hierarchy[currTaskIndex].id;
-          this.mainBarName = this.hierarchy[currTaskIndex].name;
-          this.pieId = this.hierarchy[currTaskIndex].id;
-          this.pieName = this.hierarchy[currTaskIndex].name;
-          break;
-        }
-      }
-
-      this.hierarchy = newHierarchy;
     }
 
+    this.mainBarId = taskId;
+    this.mainBarName = taskName;
+    this.pieId = taskId;
+    this.pieName = taskName;
+    this.secondaryBarId = '';
+    this.secondaryBarName = '';
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

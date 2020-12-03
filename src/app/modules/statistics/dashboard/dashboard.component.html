@@ -1,60 +1,48 @@
-<div style=" position:relative; top: 50px;" *ngIf="currentUser">
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span>סטטיסטיקות של משימה</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div style=" position:relative;" *ngIf="currentUser">
     <!--First Card-->
-    <div style="display: flex;height: 420px;text-align: center;justify-content: center;">
-        <div style="flex:25%; border-left:1px solid #EAEAEA; min-width: 205px">
-            <mat-form-field style="position: relative; top:30px;">
-                <mat-label>פילוח לפי</mat-label>
-                <mat-select [(ngModel)]="selectedFilterBy" (selectionChange)="setGraphValues()">
-                    <mat-option *ngFor="let currFilter of filterBy" [value]="currFilter.id">
-                        {{ currFilter.displayName }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-form-field style="position: relative; top:30px;">
-                <mat-label>סוג סטטיסטיקה</mat-label>
-                <mat-select [(ngModel)]="selectedStatisticsType" [disabled]="selectedFilterBy === 'UnitTaskCount'" (selectionChange)="setGraphValues()">
-                    <mat-option *ngFor="let currStatisticsType of statisticsType" [value]="currStatisticsType.id">
-                        {{ currStatisticsType.displayName }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <br>
-            <div style="position:relative;top:70px">
-                <span *ngFor="let currTaskType of taskTypes">
-                <button [color]="currTaskType.color" (click)="changeStats(currTaskType)" mat-raised-button style="margin: 10px 0; font-weight: bold; width: 120px;">
-                    {{ currTaskType.name }}
-                </button><br>
+    <div style="display: flex; flex-wrap:nowrap; padding: 10px 10px 0px 25px; justify-content: flex-end;">
+        <mat-list role="list" style="flex: 80%;position: relative; bottom:10px; z-index:2; display:flex;" *ngIf="hierarchy.length > 1">
+            <mat-list-item style="width:initial !important" role="listitem">
+                <button mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="hierarchy[0].name" matTooltipPosition="above" (click)="changeHierarchy(hierarchy[0]._id, hierarchy[0].name)">{{ hierarchy[0].name }}</button>
+                <span *ngIf="hierarchy.length >= 2" style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
+            </mat-list-item>
+            <mat-list-item *ngFor="let currHierarchy of hierarchy; let i = index;" style="width:initial !important;" role="listitem">
+                <span *ngIf="i !== 0 && i !== hierarchy.length - 1;">
+                    <button (click)="changeHierarchy(currHierarchy._id, currHierarchy.name)" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</button>
+                    <span style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
                 </span>
-            </div>
-        </div>
-        <div style="flex:75%; width:0; position:relative; ">
-            <mat-list role="list" style="display:flex; position: absolute;top: -38px; z-index:2;" *ngIf="hierarchy.length > 1">
-                <mat-list-item style="width:initial !important" role="listitem">
-                    <button mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="hierarchy[0].name" matTooltipPosition="above" (click)="changeHierarchy(hierarchy[0].id)">{{ hierarchy[0].name }}</button>
-                    <span *ngIf="hierarchy.length >= 2" style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
-                </mat-list-item>
-                <mat-list-item *ngFor="let currHierarchy of hierarchy; let i = index;" style="width:initial !important;" role="listitem">
-                    <span *ngIf="i !== 0 && i !== hierarchy.length - 1;">
-                        <button (click)="changeHierarchy(currHierarchy.id)" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</button>
-                        <span style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
-                    </span>
-                    <span *ngIf="i === hierarchy.length - 1;">
-                        <div mat-button color="primary" style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</div>
-                    </span>
-                </mat-list-item>
-                
-            </mat-list>
-
+                <span *ngIf="i === hierarchy.length - 1;">
+                    <div mat-button color="primary" style="cursor: default; font-size:15px; position: relative; right:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</div>
+                </span>
+            </mat-list-item>
+        </mat-list>
+        <mat-form-field style="position: relative; flex: 20%; flex-grow: 0;">
+            <mat-label>סוג סטטיסטיקה</mat-label>
+            <mat-select [(ngModel)]="selectedStatisticsType" [disabled]="selectedFilterBy === 'UnitTaskCount'" (selectionChange)="setGraphValues()">
+                <mat-option *ngFor="let currStatisticsType of statisticsType" [value]="currStatisticsType.id">
+                    {{ currStatisticsType.displayName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div style="display: flex;height: 350px;text-align: center;justify-content: center; margin-top: -20px;">
+        <div style="flex:100%; width:0; position:relative; ">
             <app-bar-graph (dblClick)="leftClickChange($event)" (oneClick)="rightClickChange($event)" [graphType]="barGraphType" getFromDashboard="true" [name]="mainBarName" [id]="mainBarId" [parentGroupId]="mainParentGroupId" [onUnitTaskCount]="onUnitTaskCount" ></app-bar-graph>
         </div>
     </div>
     <!--Second Card-->
-    <div style="display: flex;height: 400px;text-align: center;justify-content: center;">
-        <div style="flex: 25%;border-left:1px solid #EAEAEA; border-top:1px solid #EAEAEA; min-width: 205px">
+    <div style="display: flex;height: 350px;text-align: center;justify-content: center;">
+        <div style="flex: 35%;border-left:1px solid #EAEAEA; border-top:1px solid #EAEAEA; min-width: 205px; height:400px;">
             <app-pie-graph graphType="UnitSum" [name]="pieName" [id]="pieId" getFromDashboard="true"></app-pie-graph>
         </div>
-        <div style="flex: 75%; border-top:1px solid #EAEAEA; width:0;">
+        <div style="flex: 65%; border-top:1px solid #EAEAEA; width:0;">
             <app-secondary-bar-graph [graphType]="barGraphType" getFromDashboard="true" [name]="secondaryBarName" [id]="secondaryBarId" [parentGroupId]="secondaryParentGroupId" [onUnitTaskCount]="onUnitTaskCount"></app-secondary-bar-graph>
         </div>
     </div>
