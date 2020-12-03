@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { TaskService } from '../core/http/task.service';
+import { DashboardComponent } from '../modules/statistics/dashboard/dashboard.component';
 
 const PARENT_IDS = [
   { name: 'forceOp', id: '5f4cc74c999432075ebeab2f' },
@@ -16,8 +18,9 @@ export class TestComponent implements OnInit {
   forceOpTasks;
   buildForceTasks;
   wrapTasks;
+  finishedLoading = false;
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService, private dialog: MatDialog) { }
 
   async ngOnInit() {
     this.forceOpTasks = (await this.taskService.getTasksByParentId(PARENT_IDS[0].id).toPromise()).tasks;
@@ -37,6 +40,21 @@ export class TestComponent implements OnInit {
     }
 
     this.wrapTasks = (await this.taskService.getTasksByParentId(PARENT_IDS[2].id).toPromise()).tasks;
+
+    this.finishedLoading = true;
+  }
+
+  taskStatistics(taskId, name) {
+    const dialogRef = this.dialog.open(DashboardComponent, {
+      width: '1300px',
+      height: '880px',
+      data: {
+        task: {
+                taskId,
+                name
+              }
+      }
+    });
   }
 
 }

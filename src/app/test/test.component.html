@@ -1,29 +1,33 @@
-<div class="main-div">
+<div class="spinner-cls" *ngIf="!finishedLoading">
+    <mat-spinner></mat-spinner>
+</div>
+<div class="main-div" *ngIf="finishedLoading">
     <div class="secondary-div-first">
-        <div class="vertical-align">
-            <div class="rotate">בדיקת כוחחחחחחחחחחח</div>
-        </div>
+        <button mat-button class="vertical-align" (click)="taskStatistics('5f4cc74c999432075ebeab2f', 'הפעלת כוח');">
+            <span class="rotate">הפעלת כוח</span>
+        </button>
         <div class="first-view">
-            <div class="first-tasks-main" *ngFor="let currOpTask of forceOpTasks">
+            <div (click)="taskStatistics(currOpTask._id, currOpTask.name);" class="first-tasks-main" *ngFor="let currOpTask of forceOpTasks" style="cursor:pointer;">
                 <div class="first-tasks-names"> {{ currOpTask.name }} </div>
                 <div class="first-subtasks-main">
-                    <div class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.tasks">
-                        {{ currOpSubTask.name }}</div>
+                    <button (click)="$event.stopPropagation(); taskStatistics(currOpSubTask._id, currOpSubTask.name);" mat-button class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.tasks">
+                        {{ currOpSubTask.name }}
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     <div class="secondary-div-second">
-        <div class="vertical-align">
-            <div class="rotate">עוד בדיקה</div>
-        </div>
+        <button mat-button class="vertical-align" (click)="taskStatistics('5f4cc9e2999432a15dbeab31', 'בניין כוח');">
+            <span class="rotate">בניין כוח</span>
+        </button>
         <div class="second-view">
             <div class="second-tasks-main" *ngFor="let currBuildTask of buildForceTasks">
-                <div class="second-tasks-names" [matTooltip]="currBuildTask.name" matTooltipPosition="above">
+                <div matRipple class="second-tasks-names" (click)="taskStatistics(currBuildTask._id, currBuildTask.name)">
                     {{ currBuildTask.name }}
                 </div>
                 <div class="second-subtasks-main">
-                    <div class="second-subtasks-secondary" *ngFor="let currSubBuildTask of currBuildTask.tasks">
+                    <div matRipple class="second-subtasks-secondary" *ngFor="let currSubBuildTask of currBuildTask.tasks" (click)="taskStatistics(currSubBuildTask._id, currSubBuildTask.name)">
                         {{ currSubBuildTask.name }}
                     </div>
                 </div>
@@ -31,20 +35,21 @@
         </div>
     </div>
     <div class="secondary-div-third">
-        <div class="vertical-align">
-            <div class="rotate">רוחב</div>
-        </div>
+        <button mat-button class="vertical-align" (click)="taskStatistics('TASKID', 'NAME');">
+            <span class="rotate">רוחב</span>
+        </button>
         <div class="third-view">
-            <div class="third-tasks-main" *ngFor="let a of [1,2,3,4,5,6,7,8,9,10]">
-                משימה של רוחב</div>
+            <div matRipple class="third-tasks-main" *ngFor="let a of [1,2,3,4,5,6,7,8,9,10]" (click)="taskStatistics('TASKID', 'NAME');">
+                משימה של רוחב
+            </div>
         </div>
     </div>
     <div class="secondary-div-fourth">
-        <div class="vertical-align">
-            <div class="rotate">בדיקה</div>
-        </div>
+        <button mat-button class="vertical-align" (click)="taskStatistics('5f689b32fc60a9ebdcaa7cbb', 'גורמי מעטפת');">
+            <span class="rotate">גורמי מעטפת</span>
+        </button>
         <div class="fourth-view">
-            <div class="fourth-tasks-main" *ngFor="let b of [1,2,3,4,5]">
+            <div matRipple class="fourth-tasks-main" *ngFor="let b of [1,2,3,4,5]" (click)="taskStatistics('TASKID', 'NAME')">
                 בדיקה
             </div>
         </div>

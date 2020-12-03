@@ -1,4 +1,4 @@
-<div style="background-color: white;box-shadow: 0 0 4px -1px; margin: 30px; position:relative;" *ngIf="currentUser">
+<div style=" position:relative; top: 50px;" *ngIf="currentUser">
     <!--First Card-->
     <div style="display: flex;height: 420px;text-align: center;justify-content: center;">
         <div style="flex:25%; border-left:1px solid #EAEAEA; min-width: 205px">
@@ -28,7 +28,7 @@
                 </span>
             </div>
         </div>
-        <div style="flex:75%; width:0; position:relative; margin-top:26px;">
+        <div style="flex:75%; width:0; position:relative; ">
             <mat-list role="list" style="display:flex; position: absolute;top: -38px; z-index:2;" *ngIf="hierarchy.length > 1">
                 <mat-list-item style="width:initial !important" role="listitem">
                     <button mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="hierarchy[0].name" matTooltipPosition="above" (click)="changeHierarchy(hierarchy[0].id)">{{ hierarchy[0].name }}</button>
