@@ -8,10 +8,11 @@
         </button>
         <div class="first-view">
             <div (click)="taskStatistics(currOpTask);" class="first-tasks-main" *ngFor="let currOpTask of forceOpTasks" style="cursor:pointer;">
-                <div class="first-tasks-names"> {{ currOpTask.name }} </div>
+                <div class="first-tasks-names" style="overflow-y: auto; flex-wrap: wrap;"> {{ currOpTask.name }} </div>
                 <div class="first-subtasks-main">
-                    <button (click)="$event.stopPropagation(); taskStatistics(currOpSubTask);" mat-button class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.tasks">
-                        {{ currOpSubTask.name }}
+                    <div *ngIf="currOpTask.tasks.length === 0"  style="height:32px;"></div>
+                    <button (click)="$event.stopPropagation(); taskStatistics(currOpSubTask);" mat-button class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.tasks" [matTooltip]="currOpSubTask.name" matTooltipPosition="above">
+                        <div style="max-width: 100%;overflow: hidden;text-overflow: ellipsis;">{{ currOpSubTask.name }}</div>
                     </button>
                 </div>
             </div>

@@ -10,12 +10,12 @@
     <div style="display: flex; flex-wrap:nowrap; padding: 10px 10px 0px 25px; justify-content: flex-end;">
         <mat-list role="list" style="flex: 80%;position: relative; bottom:10px; z-index:2; display:flex;" *ngIf="hierarchy.length > 1">
             <mat-list-item style="width:initial !important" role="listitem">
-                <button mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="hierarchy[0].name" matTooltipPosition="above" (click)="changeHierarchy(hierarchy[0]._id, hierarchy[0].name)">{{ hierarchy[0].name }}</button>
+                <button mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="hierarchy[0].name" matTooltipPosition="above" (click)="changeHierarchy(hierarchy[0]._id || hierarchy[0].id, hierarchy[0].name)">{{ hierarchy[0].name }}</button>
                 <span *ngIf="hierarchy.length >= 2" style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
             </mat-list-item>
             <mat-list-item *ngFor="let currHierarchy of hierarchy; let i = index;" style="width:initial !important;" role="listitem">
                 <span *ngIf="i !== 0 && i !== hierarchy.length - 1;">
-                    <button (click)="changeHierarchy(currHierarchy._id, currHierarchy.name)" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</button>
+                    <button (click)="changeHierarchy(currHierarchy._id || currHierarchy.id, currHierarchy.name)" mat-button color="primary" style="font-weight: bold; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 130px;"  [matTooltip]="currHierarchy.name" matTooltipPosition="above">{{ currHierarchy.name }}</button>
                     <span style="color: #9a9a9a; font-weight: bold; position:relative;right:2px; cursor: default;">></span>
                 </span>
                 <span *ngIf="i === hierarchy.length - 1;">

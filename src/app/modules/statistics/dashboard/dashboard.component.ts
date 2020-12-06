@@ -171,7 +171,7 @@ export class DashboardComponent implements OnInit {
   changeHierarchy(taskId, taskName) {
     // tslint:disable-next-line: prefer-for-of
     for (let currHierarchyIndex = 0; currHierarchyIndex < this.hierarchy.length; currHierarchyIndex++) {
-      if (this.hierarchy[currHierarchyIndex]._id === taskId) {
+      if (this.hierarchy[currHierarchyIndex]._id  === taskId || this.hierarchy[currHierarchyIndex].id  === taskId) {
         this.hierarchy.splice(currHierarchyIndex + 1);
         console.log(this.hierarchy);
         break;
