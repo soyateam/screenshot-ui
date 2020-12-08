@@ -44,12 +44,16 @@ export class BarGraphComponent implements OnInit, OnChanges {
       noData: 'לא קיימים נתונים להצגת הגרף'
     },
     chart: {
+        height: '350px',
         type: 'column',
         backgroundColor: 'rgba(255, 255, 255, 0)',
         events: {
           load() {
             this.hideLoading();
           }
+        },
+        style: {
+          fontFamily: 'arial'
         }
     },
     title: {
@@ -63,14 +67,22 @@ export class BarGraphComponent implements OnInit, OnChanges {
     subtitle: {},
     xAxis: {
         categories: [],
-        crosshair: true
+        crosshair: true,
+        labels: {
+          style: {
+            fontSize: '14px'
+          }
+        }
     },
     legend: {
       // tslint:disable-next-line: object-literal-shorthand
       labelFormatter: function() {
           const sum = this.yData.reduce((pv, cv) => pv + cv, 0);
           return '(' + Math.floor(sum) + ') ' + this.name;
-      }
+      },
+      itemStyle: {
+        fontSize: '14px'
+      },
     },
     yAxis: {
         min: 0,
@@ -79,8 +91,8 @@ export class BarGraphComponent implements OnInit, OnChanges {
         }
     },
     tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        headerFormat: '<div style="font-size:12px; font-weight:bold; text-align:center;">{point.key}</div><table style="direction:rtl; text-align:center;">',
+        pointFormat: '<tr><td style="color:{series.color};padding:0;font-weight:bold; font-size:12px;">{series.name}: </td>' +
             '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
@@ -107,12 +119,12 @@ export class BarGraphComponent implements OnInit, OnChanges {
                   // tslint:disable-next-line: prefer-for-of
                   for (let currChildIndex = 0; currChildIndex < this.series.xAxis.labelGroup.element.children.length; currChildIndex++) {
                     this.series.xAxis.labelGroup.element.children[currChildIndex].style.cssText =
-                    'color: rgb(102,102,102); cursor: default; font-size: 11px; fill: rgb(102, 102, 102);';
+                    'color: rgb(102,102,102); cursor: default; font-size: 13px; fill: rgb(102, 102, 102);';
                     // this.series.xAxis.labelGroup.element.children[this.x].style[4] = 'nothing';
                   }
                   // this.series.xAxis.labelGroup.element.children[this.x].style.fontWeight = 'bold';
                   this.series.xAxis.labelGroup.element.children[this.x].style.cssText =
-                    'color: rgb(0,0,0); cursor: default; font-size: 11px; fill: rgb(0, 0, 0); font-weight: bold; text-decoration: overline';
+                    'color: rgb(0,0,0); cursor: default; font-size: 13px; fill: rgb(0, 0, 0); font-weight: bold; text-decoration: overline';
                   oneClickHandle.emit({name: this.category, id: categoryIds[this.x]});
                   e.preventDefault();
                 }

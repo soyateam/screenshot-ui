@@ -32,6 +32,9 @@ export class PieGraphComponent implements OnInit, OnChanges {
     chart: {
         type: 'pie',
         backgroundColor: 'rgba(255, 255, 255, 0)',
+        style: {
+          fontFamily: 'arial'
+        }
     },
     title: {
         text: ''
@@ -141,8 +144,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
     for (const drilldownData of data.drilldownSeries) {
       updatedDrilldownSeries.push({ ...drilldownData, tooltip: this.drilldownTooltip });
     }
-    console.log(updatedSeries);
-    console.log(updatedDrilldownSeries);
+
     this.options = {
       ...this.options,
       drilldown: { series: updatedDrilldownSeries },

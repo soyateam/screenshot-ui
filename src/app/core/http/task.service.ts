@@ -20,7 +20,7 @@ export class TaskService {
   getTasks(type): Observable<any> {
     return this.http.get(`${this.tasksUrl}/type/${type ? 'BuildForce' : 'OperativeForce'}`, this.httpOptions)
       .pipe(
-        tap(_ => this.log('fetched tasks')),
+        tap(_ => this),
         catchError(this.handleError<any>('getTasks', []))
       );
   }
@@ -31,10 +31,7 @@ export class TaskService {
     return this.http.get<any>(url)
       .pipe(
         map(tasks => tasks),
-        tap(t => {
-          const outcome = t ? `fetched` : `did not find`;
-          this.log(`${outcome} tasks id=${id}`);
-        }),
+        tap(t => this),
         catchError(this.handleError<any>(`getTasksByParentId id=${id}`))
       );
   }
@@ -43,7 +40,7 @@ export class TaskService {
   getTask(id: string): Observable<any> {
     const url = `${this.tasksUrl}/${id}`;
     return this.http.get<any>(url).pipe(
-      tap(_ => this.log(`fetched task id=${id}`)),
+      tap(_ => this),
       catchError(this.handleError<any>(`getTask id=${id}`))
     );
   }

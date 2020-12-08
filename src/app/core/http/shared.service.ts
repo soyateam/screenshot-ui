@@ -21,7 +21,7 @@ export class SharedService {
     // tslint:disable-next-line: max-line-length
     const url = `${this.sharedUrl}/stats/?taskId=${taskId}&stats=${stats}${showSubTasks ? '&showSubTasks=true' : ''}${parentGroupId ? '&parentGroupId=' + parentGroupId : ''}`;
     return this.http.get<any>(url).pipe(
-      tap(_ => this.log(`fetched stats id=${taskId}`)),
+      tap(_ => this),
       catchError(this.handleError<any>(`getStats id=${taskId}`))
     );
   }

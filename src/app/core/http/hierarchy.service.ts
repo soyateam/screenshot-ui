@@ -21,10 +21,7 @@ export class HierarchyService {
     return this.http.get<any>(url)
       .pipe(
         map(groups => groups),
-        tap(t => {
-          const outcome = t ? `fetched` : `did not find`;
-          this.log(`${outcome} groups id=${id}`);
-        }),
+        tap(t => this),
         catchError(this.handleError<any>(`getGroupsByParentId id=${id}`))
       );
   }
@@ -33,7 +30,7 @@ export class HierarchyService {
   getGroup(id: string): Observable<any> {
     const url = `${this.groupsUrl}/${id}`;
     return this.http.get<any>(url).pipe(
-      tap(_ => this.log(`fetched group id=${id}`)),
+      tap(_ => this),
       catchError(this.handleError<any>(`getGroup id=${id}`))
     );
   }

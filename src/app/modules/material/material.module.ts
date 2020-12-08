@@ -20,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [],
@@ -45,6 +46,7 @@ import { MatRippleModule } from '@angular/material/core';
     MatDividerModule,
     MatListModule,
     MatRippleModule,
+    MatBadgeModule,
   ],
   exports: [
     MatToolbarModule,
@@ -67,6 +69,7 @@ import { MatRippleModule } from '@angular/material/core';
     MatDividerModule,
     MatListModule,
     MatRippleModule,
+    MatBadgeModule,
   ]
 })
 export class MaterialModule { }
