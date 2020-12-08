@@ -18,3 +18,12 @@ mat-dialog-container {
 .mat-list-item-content {
     padding: 0 2px !important;
 }
+
+.mat-badge-medium .mat-badge-content {
+    width: 23px !important;
+    height: 23px !important;
+    line-height: 23px !important;
+    top: 12px !important;
+    left: 3px !important;
+    font-size: 12px !important;
+}

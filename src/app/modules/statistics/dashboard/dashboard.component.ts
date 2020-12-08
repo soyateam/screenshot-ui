@@ -67,7 +67,6 @@ export class DashboardComponent implements OnInit {
 
       this.hierarchy.push(data.task);
 
-      console.log(this.hierarchy);
       });
     }
 
@@ -173,7 +172,6 @@ export class DashboardComponent implements OnInit {
     for (let currHierarchyIndex = 0; currHierarchyIndex < this.hierarchy.length; currHierarchyIndex++) {
       if (this.hierarchy[currHierarchyIndex]._id  === taskId || this.hierarchy[currHierarchyIndex].id  === taskId) {
         this.hierarchy.splice(currHierarchyIndex + 1);
-        console.log(this.hierarchy);
         break;
       }
     }

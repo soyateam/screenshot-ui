@@ -39,7 +39,6 @@ export class TestComponent implements OnInit {
       this.buildForceTasks[currBuildTask].tasks =
         (await this.taskService.getTasksByParentId(this.buildForceTasks[currBuildTask]._id).toPromise()).tasks;
     }
-    console.log(this.forceOpTasks);
 
     this.wrapTasks = (await this.taskService.getTasksByParentId(PARENT_IDS[2].id).toPromise()).tasks;
 
