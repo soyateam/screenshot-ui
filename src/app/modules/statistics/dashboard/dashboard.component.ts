@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   statisticsType = [{id: 'Sum', displayName: 'כמות אנשים'},
                     {id: 'ServiceSum', displayName: 'כמות אנשים לפי סוגי שירות'},
                     {id: 'RankSum', displayName: 'כמות אנשים לפי תקנים'}];
-  defaultParentId = '5db805a8216dad5ed3b9efbf';
+  mainTaskId = '5f4cc73b4201366c45b83925';
   currentUser;
   pieName = '';
   pieId = '';
@@ -34,11 +34,10 @@ export class DashboardComponent implements OnInit {
   selectedStatisticsType = '';
   currStat = {id: '', name: ''};
   barGraphType = '';
-  mainParentGroupId = '5db805a8216dad5ed3b9efbf';
   secondaryParentGroupId = '';
   onUnitTaskCount = false;
   ancestors;
-  constructor(private router: Router, private userService: UserService, private taskService: TaskService,
+  constructor(private userService: UserService, private taskService: TaskService,
               public dialogRef: MatDialogRef<DashboardComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.pieName = data.task.name;
     this.pieId = data.task._id;
@@ -47,7 +46,7 @@ export class DashboardComponent implements OnInit {
     this.secondaryParentGroupId = '';
     this.ancestors = data.task.ancestors;
 
-    if (this.ancestors[0] === data.task.parent) {
+    if (this.ancestors[0] !== this.mainTaskId) {
       this.ancestors.reverse();
     }
 
@@ -76,7 +75,6 @@ export class DashboardComponent implements OnInit {
     this.selectedFilterBy = this.filterBy[0].id;
     this.selectedStatisticsType = this.statisticsType[0].id;
     this.onUnitTaskCount = false;
-    this.mainParentGroupId = this.defaultParentId;
   }
 
   changeStats(taskType): void {
@@ -95,7 +93,7 @@ export class DashboardComponent implements OnInit {
     this.mainBarId = taskType.id;
     this.mainBarName = taskType.name;
     if (this.onUnitTaskCount && this.selectedFilterBy === 'UnitTaskCount') {
-      this.mainParentGroupId = this.defaultParentId;
+      // this.mainParentGroupId = this.defaultParentId;
       this.secondaryParentGroupId = '';
       this.secondaryBarId = '';
       this.secondaryBarName = '';
@@ -104,9 +102,6 @@ export class DashboardComponent implements OnInit {
       this.secondaryBarName = '';
       this.secondaryParentGroupId = '';
     }
-    // this.secondaryBarId = '';
-    // this.secondaryBarName = '';
-    // this.secondaryParentGroupId = '';
   }
 
   setGraphValues(): void {
@@ -125,7 +120,6 @@ export class DashboardComponent implements OnInit {
       if (this.onUnitTaskCount) {
         this.mainBarId = this.pieId;
         this.mainBarName = this.pieName;
-        this.mainParentGroupId = this.defaultParentId;
         this.secondaryBarId = '';
         this.secondaryBarName = '';
         this.secondaryParentGroupId = '';
@@ -148,7 +142,6 @@ export class DashboardComponent implements OnInit {
 
   leftClickChange(task): void {
     if (this.selectedFilterBy === 'UnitTaskCount' && this.onUnitTaskCount) {
-      this.mainParentGroupId = task.id;
       this.mainBarName = task.name;
       this.secondaryBarName = '';
       this.secondaryBarId = this.mainBarId;
