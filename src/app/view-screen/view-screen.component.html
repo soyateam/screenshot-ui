@@ -21,7 +21,7 @@
         <button mat-button class="vertical-align" (click)="taskStatistics({_id: forceOpTasks._id, name: forceOpTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">40%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (forceOpTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
             </div>
             <span class="rotate">{{ forceOpTasks.name }}</span>
         </button>
@@ -49,7 +49,7 @@
         <button mat-button class="vertical-align" (click)="taskStatistics({ _id: buildForceTasks._id, name: buildForceTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">30%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (buildForceTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
             </div>
             <span class="rotate">{{ buildForceTasks.name }}</span>
         </button>
@@ -78,7 +78,7 @@
         <button mat-button class="vertical-align special-fix" (click)="taskStatistics({_id: widthTasks._id, name: widthTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">10%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (widthTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
             </div>
             <span class="rotate" style="position:relative; bottom: 10px;">{{ widthTasks.name }}</span>
         </button>
@@ -96,7 +96,7 @@
         <button mat-button class="vertical-align special-fix" (click)="taskStatistics({_id: wrapTasks._id, name: wrapTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">20%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (wrapTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
             </div>
             <span class="rotate" style="position:relative; bottom: 30px;">{{ wrapTasks.name }}</span>
         </button>
