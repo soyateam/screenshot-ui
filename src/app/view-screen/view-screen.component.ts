@@ -22,14 +22,15 @@ export class ViewScreenComponent implements OnInit {
   wrapTasks: any;
   widthTasks: any;
   finishedLoading = false;
+  fullSize: any;
 
   constructor(private dialog: MatDialog,
               private sharedService: SharedService) { }
 
   async ngOnInit() {
     const fullView = await this.sharedService.getView().toPromise();
-    console.log(fullView);
     
+    this.fullSize = fullView.fullSize;
     this.forceOpTasks = fullView[taskKeys.opForce];
     this.buildForceTasks = fullView[taskKeys.buildForce];
     this.wrapTasks = fullView[taskKeys.wrap];
