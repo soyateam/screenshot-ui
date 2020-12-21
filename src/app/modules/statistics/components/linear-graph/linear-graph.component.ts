@@ -3,13 +3,6 @@ import { SharedService } from 'src/app/core/http/shared.service';
 import { ActivatedRoute } from '@angular/router';
 import { Axis } from 'highcharts';
 
-let oneClickHandle: EventEmitter<any>;
-let dblClickHandle: EventEmitter<any>;
-let categoryIds: any[];
-let currChart: any;
-let getFromDashboardReal: boolean;
-let onUnitTaskCountGlobal: boolean;
-
 @Component({
   selector: 'app-linear-graph',
   templateUrl: './linear-graph.component.html',

@@ -4,13 +4,12 @@ import { MasterTasksComponent } from './modules/tasks/components/master-tasks/ma
 import { TaskComponent } from './modules/tasks/components/task/task.component';
 import { TaskStatisticsComponent } from './modules/statistics/components/task-statistics/task-statistics.component';
 import { DashboardComponent } from './modules/statistics/dashboard/dashboard.component';
-import { TestComponent } from './test/test.component';
+import { ViewScreenComponent } from './view-screen/view-screen.component';
 
 const routes: Routes = [  { path: 'task/:id', component: TaskComponent },
-                          { path: 'test', component: TestComponent },
                           { path: 'statistics/:id/:name', component: TaskStatisticsComponent },
-                          { path: 'dashboard/:id/:name', component: TestComponent},
-                          { path: 'dashboard', component: TestComponent},
+                          /*{ path: 'dashboard/:id/:name', component: ViewScreenComponent},*/
+                          { path: 'dashboard', component: ViewScreenComponent},
                           { path: '**', redirectTo: '/dashboard' }];
 
 @NgModule({

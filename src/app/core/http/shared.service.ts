@@ -33,6 +33,16 @@ export class SharedService {
       catchError(this.handleError<any>('addGroupToTask'))
     );
   }
+
+  getView(): Observable<any> {
+    const url = `${this.sharedUrl}/view`;
+
+    return this.http.get<any>(url).pipe(
+      tap(_ => this),
+      catchError(this.handleError<any>())
+    );
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
