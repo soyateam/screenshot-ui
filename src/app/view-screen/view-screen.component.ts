@@ -23,6 +23,8 @@ export class ViewScreenComponent implements OnInit {
   widthTasks: any;
   finishedLoading = false;
   fullSize: any;
+  loadingValue = 0;
+  interval;
 
   constructor(private dialog: MatDialog,
               private sharedService: SharedService) { }
