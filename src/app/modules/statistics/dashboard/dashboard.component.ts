@@ -4,6 +4,7 @@ import { VirtualTimeScheduler } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { TaskService } from 'src/app/core/http/task.service';
+import { IUser } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +24,7 @@ export class DashboardComponent implements OnInit {
                     {id: 'ServiceSum', displayName: 'כמות אנשים לפי סוגי שירות'},
                     {id: 'RankSum', displayName: 'כמות אנשים לפי תקנים'}];
   mainTaskId = '5f4cc73b4201366c45b83925';
-  currentUser;
+  currentUser: IUser;
   pieName = '';
   pieId = '';
   mainBarName = '';
@@ -36,7 +37,7 @@ export class DashboardComponent implements OnInit {
   barGraphType = '';
   secondaryParentGroupId = '';
   onUnitTaskCount = false;
-  ancestors;
+  ancestors: any[];
   constructor(private userService: UserService, private taskService: TaskService,
               public dialogRef: MatDialogRef<DashboardComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.pieName = data.task.name;
@@ -52,7 +53,7 @@ export class DashboardComponent implements OnInit {
 
     this.taskService.getTask(data.task._id).subscribe(async (parentTask) => {
       this.hierarchy = [];
-      let result;
+      let result: any;
 
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < this.ancestors.length; i++) {
@@ -77,7 +78,7 @@ export class DashboardComponent implements OnInit {
     this.onUnitTaskCount = false;
   }
 
-  changeStats(taskType): void {
+  changeStats(taskType: { id: any; name: any; }): void {
     // tslint:disable-next-line: prefer-for-of
     for (let currTaskType = 0; currTaskType < this.taskTypes.length; currTaskType++) {
       if (taskType.id === this.taskTypes[currTaskType].id) {
@@ -129,7 +130,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  rightClickChange(task): void {
+  rightClickChange(task: { id: string; name: string; }): void {
     if (this.selectedFilterBy === 'UnitTaskCount' && this.onUnitTaskCount) {
       this.secondaryParentGroupId = task.id;
       this.secondaryBarId = this.mainBarId;
@@ -140,7 +141,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  leftClickChange(task): void {
+  leftClickChange(task: { name: string; id: string; }): void {
     if (this.selectedFilterBy === 'UnitTaskCount' && this.onUnitTaskCount) {
       this.mainBarName = task.name;
       this.secondaryBarName = '';
@@ -160,7 +161,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  changeHierarchy(taskId, taskName) {
+  changeHierarchy(taskId: string, taskName: string) {
     // tslint:disable-next-line: prefer-for-of
     for (let currHierarchyIndex = 0; currHierarchyIndex < this.hierarchy.length; currHierarchyIndex++) {
       if (this.hierarchy[currHierarchyIndex]._id  === taskId || this.hierarchy[currHierarchyIndex].id  === taskId) {
