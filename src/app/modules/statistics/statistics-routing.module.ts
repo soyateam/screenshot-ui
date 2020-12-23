@@ -5,7 +5,7 @@ import { TaskStatisticsComponent } from './components/task-statistics/task-stati
 const routes: Routes = [ { path: 'statistics/:id/:name', component: TaskStatisticsComponent } ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
 export class StatisticsRoutingModule { }

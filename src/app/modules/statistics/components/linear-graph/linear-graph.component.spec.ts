@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LinearGraphComponent } from './linear-graph.component';
 
@@ -6,7 +6,7 @@ describe('LinearGraphComponent', () => {
   let component: LinearGraphComponent;
   let fixture: ComponentFixture<LinearGraphComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LinearGraphComponent ]
     })
