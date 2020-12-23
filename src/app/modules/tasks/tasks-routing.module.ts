@@ -7,7 +7,7 @@ const routes: Routes = [ { path: 'tasks', component: MasterTasksComponent },
                          { path: 'task/:id', component: TaskComponent }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
 export class TasksRoutingModule { }

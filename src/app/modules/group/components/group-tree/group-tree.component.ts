@@ -5,7 +5,7 @@ import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Group } from 'src/app/shared/models/group.model';
 import { HierarchyService } from 'src/app/core/http/hierarchy.service';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 export class DynamicFlatNode {
   constructor(public item: Group, public level = 1, public expandable = false,

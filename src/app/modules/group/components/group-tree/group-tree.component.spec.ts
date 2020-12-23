@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GroupTreeComponent } from './group-tree.component';
 
@@ -6,7 +6,7 @@ describe('GroupTreeComponent', () => {
   let component: GroupTreeComponent;
   let fixture: ComponentFixture<GroupTreeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupTreeComponent ]
     })
