@@ -73,6 +73,10 @@
     flex: 96%;
     background-color: rgba(50,50,50,0.1);
     overflow-x:auto;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
 }
 
 .first-view {
