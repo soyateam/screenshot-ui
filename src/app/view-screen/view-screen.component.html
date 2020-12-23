@@ -7,7 +7,7 @@
             <span></span>
         </div>
         <div class="title-view">
-            <mat-form-field style="margin-right: 20px;">
+            <mat-form-field style="margin-right: 20px; flex:10%;">
                 <mat-label>בחירת חודש</mat-label>
                 <mat-select name="food">
                     <mat-option *ngFor="let a of [1,2,3,4]" [value]="a">
@@ -15,13 +15,27 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-form-field style="margin-right: 20px;flex:10%;">
+                <mat-label>יחידה</mat-label>
+                <mat-select name="food">
+                    <mat-option *ngFor="let a of [1,2,3,4]" [value]="a">
+                        {{ a }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <span style="flex:55%; font-weight:bold; font-size:22px;">
+                פילוח כ"א באמ"ן - {{ fullSize.toFixed(0) }} משרתים
+            </span>
+            <div style="flex:25%"></div>
         </div>
     </div>
     <div class="secondary-div-first">
         <button mat-button class="vertical-align" (click)="taskStatistics({_id: forceOpTasks._id, name: forceOpTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (forceOpTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">
+                    {{ (fullSize !== 0) ? (forceOpTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%
+                </span>
             </div>
             <span class="rotate">{{ forceOpTasks.name }}</span>
         </button>
@@ -29,7 +43,7 @@
             <div (click)="taskStatistics(currOpTask);" class="first-tasks-main" *ngFor="let currOpTask of forceOpTasks.children" style="cursor:pointer; position:relative;">
                 <div style="position:absolute; right:2px; top:-2px; color: #CACACA; font-weight: bold;">
                     <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (forceOpTasks.value !== 0) ? (currOpTask.value * 100 / forceOpTasks.value).toFixed(2) : 0 }}%</span>
+                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (forceOpTasks.value !== 0) ? (currOpTask.value * 100 / forceOpTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
                 <div class="first-tasks-names" style="overflow-y: auto; flex-wrap: wrap;"> {{ currOpTask.name }} </div>
                 <div class="first-subtasks-main">
@@ -37,7 +51,7 @@
                     <button (click)="$event.stopPropagation(); taskStatistics(currOpSubTask);" mat-button class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.children" [matTooltip]="currOpSubTask.name" matTooltipPosition="above">
                         <div style="position:absolute; right:2px; top:-5px; color: #6a6a6a; font-weight: bold;">
                             <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                            <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ currOpSubTask.value.toFixed(2) }}</span>
+                            <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ currOpSubTask.value.toFixed(2).replace('.00', '') }}</span>
                         </div>
                         <div style="max-width: 100%;overflow: hidden;text-overflow: ellipsis;">{{ currOpSubTask.name }}</div>
                     </button>
@@ -49,7 +63,7 @@
         <button mat-button class="vertical-align" (click)="taskStatistics({ _id: buildForceTasks._id, name: buildForceTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (buildForceTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (buildForceTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
             <span class="rotate">{{ buildForceTasks.name }}</span>
         </button>
@@ -57,7 +71,7 @@
             <div class="second-tasks-main" *ngFor="let currBuildTask of buildForceTasks.children" style="position:relative;">
                 <div style="position:absolute; right:6px; top:2px; color: white; font-weight: bold; z-index:1;">
                     <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (buildForceTasks.value !== 0) ? (currBuildTask.value * 100 / buildForceTasks.value).toFixed(2) : 0 }}%</span>
+                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (buildForceTasks.value !== 0) ? (currBuildTask.value * 100 / buildForceTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
                 <div matRipple class="second-tasks-names" (click)="taskStatistics(currBuildTask)">
                     {{ currBuildTask.name }}
@@ -66,7 +80,7 @@
                     <div matRipple class="second-subtasks-secondary" *ngFor="let currSubBuildTask of currBuildTask.children" (click)="taskStatistics(currSubBuildTask)">
                         <div style="position:absolute; left:6px; top:2px; color: white; font-weight: bold; z-index:1;">
                             <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                            <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ currSubBuildTask.value.toFixed(2) }}</span>
+                            <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ currSubBuildTask.value.toFixed(2).replace('.00', '') }}</span>
                         </div>
                         {{ currSubBuildTask.name }}
                     </div>
@@ -78,7 +92,7 @@
         <button mat-button class="vertical-align special-fix" (click)="taskStatistics({_id: widthTasks._id, name: widthTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (widthTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (widthTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
             <span class="rotate" style="position:relative; bottom: 10px;">{{ widthTasks.name }}</span>
         </button>
@@ -86,7 +100,7 @@
             <div matRipple class="third-tasks-main" *ngFor="let currWidthTask of widthTasks.children" (click)="taskStatistics(currWidthTask);">
                 <div style="position:absolute; right:2px; top:-3px; color: #6a6a6a; font-weight: bold;">
                     <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (widthTasks.value !== 0) ? (currWidthTask.value * 100 / widthTasks.value).toFixed(2) : 0}}%</span>
+                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (widthTasks.value !== 0) ? (currWidthTask.value * 100 / widthTasks.value).toFixed(2).replace('.00', '') : 0}}%</span>
                 </div>
                 {{ currWidthTask.name }}
             </div>
@@ -96,7 +110,7 @@
         <button mat-button class="vertical-align special-fix" (click)="taskStatistics({_id: wrapTasks._id, name: wrapTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:0; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (wrapTasks.value * 100 / fullSize).toFixed(1) : 0 }}%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (wrapTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
             <span class="rotate" style="position:relative; bottom: 30px;">{{ wrapTasks.name }}</span>
         </button>
@@ -104,7 +118,7 @@
             <div matRipple class="fourth-tasks-main" *ngFor="let currWrapTask of wrapTasks.children" (click)="taskStatistics(currWrapTask)">
                 <div style="position:absolute; right:4px; top:0px; color: white; font-weight: bold; z-index:1;">
                     <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (wrapTasks.value !== 0) ? (currWrapTask.value * 100 / wrapTasks.value).toFixed(2) : 0 }}%</span>
+                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (wrapTasks.value !== 0) ? (currWrapTask.value * 100 / wrapTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
                 {{ currWrapTask.name }}
             </div>
