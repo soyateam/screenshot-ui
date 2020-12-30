@@ -9,17 +9,17 @@
         <div class="title-view">
             <mat-form-field style="margin-right: 20px; flex:10%;">
                 <mat-label>בחירת חודש</mat-label>
-                <mat-select name="food">
-                    <mat-option *ngFor="let a of [1,2,3,4]" [value]="a">
-                        {{ a }}
+                <mat-select [(ngModel)]="selectedDateFilter" (selectionChange)="changeDateFilter()">                
+                    <mat-option *ngFor="let dateFilter of dateFilters" [value]="dateFilter">
+                        {{ dateFilter }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field style="margin-right: 20px;flex:10%;">
                 <mat-label>יחידה</mat-label>
-                <mat-select name="food">
-                    <mat-option *ngFor="let a of [1,2,3,4]" [value]="a">
-                        {{ a }}
+                <mat-select [(ngModel)]="selectedUnitFilter" (selectionChange)="changeUnitFilter()">
+                    <mat-option *ngFor="let unitFilter of unitFilters" [value]="unitFilter.kartoffelID">
+                        {{ unitFilter.name }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

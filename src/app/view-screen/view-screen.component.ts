@@ -21,17 +21,33 @@ export class ViewScreenComponent implements OnInit {
   buildForceTasks: any;
   wrapTasks: any;
   widthTasks: any;
+  dateFilters: any;
+  unitFilters: any;
   finishedLoading = false;
   fullSize: any;
   loadingValue = 0;
   interval;
+
+  DEFAULT_FILTERS: any = {
+    'זמן נוכחי': 'זמן נוכחי',
+    'כל היחידות': 'כל היחידות',
+  };
+
+  selectedDateFilter: any;
+  selectedUnitFilter: any;
 
   constructor(private dialog: MatDialog,
               private sharedService: SharedService) { }
 
   async ngOnInit() {
     const fullView = await this.sharedService.getView().toPromise();
-    
+    const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
+    const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise();  
+
+    this.dateFilters = ['זמן נוכחי', ...recvDateFilters];
+    this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];    
+    this.selectedDateFilter = this.DEFAULT_FILTERS['זמן נוכחי'];
+    this.selectedUnitFilter = this.DEFAULT_FILTERS['כל היחידות'];
     this.fullSize = fullView.fullSize;
     this.forceOpTasks = fullView[taskKeys.opForce];
     this.buildForceTasks = fullView[taskKeys.buildForce];
@@ -48,6 +64,33 @@ export class ViewScreenComponent implements OnInit {
         task: givenTask
       }
     });
+  }
+
+  initViewValues(viewResults: any) {    
+    this.fullSize = viewResults.fullSize;
+    this.forceOpTasks = viewResults[taskKeys.opForce];
+    this.buildForceTasks = viewResults[taskKeys.buildForce];
+    this.wrapTasks = viewResults[taskKeys.wrap];
+    this.widthTasks = viewResults[taskKeys.width];
+  }
+
+  async getViewValues() {
+    const dateFilter = this.selectedDateFilter === this.DEFAULT_FILTERS['זמן נוכחי'] ? null : this.selectedDateFilter;
+    const unitFilter = this.selectedUnitFilter === this.DEFAULT_FILTERS['כל היחידות'] ? null : this.selectedUnitFilter;
+
+    return await this.sharedService.getView(dateFilter, unitFilter).toPromise();
+  }
+
+  async changeDateFilter() {
+    this.finishedLoading = false;
+    this.initViewValues(await this.getViewValues());
+    this.finishedLoading = true;
+  }
+
+  async changeUnitFilter() {
+    this.finishedLoading = false;
+    this.initViewValues(await this.getViewValues());
+    this.finishedLoading = true;
   }
 
 }

@@ -34,8 +34,40 @@ export class SharedService {
     );
   }
 
-  getView(): Observable<any> {
-    const url = `${this.sharedUrl}/view`;
+  getView(dateFilter?: string, unitFilter?: string): Observable<any> {    
+    let filters = null;
+
+    if (dateFilter) {
+      filters = `?date=${dateFilter}`;
+    }
+
+    if (unitFilter) {
+      if (filters) {
+        filters = `${filters}&unit=${unitFilter}`;
+      } else {
+        filters = `?unit=${unitFilter}`;
+      }
+    }
+
+    const url = `${this.sharedUrl}/view${filters || ''}`;
+
+    return this.http.get<any>(url).pipe(
+      tap(_ => this),
+      catchError(this.handleError<any>())
+    );
+  }
+
+  getDateFilters(): Observable<any> {
+    const url = `${this.sharedUrl}/dates`;
+
+    return this.http.get<any>(url).pipe(
+      tap(_ => this),
+      catchError(this.handleError<any>())
+    );
+  }
+
+  getUnitNamesFilters(): Observable<any> {
+    const url = `${this.sharedUrl}/units`;
 
     return this.http.get<any>(url).pipe(
       tap(_ => this),

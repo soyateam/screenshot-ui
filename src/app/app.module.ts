@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -35,6 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     GroupModule,
     TaskModule,
     StatisticsModule,
+    FormsModule,
     TranslateModule.forRoot({
       defaultLanguage: 'he',
       loader: {
