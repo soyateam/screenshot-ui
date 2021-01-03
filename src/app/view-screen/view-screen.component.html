@@ -1,4 +1,8 @@
-<div class="spinner-cls" *ngIf="!finishedLoading">
+<div class="img-container" *ngIf="isError">
+   <img class="errImg" [src]="errorImg"/>
+</div>
+
+<div class="spinner-cls" *ngIf="!finishedLoading && !isError">
     <mat-spinner></mat-spinner>
 </div>
 <div class="main-div" *ngIf="finishedLoading">

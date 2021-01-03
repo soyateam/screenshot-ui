@@ -17,6 +17,7 @@ const taskKeys = {
 })
 export class ViewScreenComponent implements OnInit {
   defaultParentNew = '5f4cc73b4201366c45b83925'; // amn
+  errorImg: string;
   forceOpTasks: any;
   buildForceTasks: any;
   wrapTasks: any;
@@ -24,6 +25,7 @@ export class ViewScreenComponent implements OnInit {
   dateFilters: any;
   unitFilters: any;
   finishedLoading = false;
+  isError = false;
   fullSize: any;
   loadingValue = 0;
   interval;
@@ -40,20 +42,20 @@ export class ViewScreenComponent implements OnInit {
               private sharedService: SharedService) { }
 
   async ngOnInit() {
-    const fullView = await this.sharedService.getView().toPromise();
-    const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
-    const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise();  
-
-    this.dateFilters = ['זמן נוכחי', ...recvDateFilters];
-    this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];    
-    this.selectedDateFilter = this.DEFAULT_FILTERS['זמן נוכחי'];
-    this.selectedUnitFilter = this.DEFAULT_FILTERS['כל היחידות'];
-    this.fullSize = fullView.fullSize;
-    this.forceOpTasks = fullView[taskKeys.opForce];
-    this.buildForceTasks = fullView[taskKeys.buildForce];
-    this.wrapTasks = fullView[taskKeys.wrap];
-    this.widthTasks = fullView[taskKeys.width];
-    this.finishedLoading = true;
+    try {
+      const fullView = await this.sharedService.getView().toPromise();
+      const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
+      const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise(); 
+      this.dateFilters = ['זמן נוכחי', ...recvDateFilters];
+      this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];    
+      this.selectedDateFilter = this.DEFAULT_FILTERS['זמן נוכחי'];
+      this.selectedUnitFilter = this.DEFAULT_FILTERS['כל היחידות'];
+      this.initViewValues(fullView);
+      this.finishedLoading = true;
+    } catch (err) {
+      this.isError = true;
+      this.errorImg = '/assets/500_error.png'
+    }
   }
 
   taskStatistics(givenTask: any) {
@@ -72,6 +74,24 @@ export class ViewScreenComponent implements OnInit {
     this.buildForceTasks = viewResults[taskKeys.buildForce];
     this.wrapTasks = viewResults[taskKeys.wrap];
     this.widthTasks = viewResults[taskKeys.width];
+    this.forceOpTasks = this.sortTasks(this.forceOpTasks, true);
+    this.buildForceTasks = this.sortTasks(this.buildForceTasks, true);
+    this.wrapTasks = this.sortTasks(this.wrapTasks, false);
+    this.widthTasks = this.sortTasks(this.widthTasks, false);
+  }
+
+  sortTasks(tasks, isSubChildren) {
+    tasks.children;
+
+    tasks.children.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+
+    if (isSubChildren) {
+      for (let currChildrenIndex = 0; currChildrenIndex < tasks.children.length; currChildrenIndex++) {
+        tasks.children[currChildrenIndex].children.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      }
+    }
+
+    return tasks;
   }
 
   async getViewValues() {
