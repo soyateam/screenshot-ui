@@ -17,6 +17,8 @@ export class PieGraphComponent implements OnInit, OnChanges {
   @Input('name') name: string;
   // tslint:disable-next-line: no-input-rename
   @Input('getFromDashboard') getFromDashboard: boolean;
+  // tslint:disable-next-line: no-input-rename
+  @Input('dateFilter') dateFilter: string;
 
   private drilldownTooltip = {
     headerFormat: '<table>',
@@ -130,7 +132,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
     } else {
       taskId = this.route.snapshot.paramMap.get('id');
     }
-    this.sharedService.getStats(taskId, this.graphType).subscribe((result) => {
+    this.sharedService.getStats(taskId, this.graphType, null, null, null, this.dateFilter).subscribe((result) => {
         this.createChart(result);
     });
   }

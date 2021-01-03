@@ -17,9 +17,10 @@ export class SharedService {
   };
 
   /** GET stats by type. Will 404 if id not found */
-  getStats(taskId: string, stats: string, showSubTasks?: boolean, parentGroupId?: string): Observable<any> {
+  // tslint:disable-next-line: max-line-length
+  getStats(taskId: string, stats: string, showSubTasks?: boolean, parentGroupId?: string, unitFilter?: string, dateFilter?: string): Observable<any> {
     // tslint:disable-next-line: max-line-length
-    const url = `${this.sharedUrl}/stats/?taskId=${taskId}&stats=${stats}${showSubTasks ? '&showSubTasks=true' : ''}${parentGroupId ? '&parentGroupId=' + parentGroupId : ''}`;
+    const url = `${this.sharedUrl}/stats/?taskId=${taskId}&stats=${stats}${showSubTasks ? '&showSubTasks=true' : ''}${parentGroupId ? '&parentGroupId=' + parentGroupId : ''}${unitFilter ? '&unit=' + unitFilter : ''}${dateFilter ? '&date=' + dateFilter : ''}`;
     return this.http.get<any>(url).pipe(
       tap(_ => this),
       catchError(this.handleError<any>(`getStats id=${taskId}`))
