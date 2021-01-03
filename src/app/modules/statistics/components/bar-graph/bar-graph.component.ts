@@ -35,6 +35,10 @@ export class BarGraphComponent implements OnInit, OnChanges {
   @Input('parentGroupId') parentGroupId: string;
   // tslint:disable-next-line: no-input-rename
   @Input('onUnitTaskCount') onUnitTaskCount: boolean;
+  // tslint:disable-next-line: no-input-rename
+  @Input('dateFilter') dateFilter: string;
+  // tslint:disable-next-line: no-input-rename
+  @Input('unitFilter') unitFilter: string;
 
 
   public titleTexts = ['קבוצות מתוך - ', 'משימות מתוך - '];
@@ -203,7 +207,14 @@ export class BarGraphComponent implements OnInit, OnChanges {
     }
 
     // tslint:disable-next-line: max-line-length
-    this.sharedService.getStats(taskId, this.graphType, !!this.getFromDashboard, (this.onUnitTaskCount ? this.parentGroupId : null)).subscribe((result) => {
+    this.sharedService.getStats(
+      taskId,
+      this.graphType,
+      !!this.getFromDashboard,
+      (this.onUnitTaskCount ? this.parentGroupId : null),
+      this.unitFilter,
+      this.dateFilter,
+    ).subscribe((result) => {
         if (currChart) {
           currChart.hideLoading();
         }

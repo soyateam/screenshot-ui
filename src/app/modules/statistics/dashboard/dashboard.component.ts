@@ -38,6 +38,9 @@ export class DashboardComponent implements OnInit {
   secondaryParentGroupId = '';
   onUnitTaskCount = false;
   ancestors: any[];
+
+  dateFilter: any;
+  unitFilter: any;
   constructor(private userService: UserService, private taskService: TaskService,
               public dialogRef: MatDialogRef<DashboardComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.pieName = data.task.name;
@@ -46,6 +49,8 @@ export class DashboardComponent implements OnInit {
     this.mainBarName = data.task.name;
     this.secondaryParentGroupId = '';
     this.ancestors = data.task.ancestors;
+    this.dateFilter = data.date;
+    this.unitFilter = data.unit;
 
     if (this.ancestors[0] !== this.mainTaskId) {
       this.ancestors.reverse();

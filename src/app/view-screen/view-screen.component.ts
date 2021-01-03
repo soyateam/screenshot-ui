@@ -61,7 +61,9 @@ export class ViewScreenComponent implements OnInit {
       width: '1300px',
       height: '881px',
       data: {
-        task: givenTask
+        task: givenTask,
+        date: this.selectedDateFilter === this.DEFAULT_FILTERS['זמן נוכחי'] ? null : this.selectedDateFilter,
+        unit: this.selectedUnitFilter === this.DEFAULT_FILTERS['כל היחידות'] ? null : this.selectedUnitFilter
       }
     });
   }
