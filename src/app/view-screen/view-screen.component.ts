@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SharedService } from '../core/http/shared.service';
+import { UserService } from '../core/services/user.service';
 import { DashboardComponent } from '../modules/statistics/dashboard/dashboard.component';
 
 const taskKeys = {
@@ -39,22 +40,31 @@ export class ViewScreenComponent implements OnInit {
   selectedUnitFilter: any;
 
   constructor(private dialog: MatDialog,
-              private sharedService: SharedService) { }
+              private sharedService: SharedService,
+              private userService: UserService) { }
 
   async ngOnInit() {
     try {
+      this.userService.currentUser;
       const fullView = await this.sharedService.getView().toPromise();
       const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
       const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise(); 
-      this.dateFilters = ['זמן נוכחי', ...recvDateFilters];
-      this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];    
-      this.selectedDateFilter = this.DEFAULT_FILTERS['זמן נוכחי'];
-      this.selectedUnitFilter = this.DEFAULT_FILTERS['כל היחידות'];
-      this.initViewValues(fullView);
-      this.finishedLoading = true;
+      if (recvDateFilters && recvUnitNamesFilters && fullView) {
+        this.dateFilters = ['זמן נוכחי', ...recvDateFilters];
+        this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];    
+        this.selectedDateFilter = this.DEFAULT_FILTERS['זמן נוכחי'];
+        this.selectedUnitFilter = this.DEFAULT_FILTERS['כל היחידות'];
+        this.initViewValues(fullView);
+        this.finishedLoading = true;
+      } else {
+        this.isError = true;
+        this.errorImg = '/assets/500_error.png';
+      }
     } catch (err) {
       this.isError = true;
-      this.errorImg = '/assets/500_error.png'
+      if (err.indexOf('authorized') === -1) {
+        this.errorImg = '/assets/500_error.png'
+      }
     }
   }
 

@@ -5,5 +5,5 @@ export const environment = {
     loginURL: 'http://localhost:3000/auth/login',
     cookieTokenName: 'token',
   },
-  httpRequestRetryAmount: 1,
+  httpRequestRetryAmount: 0,
 };
