@@ -21,6 +21,7 @@ export class ViewScreenComponent implements OnInit {
   errorImg: string;
   forceOpTasks: any;
   buildForceTasks: any;
+  secondaryLoading = false;
   wrapTasks: any;
   widthTasks: any;
   dateFilters: any;
@@ -114,15 +115,15 @@ export class ViewScreenComponent implements OnInit {
   }
 
   async changeDateFilter() {
-    this.finishedLoading = false;
+    this.secondaryLoading = true;
     this.initViewValues(await this.getViewValues());
-    this.finishedLoading = true;
+    this.secondaryLoading = false;
   }
 
   async changeUnitFilter() {
-    this.finishedLoading = false;
+    this.secondaryLoading = true;
     this.initViewValues(await this.getViewValues());
-    this.finishedLoading = true;
+    this.secondaryLoading = false;
   }
 
 }

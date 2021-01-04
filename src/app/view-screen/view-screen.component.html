@@ -11,9 +11,10 @@
             <span></span>
         </div>
         <div class="title-view">
+            <mat-progress-bar mode="indeterminate" style="position: absolute; top: 0;" *ngIf="secondaryLoading"></mat-progress-bar>
             <mat-form-field style="margin-right: 20px; flex:10%;">
                 <mat-label>בחירת חודש</mat-label>
-                <mat-select [(ngModel)]="selectedDateFilter" (selectionChange)="changeDateFilter()">                
+                <mat-select [(ngModel)]="selectedDateFilter" (selectionChange)="changeDateFilter()" [disabled]="secondaryLoading">
                     <mat-option *ngFor="let dateFilter of dateFilters" [value]="dateFilter">
                         {{ dateFilter }}
                     </mat-option>
@@ -21,7 +22,7 @@
             </mat-form-field>
             <mat-form-field style="margin-right: 20px;flex:10%;">
                 <mat-label>יחידה</mat-label>
-                <mat-select [(ngModel)]="selectedUnitFilter" (selectionChange)="changeUnitFilter()">
+                <mat-select [(ngModel)]="selectedUnitFilter" (selectionChange)="changeUnitFilter()" [disabled]="secondaryLoading">
                     <mat-option *ngFor="let unitFilter of unitFilters" [value]="unitFilter.kartoffelID">
                         {{ unitFilter.name }}
                     </mat-option>
