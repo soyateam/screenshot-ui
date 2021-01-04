@@ -46,7 +46,7 @@
         </button>
         <div class="first-view">
             <div (click)="taskStatistics(currOpTask);" class="first-tasks-main" *ngFor="let currOpTask of forceOpTasks.children" style="cursor:pointer; position:relative;">
-                <div style="position:absolute; right:2px; top:-2px; color: #CACACA; font-weight: bold;">
+                <div style="position:absolute; right:2px; top:-2px; color: white; font-weight: bold;">
                     <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
                     <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (forceOpTasks.value !== 0) ? (currOpTask.value * 100 / forceOpTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>

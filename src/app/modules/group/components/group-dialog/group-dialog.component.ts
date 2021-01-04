@@ -24,7 +24,7 @@ export class GroupDialogComponent implements OnInit {
   }
 
   async addGroup(group) {
-    console.log(group);
+    // console.log(group);
     for (const currGroup of group.groupsAssignAbove) {
       const foundGroup = this.data.task.groups.find(item => currGroup.id === item.id);
       if (!foundGroup) {

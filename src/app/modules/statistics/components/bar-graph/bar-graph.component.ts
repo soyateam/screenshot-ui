@@ -57,7 +57,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
           }
         },
         style: {
-          fontFamily: 'arial'
+          fontFamily: 'system-ui'
         }
     },
     title: {
@@ -239,7 +239,12 @@ export class BarGraphComponent implements OnInit, OnChanges {
     }
 
     this.options = {...this.options,
-         xAxis: {categories: categoryNames},
+         xAxis: {categories: categoryNames,
+                 lables: {
+                   style: {
+                     fontSize: '14px'
+                   }
+                 }},
          series: data.series
         };
   }

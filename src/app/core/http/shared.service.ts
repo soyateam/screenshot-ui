@@ -93,6 +93,6 @@ export class SharedService {
   }
 
   private log(message: string) {
-    console.log(message);
+    // console.log(message);
   }
 }
