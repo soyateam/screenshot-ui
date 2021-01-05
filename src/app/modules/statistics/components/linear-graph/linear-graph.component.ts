@@ -89,7 +89,7 @@ export class LinearGraphComponent implements OnInit, OnChanges {
       ...this.options,
       xAxis: { categories: categoryNames },
       series: [{
-        name: 'test',
+        name: 'כמות אנשים',
         data: data.series,
         tooltip: {
           headerFormat: '<table>',
