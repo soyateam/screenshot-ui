@@ -26,8 +26,6 @@ export class GroupDialogComponent implements OnInit {
   }
 
   async addGroup(group) {
-    console.log(group);
-
     // Get all the group's children
     const allGroupChildrens = await this.hierarchyService.getAllGroupsByParentId(group.kartoffelID).toPromise();
     const filterdGroupChildren = allGroupChildrens.map((child) => {
@@ -38,7 +36,7 @@ export class GroupDialogComponent implements OnInit {
     });
 
     // Unifies the ancestors and children of the selected group    
-    const allRelatedGroups = [ ...filterdGroupChildren ];
+    const allRelatedGroups = [ ...group.groupsAssignAbove, ...filterdGroupChildren ];
 
     // Add all the above ancestors and children of the group 
     for (const currGroup of allRelatedGroups) {

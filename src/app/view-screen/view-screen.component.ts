@@ -46,7 +46,7 @@ export class ViewScreenComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.userService.currentUser;
+      // console.log(this.userService.currentUser);
       const fullView = await this.sharedService.getView().toPromise();
       const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
       const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise(); 
@@ -58,12 +58,14 @@ export class ViewScreenComponent implements OnInit {
         this.initViewValues(fullView);
         this.finishedLoading = true;
       } else {
-        this.isError = true;
-        this.errorImg = '/assets/500_error.png';
+        if (!this.userService.expired()) {
+          this.isError = true;
+          this.errorImg = '/assets/500_error.png';
+        }
       }
     } catch (err) {
       this.isError = true;
-      if (err.indexOf('authorized') === -1) {
+      if (err.indexOf('authorized') === -1 && err.indexOf('expired') === -1) {
         this.errorImg = '/assets/500_error.png'
       }
     }

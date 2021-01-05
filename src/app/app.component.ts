@@ -9,9 +9,11 @@ import { UserService } from './core/services/user.service';
 export class AppComponent implements OnInit {
   title = 'screenshot-ui';
   user;
+  service;
 
   constructor(private userService: UserService) {
     this.userService.login();
+    this.service = this.userService;
   }
 
   ngOnInit() {

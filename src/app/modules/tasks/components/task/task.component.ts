@@ -65,7 +65,7 @@ export class TaskComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
       if (result !== undefined && result.name !== '') {
       this.taskService.addTask({task: {
           parent: this.parentTaskId,
@@ -126,7 +126,7 @@ export class TaskComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
       if (result !== undefined && result.name !== '') {
 
       }
