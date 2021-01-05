@@ -19,22 +19,15 @@ export class LinearGraphComponent implements OnInit, OnChanges {
 
   public options = {
     tooltip: {
-     // enabled: false
-    },
-    plotOptions: {
-      series: {
-        states: {
-          hover: {
-           // enabled: false
-          }
-        },
-        dataLabels: {
-          // enabled: true
-        }
-      }
+      headerFormat: '<div style="font-size:12px; font-weight:bold; text-align:center;">{point.key}</div><table style="direction:rtl; text-align:center;">',
+      pointFormat:  '<tr><td style="color:{series.color};padding:0;font-weight:bold; font-size:12px;">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
     },
     lang: {
-      noData: 'boom'
+      noData: ''
     },
     chart: {
       type: 'spline',
@@ -58,7 +51,7 @@ export class LinearGraphComponent implements OnInit, OnChanges {
         text: 'כמות אנשים'
       },
     },
-    series: [] as any
+    series: [] as any,
   };
 
   constructor(private sharedService: SharedService, private route: ActivatedRoute) {
@@ -92,14 +85,6 @@ export class LinearGraphComponent implements OnInit, OnChanges {
         name: 'כמות אנשים',
         data: data.series,
         tooltip: {
-          headerFormat: '<table>',
-          // pointFormat: '<tr><td>ביחידה</td><td><b>{point.fullSize:.1f}</b></td><td>מתוך</td><td><b>{point.y:.1f}</b></td></tr>',
-          // tslint:disable-next-line: object-literal-shorthand
-          pointFormatter: function() {
-            return `<span style="direction:rtl;"><b>${this.y.toFixed(2)} <span style="color: rgb(124, 181, 236); font-weight: bold;">:כמות אנשים</span></b></span>`;
-          },
-          footerFormat: '</table>',
-          useHTML: true
         },
       }]
     }
