@@ -72,7 +72,7 @@
 .title-view {
     position: relative;
     flex: 96%;
-    background-color: rgba(50,50,50,0.1);
+    background-color: rgba(50,50,50,0.2);
     overflow-x:auto;
     overflow-y: hidden;
     display: flex;

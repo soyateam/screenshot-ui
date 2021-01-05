@@ -14,6 +14,10 @@
 <mat-divider></mat-divider>
 <div class="scrollbar scrollbar-primary" style="padding: 31px 21px 13px 0;position: relative;top: 0px;height: 83px;overflow-y: auto;overflow-x: hidden;">
     <span style="position: absolute;top: 2px;font-weight: bold;color: #7a7a7a;">קבוצות משוייכות:</span>
+    <div *ngIf="data.task.groups.length === 0;" style="text-align: center;">
+        <mat-icon style="width: 55px;height: 55px;font-size: 55px;color: #BABABA;">sentiment_dissatisfied</mat-icon><br>
+        <span style="color: #BABABA; font-weight:bold;">אין עדיין קבוצות משויכות</span>
+    </div>
     <mat-chip-list>
         <mat-chip *ngFor="let group of data.task.groups" matTooltip="{{group.hierarchy || group.name}}"> {{group.name}} <mat-icon matChipRemove (click)="removeGroup(group)">cancel</mat-icon></mat-chip>
     </mat-chip-list>

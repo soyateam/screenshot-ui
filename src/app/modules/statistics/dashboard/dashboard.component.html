@@ -43,7 +43,7 @@
             <app-pie-graph graphType="UnitSum" [name]="pieName" [id]="pieId" getFromDashboard="true" [dateFilter]="dateFilter"></app-pie-graph>
         </div>
         <div style="flex: 65%; border-top:1px solid #EAEAEA; width:0; height: 400px;">
-            <app-linear-graph ></app-linear-graph>
+            <app-linear-graph [id]="linearId" [unitFilter]="unitFilter"></app-linear-graph>
         </div>
     </div>
 </div>

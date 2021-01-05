@@ -27,6 +27,8 @@ export class DashboardComponent implements OnInit {
   currentUser: IUser;
   pieName = '';
   pieId = '';
+  linearId = '';
+  linearName = '';
   mainBarName = '';
   mainBarId = '';
   secondaryBarName = '';
@@ -45,6 +47,7 @@ export class DashboardComponent implements OnInit {
               public dialogRef: MatDialogRef<DashboardComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.pieName = data.task.name;
     this.pieId = data.task._id;
+    this.linearId = data.task._id;
     this.mainBarId = data.task._id;
     this.mainBarName = data.task.name;
     this.secondaryParentGroupId = '';
@@ -96,6 +99,7 @@ export class DashboardComponent implements OnInit {
     this.currStat = taskType;
     this.pieName = taskType.name;
     this.pieId = taskType.id;
+    this.linearId = taskType.id;
     this.mainBarId = taskType.id;
     this.mainBarName = taskType.name;
     if (this.onUnitTaskCount && this.selectedFilterBy === 'UnitTaskCount') {
@@ -154,6 +158,7 @@ export class DashboardComponent implements OnInit {
       this.secondaryParentGroupId = '';
       this.pieId = task.id;
       this.pieName = task.name;
+      this.linearId = task.id;
       this.hierarchy.push(task);
     } else {
       this.mainBarId = task.id;
@@ -162,6 +167,7 @@ export class DashboardComponent implements OnInit {
       this.secondaryBarName = '';
       this.pieId = task.id;
       this.pieName = task.name;
+      this.linearId = task.id;
       this.hierarchy.push(task);
     }
   }
@@ -179,6 +185,7 @@ export class DashboardComponent implements OnInit {
     this.mainBarName = taskName;
     this.pieId = taskId;
     this.pieName = taskName;
+    this.linearId = taskId;
     this.secondaryBarId = '';
     this.secondaryBarName = '';
   }
