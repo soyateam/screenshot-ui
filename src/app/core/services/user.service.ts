@@ -30,6 +30,11 @@ export class UserService {
 
   expired() {
     const token = this.cookieService.get(this.cookieName);
+
+    if (!token) {
+      return true;
+    }
+
     const exp = this.parseJwt(token).exp;
     if (Date.now() >= exp * 1000) {
       return true;
