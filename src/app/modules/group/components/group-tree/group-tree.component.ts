@@ -40,17 +40,17 @@ export class DynamicDatabase {
             const parentGroup = group.ancestors[index + 1];
             const selectedGroup = group.ancestors[index];
             const fullSelectedGroup = {
-              name: this.dataMap.get(parentGroup).filter((currGroup) => currGroup.kartoffelID === selectedGroup)[0].name,
               id: selectedGroup,
+              name: this.dataMap.get(parentGroup).filter((currGroup) => currGroup.kartoffelID === selectedGroup)[0].name,
             };
             groupsAssignAbove.push(fullSelectedGroup);
           }
 
           if (group.ancestors.length >= 2) {
             groupsAssignAbove.push({
+              id: group.ancestors[group.ancestors.length - 2],
               name: this.dataMap.get('')
                     .filter((currGroup) => currGroup.kartoffelID === group.ancestors[group.ancestors.length - 2])[0].name,
-              id: group.ancestors[group.ancestors.length - 2]
             });
           }
 

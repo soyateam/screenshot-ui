@@ -26,6 +26,17 @@ export class HierarchyService {
       );
   }
 
+    /** GET group by parent id. Return `undefined` when id not found */
+    getAllGroupsByParentId(id: any): Observable<any> {
+      const url = `${this.groupsUrl}/children/${id}`;
+      return this.http.get<any>(url)
+        .pipe(
+          map(groups => groups),
+          tap(t => this),
+          catchError(this.handleError<any>(`getAllGroupsByParentId id=${id}`))
+        );
+    }
+
   /** GET group by id. Will 404 if id not found */
   getGroup(id: string): Observable<any> {
     const url = `${this.groupsUrl}/${id}`;
