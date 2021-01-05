@@ -44,7 +44,19 @@ export class TaskComponent implements OnInit {
         }
       });
 
-      this.taskService.getTasksByParentId(this.parentTaskId).subscribe(tasks => this.tasks = tasks ? tasks.tasks : []);
+      this.taskService.getTasksByParentId(this.parentTaskId).subscribe((tasks) => {
+        if (!tasks || !tasks.tasks) return this.tasks = [];
+
+        // Filter only the groups that the user clicked on
+        for (const currTask of tasks.tasks) {
+          if (currTask.groups) {
+            const clickedGroups = currTask.groups.filter(group => group.isClicked);
+            if (clickedGroups.length) currTask.groups = clickedGroups;
+          }
+        }
+
+        return this.tasks = tasks.tasks;
+      });
     });
   }
 
