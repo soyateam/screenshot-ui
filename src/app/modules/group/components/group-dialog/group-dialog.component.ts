@@ -46,6 +46,7 @@ export class GroupDialogComponent implements OnInit {
           const result = await this.sharedService.assignGroup({
             taskId: this.data.task._id,
             group: { name: currGroup.name, id: currGroup.id },
+            isClicked: false,
             isCountGrow: true,
           }).toPromise();
         } catch (err) {
@@ -58,7 +59,12 @@ export class GroupDialogComponent implements OnInit {
     const found = this.data.task.groups.find(item => group.kartoffelID === item.id);
     if (!found) {
       try {
-        const result = await this.sharedService.assignGroup({taskId: this.data.task._id, group: newGroup, isCountGrow: true}).toPromise();
+        const result = await this.sharedService.assignGroup({
+          taskId: this.data.task._id,
+          group: newGroup,
+          isClicked: true,
+          isCountGrow: true
+        }).toPromise();
 
         if (result) {
           this.data.task.groups.push(newGroup);
