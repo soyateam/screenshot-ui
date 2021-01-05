@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SubTaskDialogComponent } from 'src/app/modules/tasks/components/sub-task-dialog/sub-task-dialog.component';
 import { SharedService } from 'src/app/core/http/shared.service';
 import { SnackBarService } from '../../../../core/services/snackbar.service';
+import { HierarchyService } from 'src/app/core/http/hierarchy.service';
 
 @Component({
   selector: 'app-group-dialog',
@@ -14,6 +15,7 @@ export class GroupDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,
               private sharedService: SharedService,
               private snackBarService: SnackBarService,
+              private hierarchyService: HierarchyService,
               @Inject(MAT_DIALOG_DATA) public data) {
     }
 
@@ -25,7 +27,21 @@ export class GroupDialogComponent implements OnInit {
 
   async addGroup(group) {
     console.log(group);
-    for (const currGroup of group.groupsAssignAbove) {
+
+    // Get all the group's children
+    const allGroupChildrens = await this.hierarchyService.getAllGroupsByParentId(group.kartoffelID).toPromise();
+    const filterdGroupChildren = allGroupChildrens.map((child) => {
+      return {
+        id: child.kartoffelID,
+        name: child.name 
+      }
+    });
+
+    // Unifies the ancestors and children of the selected group    
+    const allRelatedGroups = [ ...filterdGroupChildren ];
+
+    // Add all the above ancestors and children of the group 
+    for (const currGroup of allRelatedGroups) {
       const foundGroup = this.data.task.groups.find(item => currGroup.id === item.id);
       if (!foundGroup) {
         try {
@@ -34,15 +50,12 @@ export class GroupDialogComponent implements OnInit {
             group: { name: currGroup.name, id: currGroup.id },
             isCountGrow: true,
           }).toPromise();
-          if (result) {
-            this.data.task.groups.push({ name: currGroup.name, id: currGroup.id });
-          }
         } catch (err) {
           this.snackBarService.open(err.message, 'סגור');
         }
-
       }
     }
+
     const newGroup = {name: group.name, id: group.kartoffelID};
     const found = this.data.task.groups.find(item => group.kartoffelID === item.id);
     if (!found) {
