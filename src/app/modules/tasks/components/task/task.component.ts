@@ -119,6 +119,10 @@ export class TaskComponent implements OnInit {
   }
 
   openGroupDialog(task): void {
+    // Filter only the groups that the user clicked on
+    const clickedGroups = task.groups.filter(group => group.isClicked);
+    if (clickedGroups.length) task.groups = clickedGroups;
+
     const dialogRef = this.dialog.open(GroupDialogComponent, {
       width: '1000px',
       height: '660px',
