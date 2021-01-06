@@ -72,14 +72,6 @@ export class TaskService {
     );
   }
 
-  // /** PUT: update the task on the server */
-  // updateTask(task: any): Observable<any> {
-  //   return this.http.put(this.tasksUrl, task, this.httpOptions).pipe(
-  //     tap(_ => this.log(`updated task id=${task.id}`)),
-  //     catchError(this.handleError<any>('updateTask'))
-  //   );
-  // }
-
   /**
    * Handle Http operation that failed.
    * Let the app continue.

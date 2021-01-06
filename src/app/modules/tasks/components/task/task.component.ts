@@ -51,7 +51,11 @@ export class TaskComponent implements OnInit {
         for (const currTask of tasks.tasks) {
           if (currTask.groups) {
             const clickedGroups = currTask.groups.filter(group => group.isClicked);
-            if (clickedGroups.length) currTask.groups = clickedGroups;
+            if (!clickedGroups.length) {
+              for (let currGroupIndex = 0; currGroupIndex < currTask.groups.length; currGroupIndex++) {
+                currTask.groups[currGroupIndex].isClicked = true;
+              }
+            }
           }
         }
 
@@ -132,8 +136,8 @@ export class TaskComponent implements OnInit {
 
   openGroupDialog(task): void {
     // Filter only the groups that the user clicked on
-    const clickedGroups = task.groups.filter(group => group.isClicked);
-    if (clickedGroups.length) task.groups = clickedGroups;
+    /*const clickedGroups = task.groups.filter(group => group.isClicked);
+    if (clickedGroups.length) task.groups = clickedGroups;*/
 
     const dialogRef = this.dialog.open(GroupDialogComponent, {
       width: '1000px',

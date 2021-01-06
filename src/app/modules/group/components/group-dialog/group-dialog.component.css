@@ -34,3 +34,7 @@ background-color: #3f51b5; }
 .scrollbar-primary {
 scrollbar-color: #3f51b5 #F5F5F5;
 }
+
+.mat-dialog-container {
+    overflow-y:hidden !important;
+}

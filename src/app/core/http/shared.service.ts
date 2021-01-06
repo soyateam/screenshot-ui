@@ -27,7 +27,7 @@ export class SharedService {
     );
   }
 
-  /** POST: Assign Group to Task */
+  /** PUT: Assign Group to Task */
   assignGroup(group: any): Observable<any> {
     return this.http.put<any>(`${this.sharedUrl}/assign`, group, this.httpOptions).pipe(
       tap((newTask: any) => this.log(`added group to task w/ id=${newTask._id}`)),
@@ -93,6 +93,6 @@ export class SharedService {
   }
 
   private log(message: string) {
-    // console.log(message);
+     console.log(message);
   }
 }

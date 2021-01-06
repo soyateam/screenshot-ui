@@ -6,25 +6,25 @@
     </mat-toolbar-row>
 </mat-toolbar>
 
-<div class="groups-select scrollbar scrollbar-primary">
+<div class="groups-select scrollbar scrollbar-primary" style="position:relative;">
+    <mat-progress-bar style="position: absolute; top:0px; right: 0;" *ngIf="isAssigning" mode="indeterminate"></mat-progress-bar>
     <span style="position: relative; top: 5px; right: 13px; font-size: 14px; font-weight: bold; color: #7a7a7a">נא לבחור קבוצה אירגונית בכדי לשייך אותה למשימה</span>
     <app-group-tree (clickGroup)="addGroup($event)"></app-group-tree>
 </div>
 
 <mat-divider></mat-divider>
-<div class="scrollbar scrollbar-primary" style="padding: 31px 21px 13px 0;position: relative;top: 0px;height: 83px;overflow-y: auto;overflow-x: hidden;">
+<div class="scrollbar scrollbar-primary" style="padding: 31px 21px 13px 0;position: relative;top: 0px;height: 150px;overflow-y: auto;overflow-x: hidden;">
     <span style="position: absolute;top: 2px;font-weight: bold;color: #7a7a7a;">קבוצות משוייכות:</span>
-    <div *ngIf="data.task.groups.length === 0;" style="text-align: center;">
-        <mat-icon style="width: 55px;height: 55px;font-size: 55px;color: #BABABA;">sentiment_dissatisfied</mat-icon><br>
+    <div *ngIf="data.task.groups.length === 0;" style="text-align: center; position:relative; top:20px;">
+        <mat-icon style="width: 55px;height: 55px;font-size: 55px;color: #BABABA;">group</mat-icon><br>
         <span style="color: #BABABA; font-weight:bold;">אין עדיין קבוצות משויכות</span>
     </div>
     <mat-chip-list>
-        <mat-chip *ngFor="let group of data.task.groups" matTooltip="{{group.hierarchy || group.name}}"> {{group.name}} <mat-icon matChipRemove (click)="removeGroup(group)">cancel</mat-icon></mat-chip>
+        <span *ngFor="let group of data.task.groups">
+            <mat-chip  matTooltip="{{group.hierarchy || group.name}}" *ngIf="group.isClicked">
+                {{group.name}}
+                <mat-icon matChipRemove (click)="removeGroup(group)">cancel</mat-icon>
+            </mat-chip>
+        </span>
     </mat-chip-list>
-</div>
-
-<mat-divider></mat-divider>
-
-<div mat-dialog-actions class="action">
-    <button color="warn" mat-button [mat-dialog-close]="data" style="font-weight:bold;">סגור</button>
 </div>
