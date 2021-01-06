@@ -83,7 +83,7 @@
                 </div>
                 <div class="second-subtasks-main">
                     <div matRipple class="second-subtasks-secondary" *ngFor="let currSubBuildTask of currBuildTask.children" (click)="taskStatistics(currSubBuildTask)">
-                        <div style="position:absolute; left:6px; top:2px; color: white; font-weight: bold; z-index:1;">
+                        <div style="position:absolute; left:6px; top:-3px; color: white; font-weight: bold; z-index:1;">
                             <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
                             <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ currSubBuildTask.value.toFixed(2).replace('.00', '') }}</span>
                         </div>

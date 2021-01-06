@@ -142,7 +142,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
         contextButton: {
             enabled: true,
             menuItems: [{
-                text: 'Export XLS',
+                text: 'ייצא לאקסל',
                 onclick() {
                     this.options.exporting.filename =
                       `bar-chart-${(new Date().toLocaleString())
@@ -152,7 +152,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
                     this.downloadXLS();
                 }
             }, {
-                text: 'Export CSV',
+              text: 'CSV ייצא ל',
                 onclick() {
                     this.options.exporting.filename =
                       `bar-chart-${(new Date().toLocaleString())

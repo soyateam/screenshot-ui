@@ -61,7 +61,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
           contextButton: {
               enabled: true,
               menuItems: [{
-                  text: 'Export XLS',
+                  text: 'ייצא לאקסל',
                   onclick() {
                       this.options.exporting.filename =
                         `pie-chart-${(new Date().toLocaleString())
@@ -71,7 +71,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
                       this.downloadXLS();
                   }
               }, {
-                  text: 'Export CSV',
+                  text: 'CSV ייצא ל',
                   onclick() {
                       this.options.exporting.filename =
                         `pie-chart-${(new Date().toLocaleString())
@@ -149,7 +149,7 @@ export class PieGraphComponent implements OnInit, OnChanges {
 
     this.options = {
       ...this.options,
-      drilldown: { series: updatedDrilldownSeries },
+      /*drilldown: { series: updatedDrilldownSeries },*/
       series: updatedSeries
     };
   }
