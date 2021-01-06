@@ -76,19 +76,52 @@ export class GroupDialogComponent implements OnInit {
     }
   }
 
-  removeGroup(group) {
-    const found = this.data.task.groups.find(item => group.id === item.id);
-    if (found) {
-      this.sharedService.assignGroup({
-        taskId: this.data.task._id,
-        group: { name: group.name, id: group.id },
-        isCountGrow: false,
-      }).subscribe((result) => {
-        if (result) {
-          this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.id);
-          this.snackBarService.open('קבוצה נמחקה בהצלחה', 'סגור');
+  async getAllAncestorsData(ancestors) {
+    const allAncestors = [];
+    for (const ancestorId of ancestors) {
+      const group = await this.hierarchyService.getGroup(ancestorId).toPromise()
+      allAncestors.push(group);
+    }
+
+    return allAncestors;
+  }
+
+  async removeGroup(group) {
+    // Get all the groups data
+    const selectedGroup = await this.hierarchyService.getGroup(group.id).toPromise();
+    // Remove the aman ancestor from the groups
+    if (selectedGroup.ancestors) selectedGroup.ancestors.splice(selectedGroup.ancestors - 1, 1);
+
+    const allGroupAncestors = selectedGroup.ancestors.length ? await this.getAllAncestorsData(selectedGroup.ancestors) : [];
+    const allGroupChildrens = await this.hierarchyService.getAllGroupsByParentId(group.id).toPromise();
+    
+    if (selectedGroup) {
+      const originalGroupsLength = this.data.task.groups.length,
+            allGroupsToRemoved = [selectedGroup, ...allGroupAncestors, ...allGroupChildrens];
+      
+      for (const groupToRemoved of allGroupsToRemoved) {
+        try {
+          const res = await this.sharedService.assignGroup({
+            taskId: this.data.task._id,
+            group: { name: groupToRemoved.name, id: groupToRemoved.kartoffelID },
+            isCountGrow: false,
+          }).toPromise();
+
+          if (!res) {
+            throw new Error('המשימה לא קיימת!');
+          }
+  
+          // Remove the current group from the data tasks
+          this.data.task.groups = this.data.task.groups.filter((item) => item.id !== groupToRemoved.kartoffelID);
+        } catch (err) {
+          this.snackBarService.open(err.message, 'סגור');
         }
-      });
+      }
+
+      // Checks if the removed operation was successful 
+      if (originalGroupsLength > this.data.task.groups.length) {
+        this.snackBarService.open('הקבוצה וכל הקבוצות המשויכות אליה נמחקו בהצלחה', 'סגור');
+      }
     }
   }
 }
