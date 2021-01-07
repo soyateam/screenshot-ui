@@ -39,6 +39,7 @@ export class ViewScreenComponent implements OnInit {
 
   selectedDateFilter: any;
   selectedUnitFilter: any;
+  selectedUnitFilterName: any;
 
   constructor(private dialog: MatDialog,
               private sharedService: SharedService,
@@ -46,7 +47,6 @@ export class ViewScreenComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      // console.log(this.userService.currentUser);
       const fullView = await this.sharedService.getView().toPromise();
       const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
       const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise(); 
@@ -55,6 +55,7 @@ export class ViewScreenComponent implements OnInit {
         this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];    
         this.selectedDateFilter = this.DEFAULT_FILTERS['זמן נוכחי'];
         this.selectedUnitFilter = this.DEFAULT_FILTERS['כל היחידות'];
+        this.selectedUnitFilterName = 'אמ"ן';
         this.initViewValues(fullView);
         this.finishedLoading = true;
       } else {
@@ -125,6 +126,12 @@ export class ViewScreenComponent implements OnInit {
   async changeUnitFilter() {
     this.secondaryLoading = true;
     this.initViewValues(await this.getViewValues());
+    if (this.selectedUnitFilter !== 'כל היחידות') {
+      this.selectedUnitFilterName = this.unitFilters.find((unit: any) => unit.kartoffelID === this.selectedUnitFilter).name;
+        
+    } else {
+      this.selectedUnitFilterName = 'אמ"ן';
+    }
     this.secondaryLoading = false;
   }
 
