@@ -96,8 +96,10 @@ export class GroupDialogComponent implements OnInit {
     } else {
       for (let currGroupIndex = 0; currGroupIndex < this.data.task.groups.length; currGroupIndex++) {
         if (this.data.task.groups[currGroupIndex].id === group.kartoffelID) {
-          this.data.task.groups[currGroupIndex].isClicked = true;
-          await this.taskService.updateTask(this.data.task).toPromise();
+          if (!this.data.task.groups[currGroupIndex].isClicked) {
+            this.data.task.groups[currGroupIndex].isClicked = true;
+            await this.taskService.updateTask(this.data.task, this.data.task.groups[currGroupIndex].id).toPromise();
+          }
           break;
         }
       }

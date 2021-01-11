@@ -53,9 +53,9 @@ export class TaskService {
     );
   }
 
-  updateTask(task): Observable<any> {
+  updateTask(task, clickedGroupId?): Observable<any> {
     // console.log(task);
-    return this.http.put<any>(this.tasksUrl, { task }, this.httpOptions).pipe(
+    return this.http.put<any>(this.tasksUrl, { task, clickedGroupId }, this.httpOptions).pipe(
       tap((updatedTask: any) => this.log(`Updated task w/ id=${updatedTask.id}`)),
       catchError(this.handleError<any>('updateTask'))
     );
