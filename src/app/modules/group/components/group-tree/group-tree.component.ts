@@ -1,6 +1,6 @@
 import { CollectionViewer, SelectionChange, DataSource } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, Injectable, Output, EventEmitter } from '@angular/core';
+import { Component, Injectable, Output, EventEmitter, Input, OnInit, OnChanges } from '@angular/core';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Group } from 'src/app/shared/models/group.model';
@@ -148,8 +148,9 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   templateUrl: './group-tree.component.html',
   styleUrls: ['./group-tree.component.css']
 })
-export class GroupTreeComponent {
+export class GroupTreeComponent implements OnInit, OnChanges{
 
+  @Input() isGroupClicked;
   // tslint:disable-next-line: no-output-rename
   @Output('clickGroup') clickGroup = new EventEmitter();
   constructor(database: DynamicDatabase) {
@@ -162,6 +163,13 @@ export class GroupTreeComponent {
   treeControl: FlatTreeControl<DynamicFlatNode>;
 
   dataSource: DynamicDataSource;
+
+  ngOnInit() {
+
+  }
+
+  ngOnChanges() {
+  }
 
   getLevel = (node: DynamicFlatNode) => node.level;
 

@@ -9,7 +9,7 @@
 <div class="groups-select scrollbar scrollbar-primary" style="position:relative;">
     <mat-progress-bar style="position: absolute; top:0px; right: 0;" *ngIf="isAssigning" mode="indeterminate"></mat-progress-bar>
     <span style="position: relative; top: 5px; right: 13px; font-size: 14px; font-weight: bold; color: #7a7a7a">נא לבחור קבוצה אירגונית בכדי לשייך אותה למשימה</span>
-    <app-group-tree (clickGroup)="addGroup($event)"></app-group-tree>
+    <app-group-tree (clickGroup)="addGroup($event)" [isGroupClicked]="isAssigning"></app-group-tree>
 </div>
 
 <mat-divider></mat-divider>
@@ -21,9 +21,9 @@
     </div>
     <mat-chip-list>
         <span *ngFor="let group of data.task.groups">
-            <mat-chip  matTooltip="{{group.hierarchy || group.name}}" *ngIf="group.isClicked">
+            <mat-chip  matTooltip="{{group.hierarchy || group.name}}" *ngIf="group.isClicked" [disabled]="isAssigning">
                 {{group.name}}
-                <mat-icon matChipRemove (click)="removeGroup(group)">cancel</mat-icon>
+                <mat-icon *ngIf="!isAssigning" matChipRemove (click)="removeGroup(group)">cancel</mat-icon>
             </mat-chip>
         </span>
     </mat-chip-list>
