@@ -51,6 +51,43 @@ export class LinearGraphComponent implements OnInit, OnChanges {
         text: 'כמות אנשים'
       },
     },
+    exporting: {
+      buttons: {
+        contextButton: {
+            enabled: true,
+            menuItems: [{
+                text: 'ייצא לאקסל',
+                onclick() {
+                    this.options.exporting.filename =
+                      `linear-chart-${(new Date().toLocaleString())
+                        .replace(/,/g, '-')
+                        .replace(/\//g, '-')
+                        .replace(/ /g, '')}`;
+                    this.downloadXLS();
+                }
+            }, {
+              text: 'CSV ייצא ל',
+                onclick() {
+                    this.options.exporting.filename =
+                      `linear-chart-${(new Date().toLocaleString())
+                        .replace(/,/g, '-')
+                        .replace(/\//g, '-')
+                        .replace(/ /g, '')}`;
+                    this.downloadCSV();
+                }
+            }]
+        }
+    },
+      csv: {
+        columnHeaderFormatter(item, key) {
+            if (!item || item instanceof Axis) {
+                return 'משימות';
+            } else {
+                return item.name;
+            }
+        }
+      },
+    },
     series: [] as any,
   };
 
