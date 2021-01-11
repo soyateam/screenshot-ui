@@ -37,8 +37,8 @@ export class TaskService {
   }
 
   /** GET task by id. Will 404 if id not found */
-  getTask(id: string): Observable<any> {
-    const url = `${this.tasksUrl}/${id}`;
+  getTask(id: string, dateFilter?: string): Observable<any> {
+    const url = `${this.tasksUrl}/${id}${dateFilter ? `?date=${dateFilter}` : '' }`;
     return this.http.get<any>(url).pipe(
       tap(_ => this),
       catchError(this.handleError<any>(`getTask id=${id}`))

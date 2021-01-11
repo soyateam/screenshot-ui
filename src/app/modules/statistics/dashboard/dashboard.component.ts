@@ -59,13 +59,13 @@ export class DashboardComponent implements OnInit {
       this.ancestors.reverse();
     }
 
-    this.taskService.getTask(data.task._id).subscribe(async (parentTask) => {
+    this.taskService.getTask(data.task._id, this.dateFilter).subscribe(async (parentTask) => {
       this.hierarchy = [];
       let result: any;
 
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < this.ancestors.length; i++) {
-        result = await this.taskService.getTask(this.ancestors[i]).toPromise();
+        result = await this.taskService.getTask(this.ancestors[i], this.dateFilter).toPromise();
         if (result) {
           this.hierarchy.push(result);
         }
