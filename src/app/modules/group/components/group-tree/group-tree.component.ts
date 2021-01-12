@@ -89,7 +89,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   // tslint:disable-next-line: variable-name
   constructor(private _treeControl: FlatTreeControl<DynamicFlatNode>,
               // tslint:disable-next-line: variable-name
-              private _database: DynamicDatabase) { }
+              private _database: DynamicDatabase,
+              private groupTreeComponent: GroupTreeComponent) { }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this._treeControl.expansionModel.changed.subscribe(change => {
@@ -118,7 +119,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
    * Toggle the node, remove from display list
    */
   async toggleNode(node: DynamicFlatNode, expand: boolean) {
-    node.isLoading = true;
+    this.groupTreeComponent.isLoadEvent.emit(true);
+    this.groupTreeComponent.isLoading = true;
     const children = await this._database.getChildren(node.item);
     const index = this.data.indexOf(node);
     if (!children || index < 0) { // If no children, or cannot find the node, no op
@@ -139,7 +141,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
     // notify the change
     this.dataChange.next(this.data);
-    node.isLoading = false;
+    this.groupTreeComponent.isLoading = false;
+    this.groupTreeComponent.isLoadEvent.emit(false);
   }
 }
 
@@ -151,11 +154,13 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 export class GroupTreeComponent implements OnInit, OnChanges{
 
   @Input() isGroupClicked;
+  public isLoading = false;
+  @Output('isLoadEvent') public isLoadEvent = new EventEmitter();
   // tslint:disable-next-line: no-output-rename
   @Output('clickGroup') clickGroup = new EventEmitter();
   constructor(database: DynamicDatabase) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, database);
+    this.dataSource = new DynamicDataSource(this.treeControl, database, this);
 
     this.dataSource.data = database.initialData();
   }

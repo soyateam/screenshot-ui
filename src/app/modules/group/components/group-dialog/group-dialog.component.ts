@@ -13,7 +13,8 @@ import { TaskService } from 'src/app/core/http/task.service';
 })
 export class GroupDialogComponent implements OnInit {
   selectedGroup;
-  isAssigning;
+  isAssigning: boolean;
+  isLoading: boolean;
 
   constructor(public dialogRef: MatDialogRef<SubTaskDialogComponent>,
               private sharedService: SharedService,
@@ -116,6 +117,10 @@ export class GroupDialogComponent implements OnInit {
     }
 
     return allAncestors;
+  }
+
+  toggleLoading(isLoading):void {
+    this.isLoading = isLoading;
   }
 
   async removeGroup(group) {

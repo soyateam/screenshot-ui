@@ -94,12 +94,12 @@
         </div>
     </div>
     <div class="secondary-div-third">
-        <button mat-button class="vertical-align special-fix" (click)="taskStatistics({_id: widthTasks._id, name: widthTasks.name, ancestors: [defaultParentNew]});">
+        <button mat-button class="vertical-align" (click)="taskStatistics({_id: widthTasks._id, name: widthTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
                 <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (widthTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
-            <span class="rotate" style="position:relative; bottom: 10px;">{{ widthTasks.name }}</span>
+            <span class="rotate" style="position:relative; top: 4px;">{{ widthTasks.name }}</span>
         </button>
         <div class="third-view">
             <div matRipple class="third-tasks-main" *ngFor="let currWidthTask of widthTasks.children" (click)="taskStatistics(currWidthTask);">
@@ -112,12 +112,12 @@
         </div>
     </div>
     <div class="secondary-div-fourth">
-        <button mat-button class="vertical-align special-fix" (click)="taskStatistics({_id: wrapTasks._id, name: wrapTasks.name, ancestors: [defaultParentNew]});">
+        <button mat-button class="vertical-align" (click)="taskStatistics({_id: wrapTasks._id, name: wrapTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">
                 <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
                 <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (wrapTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
-            <span class="rotate" style="position:relative; bottom: 30px; font-size:12px;">{{ wrapTasks.name }}</span>
+            <span class="rotate">{{ wrapTasks.name }}</span>
         </button>
         <div class="fourth-view">
             <div matRipple class="fourth-tasks-main" *ngFor="let currWrapTask of wrapTasks.children" (click)="taskStatistics(currWrapTask)">

@@ -32,12 +32,12 @@ export class UserService {
     const token = this.cookieService.get(this.cookieName);
 
     if (!token) {
-      return true;
+      window.location.href = this.loginURL;
     }
 
     const exp = this.parseJwt(token).exp;
     if (Date.now() >= exp * 1000) {
-      return true;
+      window.location.href = this.loginURL;
     }
 
     return false;

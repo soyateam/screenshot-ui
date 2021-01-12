@@ -1,15 +1,15 @@
-<mat-toolbar>
+<mat-toolbar style="position: relative;">
     <mat-toolbar-row>
       <span>ניהול קבוצות של משימה</span>
       <span class="example-spacer"></span>
       <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
     </mat-toolbar-row>
+    <mat-progress-bar style="position: absolute; bottom:0px; right: 0;" *ngIf="isAssigning || isLoading" mode="indeterminate"></mat-progress-bar>
 </mat-toolbar>
 
 <div class="groups-select scrollbar scrollbar-primary" style="position:relative;">
-    <mat-progress-bar style="position: absolute; top:0px; right: 0;" *ngIf="isAssigning" mode="indeterminate"></mat-progress-bar>
     <span style="position: relative; top: 5px; right: 13px; font-size: 14px; font-weight: bold; color: #7a7a7a">נא לבחור קבוצה אירגונית בכדי לשייך אותה למשימה</span>
-    <app-group-tree (clickGroup)="addGroup($event)" [isGroupClicked]="isAssigning"></app-group-tree>
+    <app-group-tree (isLoadEvent)="toggleLoading($event)" (clickGroup)="addGroup($event)" [isGroupClicked]="isAssigning"></app-group-tree>
 </div>
 
 <mat-divider></mat-divider>
