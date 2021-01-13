@@ -26,8 +26,8 @@ export class TaskService {
   }
 
   /** GET tasks by parent id. Return `undefined` when id not found */
-  getTasksByParentId(id: string): Observable<any> {
-    const url = `${this.tasksUrl}/parent/${id}`;
+  getTasksByParentId(id: string, showIsClicked?): Observable<any> {
+    const url = `${this.tasksUrl}/parent/${id}${showIsClicked ? `?showIsClicked=${showIsClicked}` : ''}`;
     return this.http.get<any>(url)
       .pipe(
         map(tasks => tasks),

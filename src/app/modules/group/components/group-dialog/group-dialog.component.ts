@@ -37,6 +37,14 @@ export class GroupDialogComponent implements OnInit {
   async addGroup(group) {
     this.isAssigning = true;
 
+    const result = await this.sharedService.assignGroups(group.kartoffelID, this.data.task._id, true).toPromise();
+
+    if (result) {
+      this.data.task.groups.push({ name: group.name, id: group.kartoffelID, isClicked: true });
+    }
+    
+    this.isAssigning = false;
+    /*
     // Get all the group's children
     const allGroupChildrens = await this.hierarchyService.getAllGroupsByParentId(group.kartoffelID).toPromise();
     const filterdGroupChildren = allGroupChildrens.map((child) => {
@@ -104,9 +112,7 @@ export class GroupDialogComponent implements OnInit {
           break;
         }
       }
-    }
-
-    this.isAssigning = false;
+    }*/
   }
 
   async getAllAncestorsData(ancestors) {
@@ -126,79 +132,84 @@ export class GroupDialogComponent implements OnInit {
   async removeGroup(group) {
     this.isAssigning = true;
 
-    // Get all the groups data
-    const selectedGroup = await this.hierarchyService.getGroup(group.id).toPromise();
-    // Remove the aman ancestor from the groups
-    if (selectedGroup.ancestors) selectedGroup.ancestors.splice(selectedGroup.ancestors.length - 1, 1);
+    const result = this.sharedService.assignGroups(group.kartoffelID, this.data.task._id, false).toPromise();
 
-    const allGroupChildrens = await this.hierarchyService.getAllGroupsByParentId(group.id).toPromise();
+    if (result) {
+      this.data.task.groups = result;
+    }
+
+    this.isAssigning = false;
+    // // Get all the groups data
+    // const selectedGroup = await this.hierarchyService.getGroup(group.id).toPromise();
+    // // Remove the aman ancestor from the groups
+    // if (selectedGroup.ancestors) selectedGroup.ancestors.splice(selectedGroup.ancestors.length - 1, 1);
+
+    // const allGroupChildrens = await this.hierarchyService.getAllGroupsByParentId(group.id).toPromise();
     
-    if (selectedGroup) {
-      const originalGroupsLength = this.data.task.groups.length;
+    // if (selectedGroup) {
+    //   const originalGroupsLength = this.data.task.groups.length;
       
-      // Remove all the children of the specified group.
-      for (const groupToRemoved of allGroupChildrens) {
-        const found = this.data.task.groups.find(item => groupToRemoved.kartoffelID === item.id);
-        if (found) {
-          await this.removeGroupFromTask(groupToRemoved);
-        }
-      }
+    //   // Remove all the children of the specified group.
+    //   for (const groupToRemoved of allGroupChildrens) {
+    //     const found = this.data.task.groups.find(item => groupToRemoved.kartoffelID === item.id);
+    //     if (found) {
+    //       await this.removeGroupFromTask(groupToRemoved);
+    //     }
+    //   }
 
-      // Remove the group itself.
-      await this.removeGroupFromTask(selectedGroup);
+    //   // Remove the group itself.
+    //   await this.removeGroupFromTask(selectedGroup);
 
-      // Remove the needed ancestors of the group.
+    //   // Remove the needed ancestors of the group.
       
-      let isAncestorChildEmpty;
+    //   let isAncestorChildEmpty;
 
-      for (let currAncestorIndex = 0; currAncestorIndex < selectedGroup.ancestors.length; currAncestorIndex++) {
-        isAncestorChildEmpty = true;
+    //   for (let currAncestorIndex = 0; currAncestorIndex < selectedGroup.ancestors.length; currAncestorIndex++) {
+    //     isAncestorChildEmpty = true;
 
-        const currAncestorGroup = await this.hierarchyService.getGroup(selectedGroup.ancestors[currAncestorIndex]).toPromise();
+    //     const currAncestorGroup = await this.hierarchyService.getGroup(selectedGroup.ancestors[currAncestorIndex]).toPromise();
         
-        for (let currChildIndex = 0; currChildIndex < currAncestorGroup.children.length; currChildIndex++) {
-            for (let currTaskGroupIndex = 0; currTaskGroupIndex < this.data.task.groups.length; currTaskGroupIndex++) {
-              if (this.data.task.groups[currTaskGroupIndex].id === currAncestorGroup.children[currChildIndex]) {
-                isAncestorChildEmpty = false;
-                break;
-              }
-            }
-        }
+    //     for (let currChildIndex = 0; currChildIndex < currAncestorGroup.children.length; currChildIndex++) {
+    //         for (let currTaskGroupIndex = 0; currTaskGroupIndex < this.data.task.groups.length; currTaskGroupIndex++) {
+    //           if (this.data.task.groups[currTaskGroupIndex].id === currAncestorGroup.children[currChildIndex]) {
+    //             isAncestorChildEmpty = false;
+    //             break;
+    //           }
+    //         }
+    //     }
 
-        if (isAncestorChildEmpty) {
-          const found = this.data.task.groups.find(item => currAncestorGroup.kartoffelID === item.id);
-          if (found) {
-            await this.removeGroupFromTask(currAncestorGroup);
-          }
-        }
+    //     if (isAncestorChildEmpty) {
+    //       const found = this.data.task.groups.find(item => currAncestorGroup.kartoffelID === item.id);
+    //       if (found) {
+    //         await this.removeGroupFromTask(currAncestorGroup);
+    //       }
+    //     }
+    //   }
 
-      }
-
-
-      // Checks if the removed operation was successful 
-      if (originalGroupsLength > this.data.task.groups.length) {
-        this.isAssigning = false;
-        this.snackBarService.open('הקבוצה וכל הקבוצות המשויכות אליה נמחקו בהצלחה', 'סגור');
-      }
-    }
+    //   // Checks if the removed operation was successful 
+    //   if (originalGroupsLength > this.data.task.groups.length) {
+    //     this.isAssigning = false;
+    //     this.snackBarService.open('הקבוצה וכל הקבוצות המשויכות אליה נמחקו בהצלחה', 'סגור');
+    //   }
+    // }
   }
 
-  async removeGroupFromTask(group) {
-    try {
-      const res = await this.sharedService.assignGroup({
-        taskId: this.data.task._id,
-        group: { name: group.name, id: group.kartoffelID },
-        isCountGrow: false,
-      }).toPromise();
+  // async removeGroupFromTask(group) {
+  //   try {
+  //     const res = await this.sharedService.assignGroup({
+  //       taskId: this.data.task._id,
+  //       group: { name: group.name, id: group.kartoffelID },
+  //       isCountGrow: false,
+  //     }).toPromise();
 
-      if (!res) {
-        throw new Error('המשימה לא קיימת!');
-      }
+  //     if (!res) {
+  //       throw new Error('המשימה לא קיימת!');
+  //     }
 
-      // Remove the current group from the data tasks
-      this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.kartoffelID);
-    } catch (err) {
-      this.snackBarService.open(err.message, 'סגור');
-    }
-  }
+  //     // Remove the current group from the data tasks
+  //     this.data.task.groups = this.data.task.groups.filter((item) => item.id !== group.kartoffelID);
+  //   } catch (err) {
+  //     this.snackBarService.open(err.message, 'סגור');
+  //   }
+  // }
 }

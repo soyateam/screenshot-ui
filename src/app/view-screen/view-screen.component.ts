@@ -48,6 +48,7 @@ export class ViewScreenComponent implements OnInit {
   async ngOnInit() {
     try {
       const fullView = await this.sharedService.getView().toPromise();
+      console.log(fullView);
       const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
       const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise(); 
       if (recvDateFilters && recvUnitNamesFilters && fullView) {

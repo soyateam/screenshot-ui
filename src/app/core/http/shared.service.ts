@@ -27,6 +27,10 @@ export class SharedService {
     );
   }
 
+  assignGroups(kartoffelID, taskId, isCountGrow) {
+    return this.http.put<any>(`${this.sharedUrl}/assign`, { kartoffelID, taskId, isCountGrow })
+  }
+
   /** PUT: Assign Group to Task */
   assignGroup(group: any): Observable<any> {
     return this.http.put<any>(`${this.sharedUrl}/assign`, group, this.httpOptions).pipe(
