@@ -132,10 +132,10 @@ export class GroupDialogComponent implements OnInit {
   async removeGroup(group) {
     this.isAssigning = true;
 
-    const result = this.sharedService.assignGroups(group.kartoffelID, this.data.task._id, false).toPromise();
+    const result = await this.sharedService.assignGroups(group.id, this.data.task._id, false).toPromise() as any;
 
     if (result) {
-      this.data.task.groups = result;
+      this.data.task.groups = result.taskGroups;
     }
 
     this.isAssigning = false;
