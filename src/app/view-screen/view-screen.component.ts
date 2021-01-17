@@ -29,6 +29,7 @@ export class ViewScreenComponent implements OnInit {
   finishedLoading = false;
   isError = false;
   fullSize: any;
+  mainFullSize: any;
   loadingValue = 0;
   interval;
 
@@ -87,6 +88,7 @@ export class ViewScreenComponent implements OnInit {
 
   initViewValues(viewResults: any) {    
     this.fullSize = viewResults.fullSize;
+    this.mainFullSize = viewResults.mainFullSize;
     this.forceOpTasks = viewResults[taskKeys.opForce];
     this.buildForceTasks = viewResults[taskKeys.buildForce];
     this.wrapTasks = viewResults[taskKeys.wrap];
