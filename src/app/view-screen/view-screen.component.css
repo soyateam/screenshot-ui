@@ -150,6 +150,8 @@
     margin: 10px;
     padding: 11px;
     text-align: center;
+    font-weight: 500;
+    font-size: 16px;
     color:black;
     border: 1px solid rgba(0,0,0,0.1);
     cursor: pointer;
@@ -173,6 +175,8 @@
     height:25px;
     cursor: pointer;
     transition: 0.2s;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .fourth-tasks-main:hover {
@@ -183,15 +187,18 @@
 .first-tasks-names {
     height: 50px;
     display: flex;
+    font-weight: bold;
     justify-content: center;
     align-items: center;
     font-weight: 600;
-    font-size:17px;
+    font-size:18px;
     min-width:232px;
 }
 
 .second-tasks-names {
     color: white;
+    font-size:17px;
+    font-weight: 600;
     margin: 3px 3px 0px 3px;
     padding: 12px;
     background-color: rgb(59,170,236);
@@ -248,6 +255,7 @@
     text-align:center;
     margin: 0px 3px 2px 3px;
     padding:11px;
+    font-size:15px;
     background-color: rgb(33, 171, 157);
     color: white;
     border-left:1px solid rgba(0,0,0,0.24);

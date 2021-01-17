@@ -50,6 +50,7 @@ export class GroupDialogComponent implements OnInit {
       }
 
       if (!isExists) {
+        this.snackBarService.open('קבוצה שויכה בהצלחה', 'סגור');
         this.data.task.groups.push({ name: group.name, id: group.kartoffelID, isClicked: true });
       }
     }
@@ -146,6 +147,7 @@ export class GroupDialogComponent implements OnInit {
     const result = await this.sharedService.assignGroups(group.id, this.data.task._id, false).toPromise() as any;
 
     if (result) {
+      this.snackBarService.open('הקבוצה וכל הקבוצות המשויכות אליה נמחקו בהצלחה', 'סגור');
       this.data.task.groups = result.taskGroups;
     }
 
