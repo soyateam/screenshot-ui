@@ -39,8 +39,19 @@ export class GroupDialogComponent implements OnInit {
 
     const result = await this.sharedService.assignGroups(group.kartoffelID, this.data.task._id, true).toPromise();
 
+    let isExists = false;
+
     if (result) {
-      this.data.task.groups.push({ name: group.name, id: group.kartoffelID, isClicked: true });
+      for (let currGroup of this.data.task.groups) {
+        if (group.kartoffelID === currGroup.id) {
+          isExists = true;
+          break;
+        }
+      }
+
+      if (!isExists) {
+        this.data.task.groups.push({ name: group.name, id: group.kartoffelID, isClicked: true });
+      }
     }
     
     this.isAssigning = false;
