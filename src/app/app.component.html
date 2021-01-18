@@ -28,7 +28,7 @@
     <span style="font-size: 17px; position: relative; left:2px; bottom: 1px;">דף ראשי</span>
     <mat-icon style="position:relative; right:3px;">donut_small</mat-icon>
   </button>
-  <button mat-button routerLink="/task/5f4cc73b4201366c45b83925" style="position:relative; right: 40px; font-weight:bold">
+  <button *ngIf="service.isUserCanWrite" mat-button routerLink="/task/5f4cc73b4201366c45b83925" style="position:relative; right: 40px; font-weight:bold">
     <span style="font-size: 17px; position: relative; left:2px; bottom: 1px;">ניהול משימות</span>
     <mat-icon style="position:relative; right: 3px;">assignment</mat-icon>
   </button>

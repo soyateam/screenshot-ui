@@ -215,38 +215,47 @@ HC_exporting(Highcharts);
 HC_exportData(Highcharts);
 
 @Component({
-  selector: 'app-graph',
-  templateUrl: './graph.component.html',
-  styleUrls: ['./graph.component.css']
+   selector: 'app-graph',
+   templateUrl: './graph.component.html',
+   styleUrls: ['./graph.component.css']
 })
 export class GraphComponent implements OnInit, OnChanges {
-  // tslint:disable-next-line: no-input-rename
-  @Input('options') options;
-  // tslint:disable-next-line: no-input-rename
-  @Input('container') container: string;
+   // tslint:disable-next-line: no-input-rename
+   @Input('options') options;
+   // tslint:disable-next-line: no-input-rename
+   @Input('container') container: string;
 
-  constructor() { }
+   constructor() { }
 
-  currGraph;
+   currGraph;
 
-  ngOnInit() {
-    this.options.lang.noData = '';
+   ngOnInit() {
+      this.options.lang.noData = '';
 
-     // Apply the theme
-    // Highcharts.setOptions(theme as any);
-    this.currGraph = Highcharts.chart(this.container, this.options);
-    if (this.container !== 'linear') {
-      this.currGraph.showLoading('...טוען נתונים');
-    }
-  }
+      // Apply the theme
+      // Highcharts.setOptions(theme as any);
+      this.currGraph = Highcharts.chart(this.container, this.options);
+      if (this.container !== 'linear') {
+         this.currGraph.showLoading('...טוען נתונים');
+      }
+   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.options.lang.noData = 'לא קיימים נתונים להצגת הגרף';
-    // Highcharts.setOptions(theme as any);
-    this.currGraph = Highcharts.chart(this.container, this.options);
-    this.currGraph.redraw();
-    this.currGraph.hideLoading();
-  }
+   ngOnChanges(changes: SimpleChanges) {
+      switch(this.container) {
+         case 'bar':
+            this.options.lang.noData = 'לא קיימות תתי משימות עם שיוכים למשימה הנוכחית';
+            break;
+         case 'pie':
+            this.options.lang.noData = 'לא קיימות קבוצות המשוייכות למשימה ';
+            break;
+         default:
+            this.options.lang.noData = 'לא קיימים נתונים להצגת הגרף';
+      }
+      
+      this.currGraph = Highcharts.chart(this.container, this.options);
+      this.currGraph.redraw();
+      this.currGraph.hideLoading();
+   }
 
   showLoad(event) {
     this.currGraph.showLoading();

@@ -1,4 +1,4 @@
-<div class="task-list">
+<div class="task-list" *ngIf="isUserCanWrite">
     <mat-progress-bar style="margin-top:82px;" mode="indeterminate" *ngIf="parentTask && parentTask.ancestors.length !== ancestorsDetails.length"></mat-progress-bar>
     <mat-list role="list" style="display:flex; position:relative;" *ngIf="tasks && parentTask && parentTask.ancestors.length === ancestorsDetails.length">
         <mat-list-item *ngFor="let currAncest of ancestorsDetails" style="width:initial !important;" role="listitem">

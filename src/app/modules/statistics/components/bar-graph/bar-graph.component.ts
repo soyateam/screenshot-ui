@@ -45,7 +45,7 @@ export class BarGraphComponent implements OnInit, OnChanges {
   public yAxisTexts = ['כמות משימות', 'כמות אנשים'];
   public options: any = {
     lang: {
-      noData: 'לא קיימים נתונים להצגת הגרף'
+      noData: 'לא קיימות תתי משימות עם שיוכים למשימה הנוכחית'
     },
     chart: {
         height: '350px',

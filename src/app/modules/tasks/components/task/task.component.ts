@@ -68,6 +68,9 @@ export class TaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.isUserCanWrite = this.userService.isUserCanWrite;
+    if (!this.isUserCanWrite) {
+      window.location.href = '/';
+    }
     // this.taskService.getTask(this.parentTaskId).subscribe(parentTask => this.parentTask = parentTask);
     // const id = this.route.snapshot.paramMap.get('id');
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { chart } from 'highcharts';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-task-statistics',
@@ -7,20 +8,25 @@ import { chart } from 'highcharts';
   styleUrls: ['./task-statistics.component.css']
 })
 export class TaskStatisticsComponent implements OnInit {
-    graphs = [
-        {value: 'Sum', viewValue: 'כמות אנשים'},
-        {value: 'ServiceSum', viewValue: 'כמות אנשים לפי סוגי שירות'},
-        {value: 'RankSum', viewValue: 'כמות אנשים לפי תקנים'},
-        {value: 'UnitSum', viewValue: 'כמות אנשים ביחידות'},
-        {value: 'UnitServiceSum', viewValue: 'כמות אנשים ביחידות לפי סוגי שירות'},
-        {value: 'UnitRankSum', viewValue: 'כמות אנשים ביחידות לפי תקנים'}
-      ];
-    selectedGraph = this.graphs[0].value;
-    graphType = "bar";
+  isUserCanWrite: boolean;
+  graphs = [
+      {value: 'Sum', viewValue: 'כמות אנשים'},
+      {value: 'ServiceSum', viewValue: 'כמות אנשים לפי סוגי שירות'},
+      {value: 'RankSum', viewValue: 'כמות אנשים לפי תקנים'},
+      {value: 'UnitSum', viewValue: 'כמות אנשים ביחידות'},
+      {value: 'UnitServiceSum', viewValue: 'כמות אנשים ביחידות לפי סוגי שירות'},
+      {value: 'UnitRankSum', viewValue: 'כמות אנשים ביחידות לפי תקנים'}
+    ];
+  selectedGraph = this.graphs[0].value;
+  graphType = "bar";
 
-  constructor() { }
+  constructor(public userService: UserService) { }
 
   ngOnInit(): void {
+    this.isUserCanWrite = this.userService.isUserCanWrite;
+    if (!this.isUserCanWrite) {
+      window.location.href = '/';
+    }
   }
 
   onChange(chartType:string){
