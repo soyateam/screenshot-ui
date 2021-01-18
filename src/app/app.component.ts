@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './core/services/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import { UserService } from './core/services/user.service';
 })
 export class AppComponent implements OnInit {
   title = 'screenshot-ui';
+  isRedirected = false;
   user;
   service;
 
@@ -18,5 +20,16 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.currentUser;
+  }
+
+  isExpired() {
+    if (this.userService.expired() && !this.isRedirected) {
+      this.isRedirected = true;
+      window.location.href = environment.auth.loginURL;
+
+      return true;
+    } else {
+      return false;
+    }
   }
 }
