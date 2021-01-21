@@ -40,6 +40,24 @@ export class ViewScreenComponent implements OnInit {
     'כל היחידות': 'כל היחידות',
   };
 
+  taskForceOrder = [
+    'איראן',
+    'סוריה',
+    'לבנון',
+    'רצ"ע',
+    'איו"ש',
+    'מצרים',
+  ];
+
+  taskForceOrderNoEgypt = [
+    'איראן',
+    'סוריה',
+    'לבנון',
+    'רצ"ע',
+    'איו"ש',
+    'הסדרים',
+  ];
+
   selectedDateFilter: any;
   selectedUnitFilter: any;
   selectedUnitFilterName: any;
@@ -68,6 +86,7 @@ export class ViewScreenComponent implements OnInit {
         }
       }
     } catch (err) {
+      console.log(err);
       this.isError = true;
       if (err.indexOf('authorized') === -1 && err.indexOf('expired') === -1) {
         this.errorImg = '/assets/500_error.png'
@@ -89,12 +108,12 @@ export class ViewScreenComponent implements OnInit {
 
   initViewValues(viewResults: any) {    
     this.fullSize = viewResults.fullSize;
-    this.mainFullSize = viewResults.mainFullSize;
+    this.mainFullSize = viewResults.mainFullSize;    
     this.forceOpTasks = viewResults[taskKeys.opForce];
     this.buildForceTasks = viewResults[taskKeys.buildForce];
     this.wrapTasks = viewResults[taskKeys.wrap];
     this.widthTasks = viewResults[taskKeys.width];
-    this.forceOpTasks = this.sortTasks(this.forceOpTasks, true);
+    this.forceOpTasks = this.orderForceOpTasks(this.forceOpTasks);
     this.buildForceTasks = this.sortTasks(this.buildForceTasks, true);
     this.wrapTasks = this.sortTasks(this.wrapTasks, false);
     this.widthTasks = this.sortTasks(this.widthTasks, false);
@@ -154,6 +173,38 @@ export class ViewScreenComponent implements OnInit {
       this.selectedUnitFilterName = 'אמ"ן';
     }
     this.secondaryLoading = false;
+  }
+
+  orderForceOpTasks(tasks: any) {
+    let orderedTasks = { ...tasks, children: [] };
+
+    if (tasks.children.find((elem: any) => elem.name === 'מצרים')) {
+      for (let name of this.taskForceOrder) {
+        for (let task of tasks.children) {
+          if (task.name === name) {
+            orderedTasks.children.push(task);
+            break;
+          }
+        }
+      }
+    } else if (tasks.children.find((elem: any) => elem.name === 'הסדרים')) {
+      for (let name of this.taskForceOrderNoEgypt) {
+        for (let task of tasks.children) {
+          if (task.name === name) {
+            orderedTasks.children.push(task);
+            break;
+          }
+        }
+      }
+    } else {
+      orderedTasks = this.sortTasks(tasks, true);
+    }
+
+    for (let currChildrenIndex = 0; currChildrenIndex < orderedTasks.children.length; currChildrenIndex++) {
+      orderedTasks.children[currChildrenIndex].children.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    }
+
+    return orderedTasks;
   }
 
 }
