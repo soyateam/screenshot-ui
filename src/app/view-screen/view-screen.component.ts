@@ -4,6 +4,8 @@ import { SharedService } from '../core/http/shared.service';
 import { UserService } from '../core/services/user.service';
 import { DashboardComponent } from '../modules/statistics/dashboard/dashboard.component';
 
+const FLAG_IMAGES = ['איראן.jpg', 'סוריה.jpg', 'איוש.jpg', 'לבנון.jpg', 'סוריה.jpg', 'רצע.jpg', 'מצרים.jpg', 'הסדרים.jpg'];
+
 const taskKeys = {
   opForce: 'הפעלת כוח',
   buildForce: 'יכולות',
@@ -49,7 +51,6 @@ export class ViewScreenComponent implements OnInit {
   async ngOnInit() {
     try {
       const fullView = await this.sharedService.getView().toPromise();
-      console.log(fullView);
       const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
       const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise(); 
       if (recvDateFilters && recvUnitNamesFilters && fullView) {
@@ -97,6 +98,22 @@ export class ViewScreenComponent implements OnInit {
     this.buildForceTasks = this.sortTasks(this.buildForceTasks, true);
     this.wrapTasks = this.sortTasks(this.wrapTasks, false);
     this.widthTasks = this.sortTasks(this.widthTasks, false);
+
+    for (let currIndex = 0; currIndex < this.forceOpTasks.children.length; currIndex++) {
+      if (FLAG_IMAGES.indexOf(`${this.forceOpTasks.children[currIndex].name.replace(/[\"\']/g, '')}.jpg`) === -1) {
+      } else {
+        this.forceOpTasks.children[currIndex].image = `/assets/${this.forceOpTasks.children[currIndex].name.replace(/[\"\']/g, '')}.jpg`; 
+      }
+    }
+
+    for (let currIndex = 0; currIndex < this.forceOpTasks.children.length; currIndex++) {
+      for (let currChildIndex = 0; currChildIndex < this.forceOpTasks.children[currIndex].children.length; currChildIndex++) {
+        if (this.forceOpTasks.children[currIndex].children[currChildIndex].name === 'אחר') {
+          this.forceOpTasks.children[currIndex].children.push(this.forceOpTasks.children[currIndex].children.splice(currChildIndex, 1)[0]);
+          break;
+        }
+      }
+    }
   }
 
   sortTasks(tasks, isSubChildren) {
@@ -108,6 +125,7 @@ export class ViewScreenComponent implements OnInit {
       for (let currChildrenIndex = 0; currChildrenIndex < tasks.children.length; currChildrenIndex++) {
         tasks.children[currChildrenIndex].children.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
       }
+
     }
 
     return tasks;

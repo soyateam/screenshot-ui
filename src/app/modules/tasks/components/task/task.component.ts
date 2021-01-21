@@ -61,7 +61,19 @@ export class TaskComponent implements OnInit {
         //   }
         // }
 
-        return this.tasks = tasks.tasks;
+        
+        this.tasks = tasks.tasks;
+        if (this.tasks && this.tasks[0] && this.tasks[0].ancestors && this.tasks[0].ancestors.length > 1) {
+          this.tasks.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        }
+
+        for (let currIndex = 0; currIndex < this.tasks.length; currIndex++) {
+          if (this.tasks[currIndex].name === 'אחר') {
+            this.tasks.push(this.tasks.splice(currIndex, 1)[0]);
+            break;
+          }
+        }
+        return this.tasks;
       });
     });
   }

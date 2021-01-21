@@ -50,7 +50,13 @@
                     <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
                     <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (forceOpTasks.value !== 0) ? (currOpTask.value * 100 / forceOpTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
-                <div class="first-tasks-names" style="overflow-y: auto; flex-wrap: wrap;"> {{ currOpTask.name }} </div>
+                <div style="display: flex; justify-content: center;">
+                    <div class="first-tasks-names" style="overflow-y: auto; flex-wrap: wrap; flex:70%"> {{ currOpTask.name }} </div>
+                    <div *ngIf="currOpTask.image" style="flex:30%;">
+                        <img height="35" [src]="currOpTask.image" style="position: relative; top: 7px; left: 4px; border: 1px solid black;"/>
+                    </div>
+                </div>
+                
                 <div class="first-subtasks-main">
                     <div *ngIf="currOpTask.children.length === 0" style="height:32px;"></div>
                     <button (click)="$event.stopPropagation(); taskStatistics(currOpSubTask);" mat-button class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.children" [matTooltip]="currOpSubTask.name" matTooltipPosition="above">
