@@ -37,8 +37,7 @@
     <div class="secondary-div-first">
         <button mat-button class="vertical-align" (click)="taskStatistics({_id: forceOpTasks._id, name: forceOpTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">
-                <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">
+                <span style="font-size:12px; position:relative; bottom:3px; right:0px;">
                     {{ (fullSize !== 0) ? (forceOpTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%
                 </span>
             </div>
@@ -47,8 +46,7 @@
         <div class="first-view">
             <div (click)="taskStatistics(currOpTask);" class="first-tasks-main" *ngFor="let currOpTask of forceOpTasks.children" style="cursor:pointer; position:relative;">
                 <div style="position:absolute; right:2px; top:-2px; color: white; font-weight: 500;">
-                    <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (forceOpTasks.value !== 0) ? (currOpTask.value * 100 / forceOpTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
+                    <span style="font-size:12px; position:relative; bottom:0px; right:2px;">{{ (forceOpTasks.value !== 0) ? (currOpTask.value * 100 / forceOpTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
                 <div style="display: flex; justify-content: center;">
                     <div class="first-tasks-names" style="overflow-y: auto; flex-wrap: wrap; flex:70%"> {{ currOpTask.name }} </div>
@@ -61,8 +59,7 @@
                     <div *ngIf="currOpTask.children.length === 0" style="height:32px;"></div>
                     <button (click)="$event.stopPropagation(); taskStatistics(currOpSubTask);" mat-button class="first-subtasks-secondary" *ngFor="let currOpSubTask of currOpTask.children" [matTooltip]="currOpSubTask.name" matTooltipPosition="above">
                         <div style="position:absolute; right:2px; top:-5px; color: #6a6a6a; ">
-                            <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                            <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ currOpSubTask.value.toFixed(2).replace('.00', '') }}</span>
+                            <span style="font-size:12px; position:relative; bottom:5px; right:2px;">{{ currOpSubTask.value.toFixed(2).replace('.00', '') }}</span>
                         </div>
                         <div style="max-width: 100%;overflow: hidden;text-overflow: ellipsis; font-family: 'system-ui'; font-weight: 400;">{{ currOpSubTask.name }}</div>
                     </button>
@@ -73,25 +70,22 @@
     <div class="secondary-div-second">
         <button mat-button class="vertical-align" (click)="taskStatistics({ _id: buildForceTasks._id, name: buildForceTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">
-                <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (buildForceTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:0px;">{{ (fullSize !== 0) ? (buildForceTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
             <span class="rotate">{{ buildForceTasks.name }}</span>
         </button>
         <div class="second-view">
             <div class="second-tasks-main" *ngFor="let currBuildTask of buildForceTasks.children" style="position:relative;">
                 <div style="position:absolute; right:6px; top:2px; color: white; font-weight: bold; z-index:1;">
-                    <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (buildForceTasks.value !== 0) ? (currBuildTask.value * 100 / buildForceTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
+                    <span style="font-size:12px; position:relative; bottom:1px; right:1px;">{{ (buildForceTasks.value !== 0) ? (currBuildTask.value * 100 / buildForceTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
                 <div matRipple class="second-tasks-names" style="font-family: 'system-ui';" (click)="taskStatistics(currBuildTask)">
                     {{ currBuildTask.name }}
                 </div>
                 <div class="second-subtasks-main">
                     <div matRipple class="second-subtasks-secondary" *ngFor="let currSubBuildTask of currBuildTask.children" (click)="taskStatistics(currSubBuildTask)">
-                        <div style="position:absolute; left:6px; top:-3px; color: white; font-weight: bold; z-index:1;">
-                            <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                            <span style="font-size:12px; position:relative; bottom:3px; right:2px; font-family: 'system-ui';">{{ currSubBuildTask.value.toFixed(2).replace('.00', '') }}</span>
+                        <div style="position:absolute; right:6px; top:2px; color: white; font-weight: bold; z-index:1;">
+                            <span style="font-size:12px; position:relative; bottom:5px; left: 2px; font-family: 'system-ui';">{{ currSubBuildTask.value.toFixed(2).replace('.00', '') }}</span>
                         </div>
                         {{ currSubBuildTask.name }}
                     </div>
@@ -102,16 +96,14 @@
     <div class="secondary-div-third">
         <button mat-button class="vertical-align" (click)="taskStatistics({_id: widthTasks._id, name: widthTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">
-                <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (widthTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
+                <span style="font-size:12px; position:relative; bottom:3px; right:0px;">{{ (fullSize !== 0) ? (widthTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
             <span class="rotate" style="position:relative; top: 4px;">{{ widthTasks.name }}</span>
         </button>
         <div class="third-view">
             <div matRipple class="third-tasks-main" *ngFor="let currWidthTask of widthTasks.children" (click)="taskStatistics(currWidthTask);">
                 <div style="position:absolute; right:2px; top:-3px; color: #6a6a6a; font-weight: bold;">
-                    <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (widthTasks.value !== 0) ? (currWidthTask.value * 100 / widthTasks.value).toFixed(2).replace('.00', '') : 0}}%</span>
+                    <span style="font-size:12px; position:relative; bottom:2px; right:0px;">{{ (widthTasks.value !== 0) ? (currWidthTask.value * 100 / widthTasks.value).toFixed(2).replace('.00', '') : 0}}%</span>
                 </div>
                 {{ currWidthTask.name }}
             </div>
@@ -120,16 +112,14 @@
     <div class="secondary-div-fourth">
         <button mat-button class="vertical-align" (click)="taskStatistics({_id: wrapTasks._id, name: wrapTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">
-                <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                <span style="font-size:12px; position:relative; bottom:3px; right:5px;">{{ (fullSize !== 0) ? (wrapTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
+                <span style="font-size:12px; position:relative; bottom:3px;">{{ (fullSize !== 0) ? (wrapTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
             </div>
             <span class="rotate">{{ wrapTasks.name }}</span>
         </button>
         <div class="fourth-view">
             <div matRipple class="fourth-tasks-main" *ngFor="let currWrapTask of wrapTasks.children" (click)="taskStatistics(currWrapTask)">
                 <div style="position:absolute; right:4px; top:0px; color: white; font-weight: bold; z-index:1;">
-                    <mat-icon style="font-size:18px; width:18px; height:18px; position:relative; top:2px;">group</mat-icon>
-                    <span style="font-size:12px; position:relative; bottom:3px; right:2px;">{{ (wrapTasks.value !== 0) ? (currWrapTask.value * 100 / wrapTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
+                    <span style="font-size:12px; position:relative; bottom:3px; right:0px;">{{ (wrapTasks.value !== 0) ? (currWrapTask.value * 100 / wrapTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
                 {{ currWrapTask.name }}
             </div>
