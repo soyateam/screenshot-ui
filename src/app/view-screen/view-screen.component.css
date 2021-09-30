@@ -233,6 +233,7 @@
 }
 
 .first-subtasks-secondary {
+    min-height: 36px;
     text-align: center;
     margin: 2px 20px;
     padding: 5px;
