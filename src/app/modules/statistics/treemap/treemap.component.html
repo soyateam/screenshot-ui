@@ -1,0 +1,16 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span>ייצוג פילוח המשימות בגרף Treemap</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<!-- <div style=" position:relative;" *ngIf=currentUser> -->
+<div style=" position:relative;">
+    <!--First Card-->
+    <div style="display: flex;height: 600px;text-align: center;justify-content: center; margin-top: -20px;">
+        <div style="flex:100%; width:0; position:relative; margin-top: 20px;">
+            <app-treemap-graph [taskId]="null" [tasks]="tasks"></app-treemap-graph>
+        </div>
+    </div>
+</div>

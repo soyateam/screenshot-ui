@@ -60,13 +60,14 @@
 
 .secondary-div-second {
     display:flex;
-    height:280px;
+    /* height:280px; */
+    height: 350px;
 }
 
-.secondary-div-third {
+/* .secondary-div-third {
     display:flex;
     height:70px;
-}
+} */
 
 .secondary-div-fourth {
     display: flex;  height:110px;

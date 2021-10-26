@@ -1,0 +1,11 @@
+.empty-data-container {
+    position: sticky;
+    top: 50%;
+}
+
+.empty-data {
+    color: #666666;
+    font-size: 24px;
+    font-weight: bold;
+    fill: #666666;
+}
