@@ -145,7 +145,8 @@ export class TreemapGraphComponent implements OnInit {
       levels: [
         {
           level: 1,
-          layoutAlgorithm: 'sliceAndDice',
+          layoutAlgorithm: 'squarified',
+          allowOverlap: false,
           dataLabels: {
             enabled: true,
             align: 'left',
@@ -159,11 +160,13 @@ export class TreemapGraphComponent implements OnInit {
         },
         {
           level: 2,
+          layoutAlgorithm: 'squarified',
+          allowOverlap: false,
           dataLabels: {
             enabled: true,
             style: {
               fontFamily: 'arial',
-              fontSize: '1rem',
+              fontSize: '14px'
             }
           },
         }
