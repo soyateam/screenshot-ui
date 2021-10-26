@@ -12,6 +12,8 @@ const drilldown = require('highcharts/modules/drilldown.src');
 const HC_exporting = require('highcharts/modules/exporting');
 // tslint:disable-next-line: variable-name
 const HC_exportData = require('highcharts/modules/export-data');
+// tslint:disable-next-line: variable-name
+const HC_treemap = require('highcharts/modules/treemap');
 
 const theme = {
   colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
@@ -213,6 +215,7 @@ noData(Highcharts);
 drilldown(Highcharts);
 HC_exporting(Highcharts);
 HC_exportData(Highcharts);
+HC_treemap(Highcharts);
 
 @Component({
    selector: 'app-graph',
@@ -235,7 +238,7 @@ export class GraphComponent implements OnInit, OnChanges {
       // Apply the theme
       // Highcharts.setOptions(theme as any);
       this.currGraph = Highcharts.chart(this.container, this.options);
-      if (this.container !== 'linear') {
+      if (this.container !== 'linear' && this.container !== 'treemap') {
          this.currGraph.showLoading('...טוען נתונים');
       }
    }

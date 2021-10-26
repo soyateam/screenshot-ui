@@ -1,0 +1,9 @@
+<div *ngIf="emptyData" class="empty-data-container">
+    <span class="empty-data">
+        לא קיימים נתונים להצגת גרף
+    </span>
+</div>
+<div *ngIf="!emptyData">
+    <app-graph [options]="options" container="treemap"></app-graph>
+    <div id="treemap"></div>
+</div>

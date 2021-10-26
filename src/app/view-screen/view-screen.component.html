@@ -11,6 +11,9 @@
             <span></span>
         </div>
         <div class="title-view">
+            <button mat-icon-button (click)="$event.stopPropagation(); showTableChart();"  matTooltip="הצגת גרף Treemap" matTooltipPosition="above">
+                <mat-icon>table_chart</mat-icon>
+            </button>
             <mat-progress-bar mode="indeterminate" style="position: absolute; top: 0;" *ngIf="secondaryLoading"></mat-progress-bar>
             <mat-form-field style="margin-right: 20px; flex:10%;">
                 <mat-label style="font-family:'system-ui';">בחירת חודש</mat-label>
@@ -78,10 +81,10 @@
         </button>
         <div class="second-view">
             <div class="second-tasks-main" *ngFor="let currBuildTask of buildForceTasks.children" style="position:relative;">
-                <div style="position:absolute; right:6px; top:2px; color: white; font-weight: bold; z-index:1;">
+                <div *ngIf="currBuildTask.children.length !== 0" style="position:absolute; right:6px; top:2px; color: white; font-weight: bold; z-index:1;">
                     <span style="font-size:12px; position:relative; bottom:1px; right:1px;">{{ (buildForceTasks.value !== 0) ? (currBuildTask.value * 100 / buildForceTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
                 </div>
-                <div matRipple class="second-tasks-names" style="font-family: 'system-ui';" (click)="taskStatistics(currBuildTask)">
+                <div *ngIf="currBuildTask.children.length !== 0" matRipple class="second-tasks-names" style="font-family: 'system-ui';" (click)="taskStatistics(currBuildTask)">
                     {{ currBuildTask.name }}
                 </div>
                 <div class="second-subtasks-main">
@@ -93,9 +96,22 @@
                     </div>
                 </div>
             </div>
+            <div style="display: flex; flex-direction: row;">
+                <div *ngFor="let emptyBuildTask of buildForceEmptyTasks" style="position: relative;flex-grow: 1;">
+                    <div matRipple class="second-tasks-names" style="flex-grow: 1;">
+                        <div style="position:absolute; right:6px; top:2px; color: white; font-weight: bold; z-index:1;">
+                            <span style="font-size:12px; position:relative; bottom:1px; right:1px;">{{ (buildForceTasks.value !== 0) ? (emptyBuildTask.value * 100 / buildForceTasks.value).toFixed(2).replace('.00', '') : 0 }}%</span>
+                        </div>
+                        <div matRipple style="font-family: 'system-ui';" (click)="taskStatistics(emptyBuildTask)">
+                            {{ emptyBuildTask.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
-    <div class="secondary-div-third">
+    <!-- <div class="secondary-div-third">
         <button mat-button class="vertical-align" (click)="taskStatistics({_id: widthTasks._id, name: widthTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">
                 <span style="font-size:12px; position:relative; bottom:3px; right:0px;">{{ (fullSize !== 0) ? (widthTasks.value * 100 / fullSize).toFixed(1).replace('.0', '') : 0 }}%</span>
@@ -110,7 +126,7 @@
                 {{ currWidthTask.name }}
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="secondary-div-fourth">
         <button mat-button class="vertical-align" (click)="taskStatistics({_id: wrapTasks._id, name: wrapTasks.name, ancestors: [defaultParentNew]});">
             <div class="" style="color: white; font-weight: bold; z-index:1; position: absolute; top:-3px; width:100%; left:0;">

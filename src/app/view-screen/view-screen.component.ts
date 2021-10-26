@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SharedService } from '../core/http/shared.service';
 import { UserService } from '../core/services/user.service';
 import { DashboardComponent } from '../modules/statistics/dashboard/dashboard.component';
+import { TreemapComponent } from '../modules/statistics/treemap/treemap.component';
 
 const FLAG_IMAGES = ['איראן.jpg', 'סוריה.jpg', 'איוש.jpg', 'לבנון.jpg', 'סוריה.jpg', 'רצע.jpg', 'מצרים.jpg', 'הסדרים.jpg'];
 
@@ -10,7 +11,7 @@ const taskKeys = {
   opForce: 'הפעלת כוח',
   buildForce: 'יכולות',
   wrap: 'מעטפת',
-  width: 'רוחב'
+  // width: 'רוחב'
 }
 
 @Component({
@@ -23,9 +24,10 @@ export class ViewScreenComponent implements OnInit {
   errorImg: string;
   forceOpTasks: any;
   buildForceTasks: any;
+  buildForceEmptyTasks: any;
   secondaryLoading = false;
   wrapTasks: any;
-  widthTasks: any;
+  // widthTasks: any;
   dateFilters: any;
   unitFilters: any;
   finishedLoading = false;
@@ -63,17 +65,17 @@ export class ViewScreenComponent implements OnInit {
   selectedUnitFilterName: any;
 
   constructor(private dialog: MatDialog,
-              private sharedService: SharedService,
-              private userService: UserService) { }
+    private sharedService: SharedService,
+    private userService: UserService) { }
 
   async ngOnInit() {
     try {
       const fullView = await this.sharedService.getView().toPromise();
-      const recvDateFilters = await this.sharedService.getDateFilters().toPromise();  
-      const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise(); 
+      const recvDateFilters = await this.sharedService.getDateFilters().toPromise();
+      const recvUnitNamesFilters = await this.sharedService.getUnitNamesFilters().toPromise();
       if (recvDateFilters && recvUnitNamesFilters && fullView) {
         this.dateFilters = ['זמן נוכחי', ...recvDateFilters];
-        this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];    
+        this.unitFilters = [{ name: 'כל היחידות', kartoffelID: this.DEFAULT_FILTERS['כל היחידות'] }, ...recvUnitNamesFilters];
         this.selectedDateFilter = this.DEFAULT_FILTERS['זמן נוכחי'];
         this.selectedUnitFilter = this.DEFAULT_FILTERS['כל היחידות'];
         this.selectedUnitFilterName = 'אמ"ן';
@@ -106,22 +108,24 @@ export class ViewScreenComponent implements OnInit {
     });
   }
 
-  initViewValues(viewResults: any) {    
+  initViewValues(viewResults: any) {
     this.fullSize = viewResults.fullSize;
-    this.mainFullSize = viewResults.mainFullSize;    
+    this.mainFullSize = viewResults.mainFullSize;
     this.forceOpTasks = viewResults[taskKeys.opForce];
     this.buildForceTasks = viewResults[taskKeys.buildForce];
     this.wrapTasks = viewResults[taskKeys.wrap];
-    this.widthTasks = viewResults[taskKeys.width];
+    // this.widthTasks = viewResults[taskKeys.width];
     this.forceOpTasks = this.orderForceOpTasks(this.forceOpTasks);
-    this.buildForceTasks = this.sortTasks(this.buildForceTasks, true);
+    this.buildForceTasks = this.sortTasks(this.buildForceTasks, true, true);
     this.wrapTasks = this.sortTasks(this.wrapTasks, false);
-    this.widthTasks = this.sortTasks(this.widthTasks, false);
+    this.buildForceEmptyTasks = this.buildForceTasks.children.filter((task) => task.children.length === 0);
+    console.log(this.buildForceEmptyTasks);
+    // this.widthTasks = this.sortTasks(this.widthTasks, false);
 
     for (let currIndex = 0; currIndex < this.forceOpTasks.children.length; currIndex++) {
       if (FLAG_IMAGES.indexOf(`${this.forceOpTasks.children[currIndex].name.replace(/[\"\']/g, '')}.jpg`) === -1) {
       } else {
-        this.forceOpTasks.children[currIndex].image = `/assets/${this.forceOpTasks.children[currIndex].name.replace(/[\"\']/g, '')}.jpg`; 
+        this.forceOpTasks.children[currIndex].image = `/assets/${this.forceOpTasks.children[currIndex].name.replace(/[\"\']/g, '')}.jpg`;
       }
     }
 
@@ -135,14 +139,18 @@ export class ViewScreenComponent implements OnInit {
     }
   }
 
-  sortTasks(tasks, isSubChildren) {
+  sortTasks(tasks, isSubChildren, sortByChildren = false) {
     tasks.children;
 
-    tasks.children.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    tasks.children.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+
+    if (sortByChildren) {
+      tasks.children.sort((a, b) => (a.children.length > b.children.length) ? -1 : ((a.children.length < b.children.length) ? 1 : 0))
+    }
 
     if (isSubChildren) {
       for (let currChildrenIndex = 0; currChildrenIndex < tasks.children.length; currChildrenIndex++) {
-        tasks.children[currChildrenIndex].children.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        tasks.children[currChildrenIndex].children.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
       }
 
     }
@@ -168,7 +176,7 @@ export class ViewScreenComponent implements OnInit {
     this.initViewValues(await this.getViewValues());
     if (this.selectedUnitFilter !== 'כל היחידות') {
       this.selectedUnitFilterName = this.unitFilters.find((unit: any) => unit.kartoffelID === this.selectedUnitFilter).name;
-        
+
     } else {
       this.selectedUnitFilterName = 'אמ"ן';
     }
@@ -201,10 +209,25 @@ export class ViewScreenComponent implements OnInit {
     }
 
     for (let currChildrenIndex = 0; currChildrenIndex < orderedTasks.children.length; currChildrenIndex++) {
-      orderedTasks.children[currChildrenIndex].children.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      orderedTasks.children[currChildrenIndex].children.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     }
 
     return orderedTasks;
+  }
+
+  showTableChart() {
+    this.dialog.open(
+      TreemapComponent,
+      {
+        width: '1300px',
+        height: '881px',
+        data: {
+          forceOpTasks: this.forceOpTasks,
+          buildForceTasks: this.buildForceTasks,
+          wrapTasks: this.wrapTasks,
+        }
+      }
+    );
   }
 
 }

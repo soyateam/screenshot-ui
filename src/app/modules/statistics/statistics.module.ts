@@ -12,10 +12,12 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SecondaryBarGraphComponent } from './components/secondary-bar-graph/secondary-bar-graph.component';
 import { LinearGraphComponent } from './components/linear-graph/linear-graph.component';
+import { TreemapComponent } from './treemap/treemap.component';
+import { TreemapGraphComponent } from './components/treemap-graph/treemap-graph.component';
 
 
 @NgModule({
-    declarations: [GraphComponent, TaskStatisticsComponent, PieGraphComponent, BarGraphComponent, DashboardComponent, SecondaryBarGraphComponent, LinearGraphComponent],
+    declarations: [GraphComponent, TaskStatisticsComponent, PieGraphComponent, BarGraphComponent, DashboardComponent, SecondaryBarGraphComponent, LinearGraphComponent, TreemapComponent, TreemapGraphComponent],
     imports: [
         CommonModule,
         SharedModule,
