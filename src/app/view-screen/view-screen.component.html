@@ -7,9 +7,9 @@
 </div>
 <div class="main-div" *ngIf="finishedLoading">
     <div class="secondary-div-title">
-        <div class="vertical-align-special" style="border-top: initial !important; border-bottom:initial !important;">
-            <span></span>
-        </div>
+        <button mat-button class="vertical-align-special" (click)="taskStatistics({_id: defaultParentNew, name: fullAmanName, ancestors: []});" style="border-top: initial !important; border-bottom:initial !important;">
+            <span>{{ fullAmanName }}</span>
+        </button>
         <div class="title-view">
             <button mat-icon-button (click)="$event.stopPropagation(); showTableChart();"  matTooltip="הצגת גרף Treemap" matTooltipPosition="above">
                 <mat-icon>table_chart</mat-icon>
