@@ -238,6 +238,12 @@ export class BarGraphComponent implements OnInit, OnChanges {
       categoryNames = data.categories;
     }
 
+    if (data.series) {
+      for (let index = 0; index < data.series.length; index++) {
+        data.series[index] = { ...data.series[index], dataSorting: { enabled: true } }
+      }
+    }
+
     this.options = {...this.options,
          xAxis: {categories: categoryNames,
                  lables: {

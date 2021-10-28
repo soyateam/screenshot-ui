@@ -20,6 +20,7 @@ const taskKeys = {
   styleUrls: ['./view-screen.component.css']
 })
 export class ViewScreenComponent implements OnInit {
+  fullAmanName: string = 'כלל אמ״ן';
   defaultParentNew = '5f4cc73b4201366c45b83925'; // amn
   errorImg: string;
   forceOpTasks: any;
