@@ -71,7 +71,7 @@ export class TreemapGraphComponent implements OnInit {
         let sum = 0;
         for (let index = 0; index < this.series.data.length; index++) {
           if (this.series.data[index].parent === this.id &&
-              this.series.data[index].value) {
+            this.series.data[index].value) {
             sum += this.series.data[index].value;
           }
         }
@@ -140,6 +140,7 @@ export class TreemapGraphComponent implements OnInit {
       type: "treemap",
       layoutAlgorithm: 'stripes',
       alternateStartingDirection: true,
+      allowOverlap: false,
       // showInLegend: true,
       // legendType: 'point',
       levels: [
@@ -148,13 +149,15 @@ export class TreemapGraphComponent implements OnInit {
           layoutAlgorithm: 'squarified',
           allowOverlap: false,
           dataLabels: {
+            useHTML: true,
             enabled: true,
             align: 'left',
             verticalAlign: 'top',
             style: {
               fontFamily: 'arial',
               fontSize: '1.5rem',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              textOverflow: 'ellipsis'
             }
           },
         },
@@ -163,10 +166,12 @@ export class TreemapGraphComponent implements OnInit {
           layoutAlgorithm: 'squarified',
           allowOverlap: false,
           dataLabels: {
+            useHTML: true,
             enabled: true,
             style: {
               fontFamily: 'arial',
-              fontSize: '14px'
+              fontSize: '14px',
+              textOverflow: 'ellipsis'
             }
           },
         }
@@ -271,6 +276,6 @@ export class TreemapGraphComponent implements OnInit {
         ...this.options,
         series: [{ ...this.options.series[0], data }]
       }
-    }    
+    }
   }
 }
