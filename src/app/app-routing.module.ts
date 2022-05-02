@@ -9,8 +9,8 @@ import { ViewScreenComponent } from './view-screen/view-screen.component';
 const routes: Routes = [  { path: 'task/:id', component: TaskComponent },
                           { path: 'statistics/:id/:name', component: TaskStatisticsComponent },
                           /*{ path: 'dashboard/:id/:name', component: ViewScreenComponent},*/
-                          { path: 'dashboard', component: ViewScreenComponent},
-                          { path: '**', redirectTo: '/dashboard' }];
+                          // { path: 'dashboard', component: ViewScreenComponent},
+                          { path: '**', redirectTo: '/task/5f4cc73b4201366c45b83925' }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],

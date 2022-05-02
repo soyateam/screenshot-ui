@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 export class TaskService {
 
   private tasksUrl = `${environment.api}/task`;
+  private taskUpdateUrl = `${environment.api}/shared/task`;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -55,7 +56,7 @@ export class TaskService {
 
   updateTask(task, clickedGroupId?): Observable<any> {
     // console.log(task);
-    return this.http.put<any>(this.tasksUrl, { task, clickedGroupId }, this.httpOptions).pipe(
+    return this.http.put<any>(this.taskUpdateUrl, { task, clickedGroupId }, this.httpOptions).pipe(
       tap((updatedTask: any) => this.log(`Updated task w/ id=${updatedTask.id}`)),
       catchError(this.handleError<any>('updateTask'))
     );
